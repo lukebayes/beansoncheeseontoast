@@ -1,0 +1,6 @@
+= Action Pack -- On rails from request to response
+
+Action Pack splits the response to a web request into a controller part (performing the logic) and a view part (rendering a template). This two-step approach is known as an action, which will normally create, read, update, or delete (CRUD for short) some sort of model part (often backed by a service) before choosing either to render a template or redirecting to another action.
+
+The main idea here is to destroy complex state (and thus complexity) in the Rich client environment and instead treat user gestures as we treat the HTTP request/response life cycle.
+
