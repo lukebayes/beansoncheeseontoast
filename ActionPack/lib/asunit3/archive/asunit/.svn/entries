@@ -1,0 +1,43 @@
+8
+
+dir
+206
+https://asunit.svn.sourceforge.net/svnroot/asunit/trunk/framework/as3/asunit
+https://asunit.svn.sourceforge.net/svnroot/asunit
+
+
+
+2009-01-06T19:02:39.384509Z
+206
+lukebayes
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+d8e23dfe-1f0e-0410-994a-b585122fabbd
+
+textui
+dir
+
+runner
+dir
+
+errors
+dir
+
+framework
+dir
+
+util
+dir
+
