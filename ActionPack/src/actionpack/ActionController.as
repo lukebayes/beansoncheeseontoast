@@ -2,6 +2,7 @@ package actionpack {
     
     import capitalize;
     import flash.utils.getQualifiedClassName;
+    import flash.utils.getDefinitionByName;
     
     public class ActionController {
         private static const DEFAULT_ACTION_NAME:String = 'index';
@@ -81,16 +82,13 @@ package actionpack {
         public function templateDoesExist(templateName:String=null, actionName:String=null):Boolean {
             actionName ||= DEFAULT_ACTION_NAME;
             templateName ||= defaultTemplateName(actionName);
-            trace(">> working with: " + templateName + " and action: " + actionName);
             var resolved:String = templateToClassName(templateName);
-            trace(">> TEMPLATE: " + resolved);
-            return false
+            return getDefinitionByName(resolved) != null;
         }
         
         private function templateToClassName(template:String):String {
             var parts:Array = template.split('/');
             var name:String = capitalize(parts.pop());
-            trace(">> name: " + name);
             var resolved:String = parts.join('/');
             return resolved += '::' + name;
         }

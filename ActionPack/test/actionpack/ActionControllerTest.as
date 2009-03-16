@@ -1,9 +1,11 @@
 package actionpack {
 
     import asunit.framework.TestCase;
+    import mock_named.Index; // TODO: This should be auto-imported somehow!
 
     public class ActionControllerTest extends TestCase {
         private var instance:ActionController;
+        private var indexTemplate:Index;
 
         public function ActionControllerTest(methodName:String=null) {
             super(methodName)
