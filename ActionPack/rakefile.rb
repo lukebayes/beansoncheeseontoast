@@ -31,17 +31,8 @@ end
 desc 'Compile and debug the application'
 debug :debug
 
-
-desc 'Compile run the test harness'
-flashplayer :test => 'bin/ActionPackRunner.swf' do |t|
-  t.swf = 'bin/ActionPackRunner.swf'
-end
-
-mxmlc 'bin/ActionPackRunner.swf' do |t|
-  t.input = 'src/ActionPackRunner.as'
-  t.source_path << 'src'
-  t.source_path << 'lib/asunit3'
-  t.source_path << 'test'
+desc 'Compile and run the test harness'
+unit :test do |t|
   t.source_path << 'fixtures'
 end
 
@@ -56,7 +47,7 @@ swc :swc
 
 desc 'Compile and run the test harness for CI'
 ci :cruise do |t|
-  t.source_path << 'testfixtures'
+  t.source_path << 'fixtures'
 end
 
 # set up the default rake task
