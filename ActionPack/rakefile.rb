@@ -28,12 +28,24 @@ project_model :model do |m|
   # m.libraries             << :corelib
 end
 
+def include_classes(t)
+  Dir.glob('fixtures/actioncontroller/**/*').each do |fixture|
+    if(!File.directory?(fixture))
+      fixture.gsub!('fixtures/actioncontroller/', '')
+      fixture.gsub!(/.as$/, '')
+      fixture = fixture.split('/').join('.')
+      t.includes << fixture
+    end
+  end
+end
+
 desc 'Compile and debug the application'
 debug :debug
 
 desc 'Compile and run the test harness'
 unit :test do |t|
   t.source_path << 'fixtures/actioncontroller'
+  include_classes(t)
 end
 
 desc 'Compile the optimized deployment'

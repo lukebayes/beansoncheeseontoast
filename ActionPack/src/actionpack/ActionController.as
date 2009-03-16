@@ -82,7 +82,7 @@ package actionpack {
             return controllerPath + '/' + actionName;
         }
 
-        public function templateDoesExist(templateName:String=null, actionName:String=null):Boolean {
+        public function templateDoesExist(actionName:String=null, templateName:String=null):Boolean {
             actionName ||= DEFAULT_ACTION_NAME;
             templateName ||= defaultTemplateName(actionName);
             var resolved:String = templateToClassName(templateName);
