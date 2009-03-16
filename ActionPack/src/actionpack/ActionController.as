@@ -90,7 +90,7 @@ package actionpack {
         private function getDefaultTemplateName(actionName:String):String {
             return controllerPath + '/' + actionName;
         }
-
+        
         public function templateDoesExist(actionName:String=null, templateName:String=null):Boolean {
             actionName ||= DEFAULT_ACTION_NAME;
             templateName ||= defaultTemplateName(actionName);

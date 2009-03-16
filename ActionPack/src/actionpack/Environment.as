@@ -32,6 +32,8 @@ package actionpack {
                 controller = this._controllers[route.controller];
             }
             
+            controller.templateDoesExist(route.action);
+            
             trace(">> GET CALLED WITH: " + request + " and: " + controller);
             
             return {};
