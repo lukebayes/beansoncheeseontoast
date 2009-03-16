@@ -8,6 +8,8 @@ package {
 
 	import asunit.framework.TestSuite;
 	import actionpack.ActionControllerTest;
+	import actionpack.EnvironmentTest;
+	import actionpack.RoutesTest;
 	import CapitalizeTest;
 	import UnderscoreTest;
 
@@ -15,6 +17,8 @@ package {
 
 		public function AllTests() {
 			addTest(new actionpack.ActionControllerTest());
+			addTest(new actionpack.EnvironmentTest());
+			addTest(new actionpack.RoutesTest());
 			addTest(new CapitalizeTest());
 			addTest(new UnderscoreTest());
 		}
