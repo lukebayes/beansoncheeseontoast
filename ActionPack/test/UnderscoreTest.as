@@ -1,5 +1,4 @@
 package  {
-
     import asunit.framework.TestCase;
 
     public class UnderscoreTest extends TestCase {

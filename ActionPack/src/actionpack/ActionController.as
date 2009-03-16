@@ -64,7 +64,7 @@ package actionpack {
         }
         
         private function getControllerName():String {
-            return getQualifiedClassName(this).split('::').pop();
+            return underscore(getQualifiedClassName(this).split('::').pop().replace(/Controller/, ''));
         }
         
     }

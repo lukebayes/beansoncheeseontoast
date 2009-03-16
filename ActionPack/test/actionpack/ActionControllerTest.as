@@ -22,16 +22,15 @@ package actionpack {
         public function testInstantiated():void {
             assertTrue("instance is ActionController", instance is ActionController);
         }
-        
+
         public function testControllerName():void {
-            var controller:MockController = new MockController();
-            assertEquals('mockcontroller', controller.controllerName);
+            var controller:MockNamedController = new MockNamedController();
+            assertEquals('mock_named', controller.controllerName);
         }
-        
     }
 }
 
 import actionpack.ActionController;
 
-class MockController extends ActionController {
+class MockNamedController extends ActionController {
 }
