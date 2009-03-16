@@ -6,6 +6,9 @@ package actionpack {
     
     public class ActionController {
         private static const DEFAULT_ACTION_NAME:String = 'index';
+        public static const viewPackages:Array = ['views'];
+        public static const controllerPackages:Array = ['controllers'];
+        public static const modelPackages:Array = ['models'];
         
         private var _actionName:String;
         private var _controllerName:String;
@@ -83,7 +86,24 @@ package actionpack {
             actionName ||= DEFAULT_ACTION_NAME;
             templateName ||= defaultTemplateName(actionName);
             var resolved:String = templateToClassName(templateName);
-            return getDefinitionByName(resolved) != null;
+            return attemptToLoadView(resolved) != null;
+        }
+        
+        private function attemptToLoadView(name:String):Class {
+            var clazz:Class = null;
+            viewPackages.some(function(packageName:String, index:int, items:Array):Boolean {
+                return (clazz = attemptToLoadClass(packageName + '.' + name)) != null;
+            });
+            return clazz;
+        }
+        
+        private function attemptToLoadClass(name:String):Class {
+            try {
+                return getDefinitionByName(name) as Class;
+            }
+            catch(e:ReferenceError) {
+            }
+            return null;
         }
         
         private function templateToClassName(template:String):String {

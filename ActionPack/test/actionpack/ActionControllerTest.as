@@ -1,7 +1,8 @@
 package actionpack {
 
     import asunit.framework.TestCase;
-    import mock_named.Index; // TODO: This should be auto-imported via rake tasks!
+    import controllers.UsersController;
+    import views.users.Index; // TODO: This should be auto-imported via rake tasks!
 
     public class ActionControllerTest extends TestCase {
         private var instance:ActionController;
@@ -35,8 +36,8 @@ package actionpack {
             assertEquals('mock_named/index', controller.defaultTemplateName());
         }
         
-        public function testTemplateExists():void {
-            var controller:MockNamedController = new MockNamedController();
+        public function testDefaultTemplateExists():void {
+            var controller:UsersController = new UsersController();
             assertTrue(controller.templateDoesExist());
         }
     }
