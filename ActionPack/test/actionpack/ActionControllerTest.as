@@ -27,6 +27,11 @@ package actionpack {
             var controller:MockNamedController = new MockNamedController();
             assertEquals('mock_named', controller.controllerName);
         }
+        
+        public function testDefaultTemplateName():void {
+            var controller:MockNamedController = new MockNamedController();
+            assertEquals('mock_named/index', controller.defaultTemplateName());
+        }
     }
 }
 

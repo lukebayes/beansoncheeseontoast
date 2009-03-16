@@ -3,10 +3,12 @@ package actionpack {
     import flash.utils.getQualifiedClassName;
     
     public class ActionController {
+        private static const DEFAULT_ACTION_NAME:String = 'index';
         
         private var _actionName:String;
         private var _controllerName:String;
         private var _controllerPath:String;
+        private var _defaultTemplateName:String;
         private var _params:Object;
         private var _response:Object;
         private var _session:Object;
@@ -64,7 +66,15 @@ package actionpack {
         }
         
         private function getControllerName():String {
-            return underscore(getQualifiedClassName(this).split('::').pop().replace(/Controller/, ''));
+            return underscore(getQualifiedClassName(this).split('::').pop().replace(/Controller$/, ''));
+        }
+        
+        public function defaultTemplateName(actionName:String=DEFAULT_ACTION_NAME):String {
+            return _defaultTemplateName = getDefaultTemplateName(actionName);
+        }
+        
+        private function getDefaultTemplateName(actionName:String):String {
+            return controllerPath + '/' + actionName;
         }
         
     }
