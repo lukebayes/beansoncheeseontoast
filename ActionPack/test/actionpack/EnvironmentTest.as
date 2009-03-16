@@ -9,7 +9,7 @@ package actionpack {
             super(methodName)
         }
 
-        public function testConfigureAndRetrieveSimpleRoute():void {
+        public function testConfigureAndLoadRoute():void {
             var env:Environment = new Environment(getContext());
             
             env.routes(function(r:*):void {
@@ -17,6 +17,8 @@ package actionpack {
             });
 
             assertEquals('/users', env.urlFor({'controller' : UsersController}));
+            
+            var rendered:* = env.get('/users');
         }
     }
 }

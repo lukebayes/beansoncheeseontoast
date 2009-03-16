@@ -14,6 +14,7 @@ package actionpack {
         private var _controllerName:String;
         private var _controllerPath:String;
         private var _defaultTemplateName:String;
+        private var _environment:Environment;
         private var _params:Object;
         private var _response:Object;
         private var _session:Object;
@@ -27,6 +28,14 @@ package actionpack {
 
         public function get actionName():String {
             return _actionName;
+        }
+
+        public function set environment(environment:Environment):void {
+            _environment = environment;
+        }
+
+        public function get environment():Environment {
+            return _environment;
         }
 
         /**

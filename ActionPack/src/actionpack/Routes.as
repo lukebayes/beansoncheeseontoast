@@ -15,11 +15,17 @@ package actionpack {
         }
         
         public function urlFor(options:*):String {
-            return '/' + findRouteByController(options.controller).name;
+            return findRouteByController(options.controller).name;
+        }
+        
+        public function routeFor(url:String):Route {
+            return findFirst(_routes, function(route:Route, index:int, routes:Array):Boolean {
+                return (route.name == url);
+            });
         }
         
         protected function addNamedRoute(name:String, options:Object=null):void {
-            _routes.push(new Route(name, options.controller, options.action));
+            _routes.push(new Route('/' + name, options.controller, options.action));
         }
         
         private function findRouteByController(controller:Class):Route {
@@ -52,17 +58,5 @@ package actionpack {
             // Loop back and run configuration again:
             configure(config);
         }
-    }
-}
-
-class Route {
-    public var name:String;
-    public var controller:Class;
-    public var action:String;
-    
-    public function Route(name:String, controller:Class, action:String) {
-        this.name = name;
-        this.controller = controller;
-        this.action = action;
     }
 }

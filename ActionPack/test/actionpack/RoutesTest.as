@@ -2,6 +2,7 @@ package actionpack {
 
     import asunit.framework.TestCase;
     import controllers.UsersController;
+    import controllers.SiteController;
 
     public class RoutesTest extends TestCase {
         private var routes:Routes;
@@ -23,12 +24,14 @@ package actionpack {
         public function testConfigure():void {
             routes.configure(function(r:*):void {
                 r.users({'controller' : UsersController});
+                r.root({'controller' : SiteController});
             });
         }
         
         public function testConfigureAndRetrieveSimpleRoute():void {
             testConfigure();
             assertEquals('/users', routes.urlFor({'controller' : UsersController}));
+            assertEquals('/', routes.urlFor({'controller' : SiteController}));
         }
     }
 }
