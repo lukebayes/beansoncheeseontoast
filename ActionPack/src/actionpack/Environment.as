@@ -1,37 +1,28 @@
 package actionpack {
     import ReferenceError;
-    import actionpack.errors.RoutingError;
+    import flash.display.DisplayObject;
     
-    dynamic public class Environment extends Routes {
+    public class Environment {
+        private var displayRoot:DisplayObject;
+        private var _routes:Routes;
         
-        public function Environment(configuration:Function=null) {
-            configuration ||= function():void {};
-            executeConfiguration(configuration);
-        }
-        
-        private function executeConfiguration(config:Function):void {
-            try {
-                config(this);
-            }
-            catch(te:TypeError) {
-                processTypeError(te.message, config);
+        public function Environment(displayRoot:DisplayObject, configuration:Function=null) {
+            this._routes = new Routes(this);
+            this.displayRoot = displayRoot;
+            if(configuration is Function) {
+                configuration.call(this, this);
             }
         }
         
-        private function processTypeError(message:String, config:Function):void {
-            var result:* = message.match(/\: (\w+) is not a function/i);
-            addHookForNamedRoute(result[1], config);
+        public function routes(handler:Function=null):Routes {
+            if(handler != null) {
+                _routes.configure(handler);
+            }
+            return _routes;
         }
         
-        private function addHookForNamedRoute(name:String, config:Function):void {
-            if(this[name] != undefined) {
-                throw new RoutingError('Attempted to create a named route where a property already exists [' + name + ']');
-            }
-            this[name] = function(options:Object):void {
-                addNamedRoute(name, options);
-            }
-            // Loop back and run configuration again:
-            executeConfiguration(config);
+        public function urlFor(options:*):String {
+            return _routes.urlFor(options);
         }
     }
 }

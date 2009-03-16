@@ -1,9 +1,12 @@
 package actionpack {
+    import actionpack.errors.RoutingError;
     
-    public class Routes {
+    dynamic public class Routes {
+        private var _environment:Environment;
         private var _routes:Array;
         
-        public function Routes() {
+        public function Routes(env:Environment) {
+            _environment = env;
             _routes = new Array();
         }
         
@@ -23,6 +26,31 @@ package actionpack {
             return findFirst(_routes, function(route:Route, index:int, items:Array):Boolean {
                 return (route.controller === controller);
             });
+        }
+
+        public function configure(config:Function):void {
+            try {
+                config.call(_environment, this);
+            }
+            catch(te:TypeError) {
+                processTypeError(te.message, config);
+            }
+        }
+        
+        private function processTypeError(message:String, config:Function):void {
+            var result:* = message.match(/\: (\w+) is not a function/i);
+            addHookForNamedRoute(result[1], config);
+        }
+        
+        private function addHookForNamedRoute(name:String, config:Function):void {
+            if(this[name] != undefined) {
+                throw new RoutingError('Attempted to create a named route where a property already exists [' + name + ']');
+            }
+            this[name] = function(options:Object):void {
+                addNamedRoute(name, options);
+            }
+            // Loop back and run configuration again:
+            configure(config);
         }
     }
 }

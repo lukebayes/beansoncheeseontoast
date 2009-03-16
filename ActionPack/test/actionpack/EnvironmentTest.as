@@ -10,11 +10,13 @@ package actionpack {
         }
 
         public function testConfigureAndRetrieveSimpleRoute():void {
-            var env:Environment = new Environment(function(e:*):void {
-                e.users({'controller' : UsersController});
+            var env:Environment = new Environment(getContext());
+            
+            env.routes(function(r:*):void {
+                r.users({'controller' : UsersController});
             });
 
-            assertEquals('/users', env.urlFor({'controller' : UsersController}))
+            assertEquals('/users', env.urlFor({'controller' : UsersController}));
         }
     }
 }
