@@ -1,8 +1,12 @@
 package actionpack {
     
+    import flash.utils.getQualifiedClassName;
+    
     public class ActionController {
         
         private var _actionName:String;
+        private var _controllerName:String;
+        private var _controllerPath:String;
         private var _params:Object;
         private var _response:Object;
         private var _session:Object;
@@ -46,5 +50,22 @@ package actionpack {
         public function get session():Object {
             return _session;
         }
+        
+        public function get controllerPath():String {
+            return _controllerPath ||= getControllerPath();
+        }
+        
+        private function getControllerPath():String {
+            return controllerName;
+        }
+        
+        public function get controllerName():String {
+            return _controllerName ||= getControllerName();
+        }
+        
+        private function getControllerName():String {
+            return getQualifiedClassName(this).split('::').pop();
+        }
+        
     }
 }
