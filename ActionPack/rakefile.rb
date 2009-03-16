@@ -32,7 +32,9 @@ desc 'Compile and debug the application'
 debug :debug
 
 desc 'Compile run the test harness'
-unit :test
+unit :test do |t|
+  t.source_path << 'testfixtures'
+end
 
 desc 'Compile the optimized deployment'
 deploy :deploy
@@ -44,7 +46,9 @@ desc 'Compile a SWC file'
 swc :swc
 
 desc 'Compile and run the test harness for CI'
-ci :cruise
+ci :cruise do |t|
+  t.source_path << 'testfixtures'
+end
 
 # set up the default rake task
 task :default => :debug
