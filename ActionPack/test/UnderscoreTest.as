@@ -11,5 +11,9 @@ package  {
         public function testSimple():void {
             assertEquals('action_pack', underscore('ActionPack'));
         }
+        
+        public function testLong():void {
+            assertEquals('foo_bar_terrific', underscore('FooBarTerrific'));
+        }
     }
 }
