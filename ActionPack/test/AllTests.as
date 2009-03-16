@@ -11,6 +11,7 @@ package {
 	import actionpack.EnvironmentTest;
 	import actionpack.RoutesTest;
 	import CapitalizeTest;
+	import FindFirstTest;
 	import UnderscoreTest;
 
 	public class AllTests extends TestSuite {
@@ -20,6 +21,7 @@ package {
 			addTest(new actionpack.EnvironmentTest());
 			addTest(new actionpack.RoutesTest());
 			addTest(new CapitalizeTest());
+			addTest(new FindFirstTest());
 			addTest(new UnderscoreTest());
 		}
 	}

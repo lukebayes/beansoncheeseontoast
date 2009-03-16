@@ -9,14 +9,12 @@ package actionpack {
             super(methodName)
         }
 
-        public function testConfigureRoutes():void {
-            var called:Boolean;
-            Environment.create(function(e:Environment):void {
-                called = true;
-                e.root({'controller' : UsersController, 'action' : 'index'});
+        public function testConfigureAndRetrieveSimpleRoute():void {
+            var env:Environment = new Environment(function(e:*):void {
+                e.users({'controller' : UsersController});
             });
-            
-            assertTrue('Configuration handler was called', called);
+
+            assertEquals('/users', env.urlFor({'controller' : UsersController}))
         }
     }
 }
