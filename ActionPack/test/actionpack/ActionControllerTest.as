@@ -32,6 +32,11 @@ package actionpack {
             var controller:MockNamedController = new MockNamedController();
             assertEquals('mock_named/index', controller.defaultTemplateName());
         }
+        
+        public function testTemplateExists():void {
+            var controller:MockNamedController = new MockNamedController();
+            assertTrue(controller.templateDoesExist());
+        }
     }
 }
 
@@ -39,3 +44,4 @@ import actionpack.ActionController;
 
 class MockNamedController extends ActionController {
 }
+
