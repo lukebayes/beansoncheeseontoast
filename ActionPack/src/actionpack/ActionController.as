@@ -91,9 +91,12 @@ package actionpack {
             return controllerPath + '/' + actionName;
         }
         
+        // Called by Environment.get:
         public function get(actionName:String=null):* {
             var clazz:Class = attemptToLoadView(actionName);
-            environment.displayRoot.addChild(new clazz());
+            var view:* = new clazz();
+            environment.displayRoot.addChild(view);
+            view.draw();
         }
         
         public function templateDoesExist(actionName:String=null):Boolean {
