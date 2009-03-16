@@ -5,7 +5,7 @@ package actionpack {
         private var _environment:Environment;
         private var _routes:Array;
         
-        public function Routes(env:Environment) {
+        public function Routes(env:Environment=null) {
             _environment = env;
             _routes = new Array();
         }
