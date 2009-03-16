@@ -1,24 +1,33 @@
 package actionpack {
 
     import asunit.framework.TestCase;
-    import controllers.UsersController;
 
     public class EnvironmentTest extends TestCase {
+        private var environment:Environment;
 
         public function EnvironmentTest(methodName:String=null) {
             super(methodName)
         }
+        
+        override protected function setUp():void {
+            super.setUp();
+            environment = new Environment(getContext());
+        }
+        
+        override protected function tearDown():void {
+            super.tearDown();
+            environment.clearDisplay();
+        }
 
         public function testConfigureAndLoadRoute():void {
-            var env:Environment = new Environment(getContext());
             
-            env.routes(function(r:*):void {
+            environment.routes(function(r:*):void {
                 r.users({'controller' : UsersController});
             });
 
-            assertEquals('/users', env.urlFor({'controller' : UsersController}));
+            assertEquals('/users', environment.urlFor({'controller' : UsersController}));
             
-            var rendered:* = env.get('/users');
+            var rendered:* = environment.get('/users');
         }
     }
 }

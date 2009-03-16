@@ -1,7 +1,6 @@
 package actionpack {
 
     import asunit.framework.TestCase;
-    import controllers.UsersController;
 
     public class ActionControllerTest extends TestCase {
 

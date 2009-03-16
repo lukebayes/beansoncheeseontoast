@@ -29,9 +29,11 @@ project_model :model do |m|
 end
 
 def include_classes(t)
-  Dir.glob('fixtures/actioncontroller/**/*').each do |fixture|
+  Dir.glob(['fixtures/actioncontroller/models/*', 'fixtures/actioncontroller/controllers/*', 'fixtures/actioncontroller/views/**/*']).each do |fixture|
     if(!File.directory?(fixture))
-      fixture.gsub!('fixtures/actioncontroller/', '')
+      fixture.gsub!('fixtures/actioncontroller/models/', '')
+      fixture.gsub!('fixtures/actioncontroller/controllers/', '')
+      fixture.gsub!('fixtures/actioncontroller/views/', '')
       fixture.gsub!(/.as$/, '')
       fixture = fixture.split('/').join('.')
       t.includes << fixture
@@ -44,7 +46,10 @@ debug :debug
 
 desc 'Compile and run the test harness'
 unit :test do |t|
-  t.source_path << 'fixtures/actioncontroller'
+  ['fixtures/actioncontroller/models', 'fixtures/actioncontroller/controllers', 'fixtures/actioncontroller/views'].each do |package|
+    t.source_path << package
+  end
+
   include_classes(t)
 end
 
@@ -58,9 +63,7 @@ desc 'Compile a SWC file'
 swc :swc
 
 desc 'Compile and run the test harness for CI'
-ci :cruise do |t|
-  t.source_path << 'fixtures/actioncontroller'
-end
+ci :cruise
 
 # set up the default rake task
 task :default => :debug

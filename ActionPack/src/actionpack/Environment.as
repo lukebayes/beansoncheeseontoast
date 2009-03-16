@@ -1,20 +1,33 @@
 package actionpack {
     import ReferenceError;
-    import flash.display.DisplayObject;
+    import flash.display.DisplayObjectContainer;
     import flash.utils.Dictionary;
+    import flash.display.Sprite;
     
     public class Environment {
-        private var displayRoot:DisplayObject;
+        private var _displayRoot:DisplayObjectContainer;
+        private var _parent:DisplayObjectContainer;
         private var _controllers:Dictionary;
         private var _routes:Routes;
         
-        public function Environment(displayRoot:DisplayObject, configuration:Function=null) {
+        public function Environment(parent:DisplayObjectContainer, configuration:Function=null) {
+            this._parent = parent;
             this._routes = new Routes(this);
             this._controllers = new Dictionary();
-            this.displayRoot = displayRoot;
+            this._displayRoot = new Sprite();
+            _parent.addChild(this._displayRoot);
             if(configuration is Function) {
                 configuration.call(this, this);
             }
+        }
+        
+        public function clearDisplay():void {
+            this._parent.removeChild(this._displayRoot);
+            this._parent.addChild(this._displayRoot = new Sprite());
+        }
+        
+        public function get displayRoot():DisplayObjectContainer {
+            return _displayRoot;
         }
         
         public function get(request:*):* {
@@ -32,11 +45,7 @@ package actionpack {
                 controller = this._controllers[route.controller];
             }
             
-            controller.templateDoesExist(route.action);
-            
-            trace(">> GET CALLED WITH: " + request + " and: " + controller);
-            
-            return {};
+            return controller.get(route.action);
         }
         
         public function routes(handler:Function=null):Routes {

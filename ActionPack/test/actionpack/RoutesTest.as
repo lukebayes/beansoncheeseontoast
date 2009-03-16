@@ -1,8 +1,6 @@
 package actionpack {
 
     import asunit.framework.TestCase;
-    import controllers.UsersController;
-    import controllers.SiteController;
 
     public class RoutesTest extends TestCase {
         private var routes:Routes;

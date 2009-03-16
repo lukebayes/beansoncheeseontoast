@@ -3,10 +3,10 @@ package actionpack {
     import capitalize;
     import flash.utils.getQualifiedClassName;
     import flash.utils.getDefinitionByName;
+    import flash.display.DisplayObject;
     
     public class ActionController {
         private static const DEFAULT_ACTION_NAME:String = 'index';
-        public static const viewPackages:Array = ['views'];
         public static const controllerPackages:Array = ['controllers'];
         public static const modelPackages:Array = ['models'];
         
@@ -91,24 +91,25 @@ package actionpack {
             return controllerPath + '/' + actionName;
         }
         
-        public function templateDoesExist(actionName:String=null, templateName:String=null):Boolean {
+        public function get(actionName:String=null):* {
+            var clazz:Class = attemptToLoadView(actionName);
+            environment.displayRoot.addChild(new clazz());
+        }
+        
+        public function templateDoesExist(actionName:String=null):Boolean {
             actionName ||= DEFAULT_ACTION_NAME;
-            templateName ||= defaultTemplateName(actionName);
-            var resolved:String = templateToClassName(templateName);
-            return attemptToLoadView(resolved) != null;
+            return attemptToLoadView(actionName) != null;
         }
         
-        private function attemptToLoadView(name:String):Class {
-            var clazz:Class = null;
-            viewPackages.some(function(packageName:String, index:int, items:Array):Boolean {
-                return (clazz = attemptToLoadClass(packageName + '.' + name)) != null;
-            });
-            return clazz;
+        private function attemptToLoadView(actionName:String=null):Class {
+            actionName ||= DEFAULT_ACTION_NAME;
+            var resolved:String = templateToClassName(defaultTemplateName(actionName));
+            return attemptToLoadClass(resolved);
         }
         
-        private function attemptToLoadClass(name:String):Class {
+        private function attemptToLoadClass(actionName:String):Class {
             try {
-                return getDefinitionByName(name) as Class;
+                return getDefinitionByName(actionName) as Class;
             }
             catch(e:ReferenceError) {
             }
