@@ -20,8 +20,7 @@ package actionpack {
         }
 
         public function testConfigureAndLoadRoute():void {
-            
-            environment.routes(function(r:*):void {
+            environment.routes(function(r:Routes):void {
                 r.users({'controller' : UsersController});
             });
 

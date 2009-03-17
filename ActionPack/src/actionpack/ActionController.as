@@ -4,18 +4,22 @@ package actionpack {
     import flash.utils.getQualifiedClassName;
     import flash.utils.getDefinitionByName;
     import flash.display.DisplayObject;
+    import actionpack.errors.ActionControllerError;
+    import actionpack.errors.RenderError;
+    import reflect.Reflection;
     
     public class ActionController {
         private static const DEFAULT_ACTION_NAME:String = 'index';
-        public static const controllerPackages:Array = ['controllers'];
-        public static const modelPackages:Array = ['models'];
         
         private var _actionName:String;
         private var _controllerName:String;
         private var _controllerPath:String;
         private var _defaultTemplateName:String;
         private var _environment:Environment;
+        private var _flash:Object;
         private var _params:Object;
+        private var _redirected:Boolean;
+        private var _rendered:Boolean;
         private var _response:Object;
         private var _session:Object;
         
@@ -35,7 +39,7 @@ package actionpack {
         }
 
         public function get environment():Environment {
-            return _environment;
+            return _environment ||= new Environment();
         }
 
         /**
@@ -67,6 +71,14 @@ package actionpack {
             return _session;
         }
         
+        public function set flash(flash:Object):void {
+            _flash = flash;
+        }
+        
+        public function get flash():Object {
+            return _flash ||= {};
+        }
+        
         public function get controllerPath():String {
             return _controllerPath ||= getControllerPath();
         }
@@ -92,12 +104,44 @@ package actionpack {
             return controllerPath + '/' + actionName;
         }
         
-        // Called by Environment.get:
+        // Controller entry point to convert URLs to actions and views:
         public function get(actionName:String=null):* {
+            _redirected = false;
+            actionName ||= DEFAULT_ACTION_NAME;
+            this[actionName].call();
+            return render(actionName);
+        }
+        
+        public function redirect_to(template:String, options:Object=null):void {
+            _redirected = true;
+            throw new ActionControllerError('ActionController.redirect_to has not yet been implemented');
+        }
+        
+        public function render(actionName:String, options:Object=null):* {
             var clazz:Class = attemptToLoadView(actionName);
             var view:* = new clazz();
+            configureView(view);
             environment.displayRoot.addChild(view);
-            view.draw();
+            _rendered = true;
+            return view;
+        }
+        
+        // Create a Reflection for the concrete controller,
+        // and the specific view.
+        // Loop over all of the readable members on the controller,
+        // and if the view is either dynamic, or has a matching
+        // writable member, transfer the value.
+        private function configureView(view:*):void {
+            var controllerReflection:Reflection = Reflection.create(this);
+            var viewReflection:Reflection = Reflection.create(view);
+            var self:* = this;
+            controllerReflection.readMembers.forEach(function(item:*, index:int, items:Array):void {
+                if(viewReflection.isDynamic || viewReflection.hasWriteMember(item.name, item.type)) {
+                    view[item.name] = self[item.name];
+                }
+            });
+
+            view.allUsers = this['allUsers'];
         }
         
         public function templateDoesExist(actionName:String=null):Boolean {
@@ -110,12 +154,7 @@ package actionpack {
         }
         
         private function attemptToLoadClass(actionName:String):Class {
-            try {
-                return getDefinitionByName(actionName) as Class;
-            }
-            catch(e:ReferenceError) {
-            }
-            return null;
+            return getDefinitionByName(actionName) as Class;
         }
         
         private function templateToClassName(template:String):String {

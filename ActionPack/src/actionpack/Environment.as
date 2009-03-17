@@ -1,8 +1,9 @@
 package actionpack {
-    import ReferenceError;
     import flash.display.DisplayObjectContainer;
     import flash.utils.Dictionary;
     import flash.display.Sprite;
+    import actionpack.errors.RoutingError;
+    import ReferenceError;
     
     public class Environment {
         private var _displayRoot:DisplayObjectContainer;
@@ -10,8 +11,8 @@ package actionpack {
         private var _controllers:Dictionary;
         private var _routes:Routes;
         
-        public function Environment(parent:DisplayObjectContainer, configuration:Function=null) {
-            this._parent = parent;
+        public function Environment(parent:DisplayObjectContainer=null, configuration:Function=null) {
+            this._parent = parent || new Sprite();
             this._routes = new Routes(this);
             this._controllers = new Dictionary();
             this._displayRoot = new Sprite();
@@ -32,20 +33,13 @@ package actionpack {
         
         public function get(request:*):* {
             var route:Route;
-            var controller:ActionController;
             if(request is String) {
                 route = _routes.routeFor(request);
             }
-            if(this._controllers[route.controller] == undefined) {
-                controller = new route.controller();
-                controller.environment = this;
-                this._controllers[route.controller] = controller;
-            }
             else {
-                controller = this._controllers[route.controller];
+                throw new RoutingError('Environment.get called with unexpected request type: ' + request);
             }
-            
-            return controller.get(route.action);
+            return getControllerForRoute(route).get(route.action);
         }
         
         public function routes(handler:Function=null):Routes {
@@ -57,6 +51,16 @@ package actionpack {
         
         public function urlFor(options:*):String {
             return _routes.urlFor(options);
+        }
+        
+        private function getControllerForRoute(route:Route):ActionController {
+            var controller:ActionController;
+            if(_controllers[route.controller] == undefined) {
+                controller = new route.controller();
+                controller.environment = this;
+                return _controllers[route.controller] = controller;
+            }
+            return _controllers[route.controller];
         }
     }
 }

@@ -27,6 +27,15 @@ package actionpack {
             var controller:UsersController = new UsersController();
             assertTrue(controller.templateDoesExist('show'));
         }
+        
+        public function testGet():void {
+            var controller:UsersController = new UsersController();
+            var response:* = controller.get('index');
+            assertNotNull('controller.get should return the rendered view', response);
+            assertNotNull('UsersController.index should set the users collection', controller.allUsers);
+            assertNotNull('Index view should have the users collection', response.allUsers);
+            assertNotNull('Index view should have the flash object', response.flash);
+        }
     }
 }
 
