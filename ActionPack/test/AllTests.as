@@ -10,6 +10,7 @@ package {
 	import actionpack.ActionControllerTest;
 	import actionpack.EnvironmentTest;
 	import actionpack.RoutesTest;
+	import CamelCaseTest;
 	import CapitalizeTest;
 	import FindFirstTest;
 	import UnderscoreTest;
@@ -20,6 +21,7 @@ package {
 			addTest(new actionpack.ActionControllerTest());
 			addTest(new actionpack.EnvironmentTest());
 			addTest(new actionpack.RoutesTest());
+			addTest(new CamelCaseTest());
 			addTest(new CapitalizeTest());
 			addTest(new FindFirstTest());
 			addTest(new UnderscoreTest());
