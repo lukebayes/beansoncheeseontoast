@@ -16,7 +16,7 @@ package actionpack {
             this._controllers = new Dictionary();
             this._displayRoot = new Sprite();
             _parent.addChild(this._displayRoot);
-            if(configuration is Function) {
+            if(configuration != null) {
                 configuration.call(this, this);
             }
         }
