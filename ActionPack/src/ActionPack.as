@@ -4,12 +4,6 @@ package {
     import flash.utils.setTimeout;
     import actionpack.Environment;
     import actionpack.Routes;
-    
-
-
-
-
-
 
     public class ActionPack extends Sprite {
         private var environment:Environment;
