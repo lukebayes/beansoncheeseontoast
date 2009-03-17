@@ -30,11 +30,16 @@ project_model :model do |m|
 end
 
 def include_classes(t)
-  Dir.glob(['fixtures/actioncontroller/models/*', 'fixtures/actioncontroller/controllers/*', 'fixtures/actioncontroller/views/**/*']).each do |fixture|
+  ['fixtures/actioncontroller/models', 'fixtures/actioncontroller/controllers', 'fixtures/actioncontroller/views', 'fixtures/actioncontroller/layouts'].each do |package|
+    t.source_path << package
+  end
+
+  Dir.glob(['fixtures/actioncontroller/models/*', 'fixtures/actioncontroller/controllers/*', 'fixtures/actioncontroller/views/**/*', 'fixtures/actioncontroller/layouts/*']).each do |fixture|
     if(!File.directory?(fixture))
       fixture.gsub!('fixtures/actioncontroller/models/', '')
       fixture.gsub!('fixtures/actioncontroller/controllers/', '')
       fixture.gsub!('fixtures/actioncontroller/views/', '')
+      fixture.gsub!('fixtures/actioncontroller/layouts/', '')
       fixture.gsub!(/.as$/, '')
       fixture = fixture.split('/').join('.')
       t.includes << fixture
@@ -43,19 +48,19 @@ def include_classes(t)
 end
 
 desc 'Compile and debug the application'
-debug :debug
+debug :debug do |t|
+  include_classes(t)
+end
 
 desc 'Compile and run the test harness'
 unit :test do |t|
-  ['fixtures/actioncontroller/models', 'fixtures/actioncontroller/controllers', 'fixtures/actioncontroller/views'].each do |package|
-    t.source_path << package
-  end
-
   include_classes(t)
 end
 
 desc 'Compile the optimized deployment'
-deploy :deploy
+deploy :deploy do |t|
+  include_classes(t)
+end
 
 desc 'Create documentation'
 document :doc

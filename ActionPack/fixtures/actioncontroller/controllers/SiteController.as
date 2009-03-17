@@ -4,5 +4,7 @@ package {
     
     public class SiteController extends ActionController {
         
+        public function index():void {
+        }
     }
 }

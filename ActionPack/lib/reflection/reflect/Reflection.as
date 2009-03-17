@@ -7,8 +7,8 @@ package reflect {
     
     public class Reflection {
         private static var READ_WRITE:String = "readwrite";
-        private static var READ:String = "read";
-        private static var WRITE:String = "write";
+        private static var READ_ONLY:String = "readonly";
+        private static var WRITE_ONLY:String = "writeonly";
         private static var reflections:Object;
         private var _accessors:Array;
         private var _base:String;
@@ -176,7 +176,7 @@ package reflect {
                 var accessors:Array = this.accessors;
                 var accessor:ReflectionAccessor
                 for each(accessor in accessors) {
-                    if(accessor.access == READ_WRITE || accessor.access == READ) {
+                    if(accessor.access == READ_WRITE || accessor.access == READ_ONLY) {
                         _readMembers.push(accessor);
                     }
                 }
@@ -194,7 +194,7 @@ package reflect {
                 var accessors:Array = this.accessors;
                 var accessor:ReflectionAccessor
                 for each(accessor in accessors) {
-                    if(accessor.access == READ_WRITE || accessor.access == WRITE) {
+                    if(accessor.access == READ_WRITE || accessor.access == WRITE_ONLY) {
                         _writeMembers.push(accessor);
                     }
                 }

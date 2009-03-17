@@ -8,6 +8,7 @@ package actionpack {
     import flash.utils.getDefinitionByName;
     import flash.utils.getQualifiedClassName;
     import reflect.Reflection;
+    import reflect.ReflectionMethod;
     
     public class ActionController {
         private static const DEFAULT_ACTION_NAME:String = 'index';
@@ -141,9 +142,25 @@ package actionpack {
             var self:* = this;
             controllerReflection.readMembers.forEach(function(item:*, index:int, items:Array):void {
                 if(viewReflection.isDynamic || viewReflection.hasWriteMember(item.name, item.type)) {
+                    //trace(">> setting: " + item.name);
                     view[item.name] = self[item.name];
                 }
             });
+            
+            // TODO: Should we patch methods onto the view too? Probably for helpers at least...
+            // We can use something like the following to instantiate and inspect appropriate
+            // helper class(es), and then patch their methods onto the view, but execute them
+            // in the scope of the controller...
+            //
+            //controllerReflection.methods.forEach(function(method:ReflectionMethod, index:int, items:Array):void {
+            //    if(method.declaredBy == "actionpack::ActionController") {
+            //        trace(">> setting method: " + method.name + " with: " + method.declaredBy);
+            //        view[method.name] = function(...args):* {
+            //            trace(">> VIEW CALLED " + method.name + " METHOD ON " + self + " with: " + args);
+            //            self[method.name].apply(self, args);
+            //        }
+            //    }
+            //});
         }
         
         public function templateDoesExist(actionName:String=null):Boolean {
