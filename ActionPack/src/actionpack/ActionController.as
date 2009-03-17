@@ -1,11 +1,12 @@
 package actionpack {
     
-    import capitalize;
-    import flash.utils.getQualifiedClassName;
-    import flash.utils.getDefinitionByName;
-    import flash.display.DisplayObject;
     import actionpack.errors.ActionControllerError;
     import actionpack.errors.RenderError;
+    import capitalize;
+    import flash.display.DisplayObject;
+    import flash.display.DisplayObjectContainer;
+    import flash.utils.getDefinitionByName;
+    import flash.utils.getQualifiedClassName;
     import reflect.Reflection;
     
     public class ActionController {
@@ -17,6 +18,7 @@ package actionpack {
         private var _defaultTemplateName:String;
         private var _environment:Environment;
         private var _flash:Object;
+        private var _layout:DisplayObjectContainer;
         private var _params:Object;
         private var _redirected:Boolean;
         private var _rendered:Boolean;
@@ -118,6 +120,8 @@ package actionpack {
         }
         
         public function render(actionName:String, options:Object=null):* {
+            // TODO: Instantiate the layout first!
+            
             var clazz:Class = attemptToLoadView(actionName);
             var view:* = new clazz();
             configureView(view);
