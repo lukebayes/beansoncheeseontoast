@@ -83,7 +83,8 @@ package actionpack {
             return underscore(getQualifiedClassName(this).split('::').pop().replace(/Controller$/, ''));
         }
         
-        public function defaultTemplateName(actionName:String=DEFAULT_ACTION_NAME):String {
+        public function defaultTemplateName(actionName:String=null):String {
+            actionName ||= DEFAULT_ACTION_NAME;
             return _defaultTemplateName = getDefaultTemplateName(actionName);
         }
         
@@ -100,12 +101,10 @@ package actionpack {
         }
         
         public function templateDoesExist(actionName:String=null):Boolean {
-            actionName ||= DEFAULT_ACTION_NAME;
             return attemptToLoadView(actionName) != null;
         }
         
         private function attemptToLoadView(actionName:String=null):Class {
-            actionName ||= DEFAULT_ACTION_NAME;
             var resolved:String = templateToClassName(defaultTemplateName(actionName));
             return attemptToLoadClass(resolved);
         }
