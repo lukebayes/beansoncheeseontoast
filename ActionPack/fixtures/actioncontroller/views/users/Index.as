@@ -4,7 +4,7 @@ package users {
     import flash.events.Event;
     import actionpack.base.View;
     
-    dynamic public class Index extends View {
+    public class Index extends View {
         
         public var allUsers:Array;
         

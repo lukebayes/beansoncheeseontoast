@@ -8,16 +8,17 @@ package {
         private var environment:Environment;
         
         public function ActionPack() {
-            environment = new Environment(this);
-            environment.routes(function(r:Routes):void {
-                r.root({'controller' : SiteController});
-                r.users({'controller' : UsersController});
-            });
             addEventListener(Event.ADDED, addedHandler);
         }
         
         private function addedHandler(event:Event):void {
             if(event.target === this) {
+                environment = new Environment(this);
+                environment.routes(function(r:Routes):void {
+                    r.root({'controller' : SiteController});
+                    r.users({'controller' : UsersController});
+                });
+
                 environment.get('/');
             }
         }

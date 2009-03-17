@@ -7,7 +7,7 @@ package site {
     import flash.text.TextField;
     import flash.utils.setTimeout;
     
-    dynamic public class Index extends View {
+    public class Index extends View {
         
         public function Index() {
             backgroundColor = 0x00ff00;
