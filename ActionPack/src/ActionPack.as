@@ -22,6 +22,10 @@ package {
                 environment.routes(function(r:Routes):void {
                     r.root({'controller' : SiteController});
                     r.users({'controller' : UsersController});
+                    // TODO: Need to implement 'connect'
+                    // and support expression arguments
+                    //r.connect(':controller/:action');
+                    //r.connect(':controller/:action/:id');
                 });
 
                 environment.get('/');
