@@ -140,8 +140,6 @@ package actionpack {
                     view[item.name] = self[item.name];
                 }
             });
-
-            view.allUsers = this['allUsers'];
         }
         
         public function templateDoesExist(actionName:String=null):Boolean {

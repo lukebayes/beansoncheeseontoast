@@ -21,10 +21,13 @@ package users {
             graphics.beginFill(0xFF0000);
             graphics.drawRect(0, 0, 200, 100);
             graphics.endFill();
-            
-            var textField:TextField = new TextField();
-            textField.text = "10";
-            addChild(textField);
+            var lastY:int = 0;
+            allUsers.forEach(function(user:User, index:int, users:Array):void {
+                var textField:TextField = new TextField();
+                textField.text = user.name;
+                textField.y = lastY += 20;
+                addChild(textField);
+            });
         }
     }
 }
