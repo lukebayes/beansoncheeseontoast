@@ -1,6 +1,5 @@
 package {
     import asunit.textui.TestRunner;
-    import actionpack.EnvironmentTest;
     
     public class ActionPackRunner extends TestRunner {
 
@@ -10,7 +9,7 @@ package {
             // execute setUp(), the method and NOT tearDown.
             // This allows you to get visual confirmation while developing
             // visual entities
-            start(EnvironmentTest, 'testConfigureAndLoadRoute', TestRunner.SHOW_TRACE);
+            start(AllTests, null, TestRunner.SHOW_TRACE);
         }
     }
 }

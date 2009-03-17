@@ -31,7 +31,7 @@ package actionpack.base {
     *   
     *   Regardless of how your view is constructed, the ActionController
     *   will execute the appropriate action (defined by the route), and 
-    *   assuming the action did not trigger a redirect_to, or it's own 
+    *   assuming the action did not trigger a redirectTo, or it's own 
     *   call to 'render', the approprite default view will be selected
     *   and instantiated.
     *   

@@ -22,7 +22,6 @@ package actionpack {
         private var _layout:DisplayObjectContainer;
         private var _params:Object;
         private var _redirected:Boolean;
-        private var _rendered:Boolean;
         private var _response:Object;
         private var _session:Object;
         
@@ -115,20 +114,32 @@ package actionpack {
             return render(actionName);
         }
         
-        public function redirect_to(template:String, options:Object=null):void {
+        public function redirectTo(template:String, options:Object=null):void {
             _redirected = true;
-            throw new ActionControllerError('ActionController.redirect_to has not yet been implemented');
+            throw new ActionControllerError('ActionController.redirectTo has not yet been implemented');
         }
         
         public function render(actionName:String, options:Object=null):* {
-            // TODO: Instantiate the layout first!
-            
+            var layout:* = renderLayout(getDefaultLayout());
             var clazz:Class = attemptToLoadView(actionName);
             var view:* = new clazz();
             configureView(view);
-            environment.displayRoot.addChild(view);
-            _rendered = true;
+            layout.contentContainer.addChild(view);
             return view;
+        }
+        
+        private function renderLayout(target:String):DisplayObjectContainer {
+            var clazz:Class = attemptToLoadClass(pathToClassName(target));
+            var layout:* = new clazz();
+            configureView(layout);
+            layout.width = environment.displayRoot.width;
+            layout.height = environment.displayRoot.height;
+            environment.displayRoot.addChild(layout);
+            return layout;
+        }
+        
+        private function getDefaultLayout(target:String=null):String {
+            return 'layouts/application_layout';
         }
         
         // Create a Reflection for the concrete controller,
@@ -142,7 +153,6 @@ package actionpack {
             var self:* = this;
             controllerReflection.readMembers.forEach(function(item:*, index:int, items:Array):void {
                 if(viewReflection.isDynamic || viewReflection.hasWriteMember(item.name, item.type)) {
-                    //trace(">> setting: " + item.name);
                     view[item.name] = self[item.name];
                 }
             });
@@ -168,17 +178,17 @@ package actionpack {
         }
         
         private function attemptToLoadView(actionName:String=null):Class {
-            var resolved:String = templateToClassName(defaultTemplateName(actionName));
-            return attemptToLoadClass(resolved);
+            var qualifiedClassName:String = pathToClassName(defaultTemplateName(actionName));
+            return attemptToLoadClass(qualifiedClassName);
         }
         
-        private function attemptToLoadClass(actionName:String):Class {
-            return getDefinitionByName(actionName) as Class;
+        private function attemptToLoadClass(qualifiedClassName:String):Class {
+            return getDefinitionByName(qualifiedClassName) as Class;
         }
         
-        private function templateToClassName(template:String):String {
-            var parts:Array = template.split('/');
-            var name:String = capitalize(parts.pop());
+        private function pathToClassName(path:String):String {
+            var parts:Array = path.split('/');
+            var name:String = camelcase(parts.pop());
             var resolved:String = parts.join('/');
             return resolved += '::' + name;
         }
