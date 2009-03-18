@@ -5,32 +5,30 @@ package actionpack {
     import actionpack.errors.RoutingError;
     import ReferenceError;
     
-    public class Environment {
+    public class Environment extends Configurable {
         private var _displayRoot:DisplayObjectContainer;
-        private var _parent:DisplayObjectContainer;
         private var _controllers:Dictionary;
         private var _routes:Routes;
         
-        public function Environment(parent:DisplayObjectContainer=null, configuration:Function=null) {
-            if(parent == null) {
-                trace("[WARNING] Environment created without a DisplayObjectContainer to attach to");
-            }
-            this._parent = parent || new Sprite();
-            this._routes = new Routes(this);
-            this._controllers = new Dictionary();
-            this._displayRoot = new Sprite();
-            _parent.addChild(this._displayRoot);
-            if(configuration != null) {
-                configuration.call(this, this);
-            }
+        public function Environment(config:Function=null) {
+            _routes = new Routes(this);
+            _controllers = new Dictionary();
+            super(config);
         }
         
         public function clearDisplay():void {
-            this._parent.removeChild(this._displayRoot);
-            this._parent.addChild(this._displayRoot = new Sprite());
+            if(displayRoot is DisplayObjectContainer) {
+                while(displayRoot.numChildren > 0) {
+                    displayRoot.removeChildAt(0);
+                }
+            }
         }
         
-        public function get displayRoot():DisplayObjectContainer {
+        public function set displayRoot(root:*):void {
+            _displayRoot = root;
+        }
+        
+        public function get displayRoot():* {
             return _displayRoot;
         }
         

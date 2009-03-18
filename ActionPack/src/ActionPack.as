@@ -18,7 +18,10 @@ package {
         
         private function timeoutComplete(event:Event):void {
             if(event.target === this) {
-                environment = new Environment(this);
+                var self:* = this;
+                environment = new Environment(function():void {
+                    this.displayRoot = self;
+                });
                 environment.routes(function(r:Routes):void {
                     r.root({'controller' : SiteController});
                     r.users({'controller' : UsersController});

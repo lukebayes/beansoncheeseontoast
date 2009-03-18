@@ -1,5 +1,6 @@
 package actionpack {
     
+    import actionpack.Configurable;
     import actionpack.errors.ActionControllerError;
     import actionpack.errors.RenderError;
     import capitalize;
@@ -10,7 +11,7 @@ package actionpack {
     import reflect.Reflection;
     import reflect.ReflectionMethod;
     
-    public class ActionController {
+    public class ActionController extends Configurable {
         private static const DEFAULT_ACTION_NAME:String = 'index';
         
         private var _actionName:String;
@@ -19,15 +20,17 @@ package actionpack {
         private var _defaultTemplateName:String;
         private var _environment:Environment;
         private var _flash:Object;
-        private var _layout:DisplayObjectContainer;
+        private var _layout:*;
         private var _params:Object;
         private var _redirected:Boolean;
-        private var _response:Object;
+        private var _reflection:Reflection;
+        private var _response:*;
         private var _session:Object;
         
-        public function ActionController() {
+        public function ActionController(config:Function=null) {
+            super(config);
         }
-            
+        
         public function set actionName(name:String):void {
             _actionName = name;
         }
@@ -43,6 +46,14 @@ package actionpack {
         public function get environment():Environment {
             return _environment ||= new Environment();
         }
+        
+        public function set layout(layout:*):void {
+            _layout = layout;
+        }
+        
+        public function get layout():* {
+            return _layout;
+        }
 
         /**
          * Holds a hash of all the GET, POST, and Url parameters passed to the action. 
@@ -57,11 +68,11 @@ package actionpack {
             return _params;
         }
         
-        public function set response(response:Object):void {
+        public function set response(response:*):void {
             _response = response;
         }
 
-        public function get response():Object {
+        public function get response():* {
             return _response;
         }
         
@@ -70,7 +81,7 @@ package actionpack {
         }
 
         public function get session():Object {
-            return _session;
+            return _session ||= {};
         }
         
         public function set flash(flash:Object):void {
@@ -110,7 +121,9 @@ package actionpack {
         public function get(actionName:String=null):* {
             _redirected = false;
             actionName ||= DEFAULT_ACTION_NAME;
-            this[actionName].call();
+            if(reflection.hasMethod(actionName)) {
+                this[actionName].call();
+            }
             return render(actionName);
         }
         
@@ -120,26 +133,24 @@ package actionpack {
         }
         
         public function render(actionName:String, options:Object=null):* {
-            var layout:* = renderLayout(getDefaultLayout());
+            layout = renderLayout(getDefaultLayoutPath());
             var clazz:Class = attemptToLoadView(actionName);
-            var view:* = new clazz();
-            configureView(view);
-            layout.contentContainer.addChild(view);
-            return view;
+            response = new clazz();
+            configureView(response);
+            layout.contentContainer.addChild(response);
+            return response;
         }
         
         private function renderLayout(target:String):DisplayObjectContainer {
             var clazz:Class = attemptToLoadClass(pathToClassName(target));
             var layout:* = new clazz();
             configureView(layout);
-            layout.width = environment.displayRoot.width;
-            layout.height = environment.displayRoot.height;
             environment.displayRoot.addChild(layout);
             return layout;
         }
         
-        private function getDefaultLayout(target:String=null):String {
-            return 'layouts/application_layout';
+        private function getDefaultLayoutPath(name:String=null):String {
+            return 'layouts/' + (name ||= 'application_layout');
         }
         
         // Create a Reflection for the concrete controller,
@@ -148,10 +159,9 @@ package actionpack {
         // and if the view is either dynamic, or has a matching
         // writable member, transfer the value.
         private function configureView(view:*):void {
-            var controllerReflection:Reflection = Reflection.create(this);
             var viewReflection:Reflection = Reflection.create(view);
             var self:* = this;
-            controllerReflection.readMembers.forEach(function(item:*, index:int, items:Array):void {
+            reflection.readMembers.forEach(function(item:*, index:int, items:Array):void {
                 if(viewReflection.isDynamic || viewReflection.hasWriteMember(item.name, item.type)) {
                     view[item.name] = self[item.name];
                 }
@@ -162,7 +172,7 @@ package actionpack {
             // helper class(es), and then patch their methods onto the view, but execute them
             // in the scope of the controller...
             //
-            //controllerReflection.methods.forEach(function(method:ReflectionMethod, index:int, items:Array):void {
+            //reflection.methods.forEach(function(method:ReflectionMethod, index:int, items:Array):void {
             //    if(method.declaredBy == "actionpack::ActionController") {
             //        trace(">> setting method: " + method.name + " with: " + method.declaredBy);
             //        view[method.name] = function(...args):* {
@@ -191,6 +201,10 @@ package actionpack {
             var name:String = camelcase(parts.pop());
             var resolved:String = parts.join('/');
             return resolved += '::' + name;
+        }
+        
+        protected function get reflection():Reflection {
+            return _reflection ||= Reflection.create(this);
         }
     }
 }

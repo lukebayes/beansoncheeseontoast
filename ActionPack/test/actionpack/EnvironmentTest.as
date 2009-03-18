@@ -1,8 +1,8 @@
 package actionpack {
 
-    import asunit.framework.TestCase;
+    import flash.display.Sprite;
 
-    public class EnvironmentTest extends TestCase {
+    public class EnvironmentTest extends ActionPackTestHelper {
         private var environment:Environment;
 
         public function EnvironmentTest(methodName:String=null) {
@@ -11,7 +11,9 @@ package actionpack {
         
         override protected function setUp():void {
             super.setUp();
-            environment = new Environment(getContext());
+            environment = new Environment(function():void {
+                this.displayRoot = displayRoot;
+            });
         }
         
         override protected function tearDown():void {
