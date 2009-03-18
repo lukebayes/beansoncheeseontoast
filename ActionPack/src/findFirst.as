@@ -1,5 +1,4 @@
-package {
-    
+package {    
     public function findFirst(collection:Array, handler:Function):* {
         var result:*;
         collection.every(function(item:Object, index:int, items:Array):Boolean {

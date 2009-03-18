@@ -12,6 +12,9 @@ package actionpack {
         private var _routes:Routes;
         
         public function Environment(parent:DisplayObjectContainer=null, configuration:Function=null) {
+            if(parent == null) {
+                trace("[WARNING] Environment created without a DisplayObjectContainer to attach to");
+            }
             this._parent = parent || new Sprite();
             this._routes = new Routes(this);
             this._controllers = new Dictionary();

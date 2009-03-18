@@ -19,9 +19,15 @@ package actionpack.base {
     *   This allows us to update global navigation presentation as needed.
     *   
     *   Layouts will have their width and height set to whatever dimensions
-    *   are available in their parent. If the outer parent of a layout is 
-    *   the stage, they can expect to grow and shrink according to a changing 
-    *   stage size.
+    *   are available in their parent at the time of creation. 
+    *   
+    *   If your parent application is a Flex application container, you can set
+    *   parcentWidth and percentHeight attributes in your layout to have 
+    *   it expand and collapse with the stage. 
+    *   
+    *   If you are not working with Flex, your layout will need to listeners
+    *   to the stage resize event after Event.ADDED_TO_STAGE handled.
+    *   
     **/
     public class ActiveLayout extends View {
         
