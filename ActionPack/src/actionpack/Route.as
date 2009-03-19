@@ -14,7 +14,7 @@ package actionpack {
         
         public function Route(path:String, options:*=null) {
             pathParts = path.split('/');
-            if(pathParts.length == 2) {
+            if(path != '/' && pathParts.length == 2) {
                 path += '/:action';
                 pathParts.push(':action');
             }

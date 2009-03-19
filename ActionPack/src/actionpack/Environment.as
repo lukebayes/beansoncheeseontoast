@@ -58,6 +58,10 @@ package actionpack {
             else {
                 throw new RoutingError('Environment.get called with unexpected request type: ' + path);
             }
+            
+            if(route == null) {
+                throw new RoutingError('Environment.get failed with unhandled path: ' + path);
+            }
             return getControllerForRoute(route).getAction(route.action);
         }
         

@@ -23,15 +23,11 @@ package {
                     this.displayRoot = self;
                 });
                 environment.routes(function():void {
-                    this.root({'controller' : SiteController});
+                    this.site({'controller' : SiteController});
                     this.users({'controller' : UsersController});
-                    // TODO: Need to implement 'connect'
-                    // and support expression arguments
-                    //this.connect(':controller/:action');
-                    //this.connect(':controller/:action/:id');
                 });
 
-                environment.get('/');
+                environment.get('/site');
             }
         }
     }
