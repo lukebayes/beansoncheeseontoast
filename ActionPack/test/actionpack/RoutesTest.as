@@ -28,8 +28,12 @@ package actionpack {
         
         public function testConfigureAndRetrieveSimpleRoute():void {
             testConfigure();
-            assertEquals('/users', routes.urlFor({'controller' : UsersController}));
-            assertEquals('/', routes.urlFor({'controller' : SiteController}));
+            assertEquals('/users', routes.pathFor({'controller' : UsersController}));
+            assertEquals('/', routes.pathFor({'controller' : SiteController}));
+        }
+        
+        public function testDefaultRoutes():void {
+            assertEquals('/users', routes.pathFor({'controller' : UsersController}));
         }
     }
 }

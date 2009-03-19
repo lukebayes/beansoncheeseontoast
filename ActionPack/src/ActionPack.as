@@ -22,13 +22,13 @@ package {
                 environment = new Environment(function():void {
                     this.displayRoot = self;
                 });
-                environment.routes(function(r:Routes):void {
-                    r.root({'controller' : SiteController});
-                    r.users({'controller' : UsersController});
+                environment.routes(function():void {
+                    this.root({'controller' : SiteController});
+                    this.users({'controller' : UsersController});
                     // TODO: Need to implement 'connect'
                     // and support expression arguments
-                    //r.connect(':controller/:action');
-                    //r.connect(':controller/:action/:id');
+                    //this.connect(':controller/:action');
+                    //this.connect(':controller/:action/:id');
                 });
 
                 environment.get('/');

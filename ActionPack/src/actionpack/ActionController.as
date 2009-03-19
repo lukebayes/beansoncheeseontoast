@@ -17,6 +17,7 @@ package actionpack {
         private var _actionName:String;
         private var _controllerName:String;
         private var _controllerPath:String;
+        private var _defaultActionName:String;
         private var _defaultTemplateName:String;
         private var _environment:Environment;
         private var _flash:Object;
@@ -108,19 +109,27 @@ package actionpack {
             return underscore(getQualifiedClassName(this).split('::').pop().replace(/Controller$/, ''));
         }
         
+        public function set defaultActionName(name:String):void {
+            _defaultActionName = name;
+        }
+        
+        public function get defaultActionName():String {
+            return _defaultActionName ||= DEFAULT_ACTION_NAME;
+        }
+        
         public function defaultTemplateName(actionName:String=null):String {
-            actionName ||= DEFAULT_ACTION_NAME;
+            actionName ||= defaultActionName;
             return _defaultTemplateName = getDefaultTemplateName(actionName);
         }
         
         private function getDefaultTemplateName(actionName:String):String {
             return controllerPath + '/' + actionName;
         }
-        
-        // Controller entry point to convert URLs to actions and views:
-        public function get(actionName:String=null):* {
+
+        // Controller entry point to convert paths into actions and views:
+        public function getAction(actionName:String=null):* {
             _redirected = false;
-            actionName ||= DEFAULT_ACTION_NAME;
+            actionName ||= defaultActionName;
             if(reflection.hasMethod(actionName)) {
                 this[actionName].call();
             }
@@ -206,5 +215,18 @@ package actionpack {
         protected function get reflection():Reflection {
             return _reflection ||= Reflection.create(this);
         }
+
+        /**
+        *  Helper methods that delegate back up to the Environment
+        **/
+
+        public function get(path:String=null):* {
+            return environment.get(path);
+        }
+        
+        public function pathFor(options:*):String {
+            return environment.pathFor(options);
+        }
+
     }
 }

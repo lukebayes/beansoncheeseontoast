@@ -11,7 +11,7 @@ package actionpack {
         private var _routes:Routes;
         
         public function Environment(config:Function=null) {
-            _routes = new Routes(this);
+            _routes = new Routes();
             _controllers = new Dictionary();
             super(config);
         }
@@ -32,32 +32,45 @@ package actionpack {
             return _displayRoot;
         }
         
-        public function get(request:*):* {
+        /**
+        *   The default behavior of a get request will accept a path String that should
+        *   match with a defined or default route. The default configuration accepts
+        *   :controller_name[/:action_name][/:id]
+        *   
+        *   Usually like one of the following:
+        *   get('users');
+        *   get('users/show/2');
+        *   get('users/edit/2');
+        *   
+        *   This method should also accept an options object to support features like 
+        *   transitions (and other?)
+        **/
+        public function get(path:*):* {
             var route:Route;
-            if(request is String) {
-                route = _routes.routeFor(request);
+            if(path is String) {
+                route = _routes.routeFor(path);
             }
             else {
-                throw new RoutingError('Environment.get called with unexpected request type: ' + request);
+                throw new RoutingError('Environment.get called with unexpected request type: ' + path);
             }
-            return getControllerForRoute(route).get(route.action);
+            return getControllerForRoute(route).getAction(route.action);
         }
         
-        public function routes(handler:Function=null):Routes {
-            if(handler != null) {
-                _routes.configure(handler);
+        public function routes(config:Function=null):Routes {
+            if(config is Function) {
+                _routes.configure(config);
             }
             return _routes;
         }
         
-        public function urlFor(options:*):String {
-            return _routes.urlFor(options);
+        public function pathFor(options:*):String {
+            return _routes.pathFor(options);
         }
         
         private function getControllerForRoute(route:Route):ActionController {
             var controller:ActionController;
             if(_controllers[route.controller] == undefined) {
-                controller = new route.controller();
+                controller = route.controller;
                 controller.environment = this;
                 return _controllers[route.controller] = controller;
             }

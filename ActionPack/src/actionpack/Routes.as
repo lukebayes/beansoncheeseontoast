@@ -2,41 +2,53 @@ package actionpack {
     import actionpack.errors.RoutingError;
     
     dynamic public class Routes {
-        private var _environment:Environment;
         private var _routes:Array;
         
-        public function Routes(env:Environment=null) {
-            _environment = env;
+        public function Routes() {
             _routes = new Array();
+        }
+
+        // The Route class should only be instantiated through this factory,
+        // where we can associate the correct environment with created
+        // controller instances.
+        private function createRoute(name:String, options:*=null):Route {
+            var controller:ActionController = new options.controller(function():void {
+                this.environment = new Environment();
+            });
+            return new Route('/' + name, controller, options.action);
         }
         
         public function root(options:Object):void {
-            _routes.push(new Route('/', options.controller, options.action));
+            _routes.push(createRoute('/', options));
         }
         
-        public function urlFor(options:*):String {
-            return findRouteByController(options.controller).name;
+        public function pathFor(options:*):String {
+            return routeFor(options).path;
         }
         
-        public function routeFor(url:String):Route {
+        public function routeFor(path:String):Route {
             return findFirst(_routes, function(route:Route, index:int, routes:Array):Boolean {
-                return (route.name == url);
+                return (route.acceptsPath(path));
             });
         }
         
         protected function addNamedRoute(name:String, options:Object=null):void {
-            _routes.push(new Route('/' + name, options.controller, options.action));
+            _routes.push(createRoute(name, options))
         }
         
-        private function findRouteByController(controller:Class):Route {
+        private function findRouteByOptions(options:*):Route {
+            return null;
+        }
+        
+        private function findRouteByController(options:*):Route {
             return findFirst(_routes, function(route:Route, index:int, items:Array):Boolean {
-                return (route.controller === controller);
-            });
+                return (route.controllerInstance === options.controller);
+            }).name || options.controller.controllerPath;
         }
 
         public function configure(config:Function):void {
             try {
-                config.call(_environment, this);
+                config.call(this);
             }
             catch(te:TypeError) {
                 processTypeError(te.message, config);

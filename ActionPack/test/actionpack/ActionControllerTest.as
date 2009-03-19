@@ -13,6 +13,11 @@ package actionpack {
                 this.displayRoot = displayRoot;
             });
         }
+        
+        override protected function tearDown():void {
+            super.tearDown();
+            environment.clearDisplay();
+        }
 
         public function testControllerName():void {
             var controller:MockNamedController = new MockNamedController();
@@ -38,23 +43,13 @@ package actionpack {
             var controller:UsersController = new UsersController(function():void {
                 this.environment = environment;
             });
-            var response:* = controller.get('index');
+            var response:* = controller.getAction('index');
             assertSame('Controller.response is the view and returned', response, controller.response);
             assertNotNull('controller.get should return the rendered view', response);
             assertNotNull('UsersController.index should set the users collection', controller.allUsers);
             assertNotNull('Layout should have the session object', controller.layout.session);
             assertNotNull('Index view should have the users collection', response.allUsers);
             assertNotNull('Index view should have the flash object', response.flash);
-        }
-        
-        public function testCallGetTwiceEnsureFirstViewIsRemoved():void {
-            var controller:UsersController = new UsersController(function():void {
-                this.environment = environment;
-            });
-            var response1:* = controller.get('index');
-            var response2:* = controller.get('show');
-            
-            
         }
     }
 }
