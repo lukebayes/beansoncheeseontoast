@@ -11,8 +11,10 @@ package actionpack {
         public var path:String;
         
         private var pathParts:Array;
+        private var options:*;
         
         public function Route(path:String, options:*=null) {
+            this.options = options;
             pathParts = path.split('/');
             if(path != '/' && pathParts.length == 2) {
                 path += '/:action';
@@ -68,6 +70,16 @@ package actionpack {
             return underscore(name).replace(/_controller$/, '');
         }
         
+        private function get staticPathPartsLength():int {
+            var count:int;
+            pathParts.forEach(function(item:String, index:int, items:Array):void {
+                if(!item.match(/^:/)) {
+                    count++;
+                }
+            });
+            return count;
+        }
+        
         /**
         *   If our path includes expressions, create a new, empty
         *   Route, populate it with the request values and return it
@@ -75,11 +87,11 @@ package actionpack {
         **/
         public function routeForPath(otherPath:String):Route {
             var otherParts:Array = otherPath.split('/');
-            if(otherParts.length != pathParts.length) {
+            if(otherParts.length > pathParts.length) {
                 return null;
             }
             
-            var result:Route = (path.indexOf(':') == -1) ? this : new Route(otherPath);
+            var result:Route = (path.indexOf(':') == -1) ? this : new Route(otherPath, options);
             
             var len:int = pathParts.length;
             var part:String;
@@ -92,13 +104,15 @@ package actionpack {
                     return null;
                 }
             }
-            
             return result;
         }
         
         private function updateRouteWithPathPart(route:Route, key:String, value:*):void {
             if(key == ':controller') {
                 value = getDefinitionByName(camelcase(value) + 'Controller');
+            }
+            if(key == ':action' && value == null) {
+                value = DEFAULT_ACTION;
             }
             key = key.replace(/^:/, '');
             route[key] = coerceToType(value);

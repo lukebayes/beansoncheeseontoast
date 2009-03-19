@@ -13,6 +13,13 @@ package actionpack {
         override protected function setUp():void {
             super.setUp();
             routes = new Routes();
+            routes.configure(function():void {
+                //this.root({'controller' : SiteController});
+                //this.users({'controller' : UsersController});
+                this.connect('/people/:action', {'controller' : UsersController});
+                this.connect('/:controller/:action/:id');
+                this.connect('/:controller/:action');
+            });
         }
         
         override protected function tearDown():void {
@@ -20,23 +27,39 @@ package actionpack {
             super.tearDown();
         }
         
-        public function testConfigure():void {
-            routes.configure(function():void {
-                this.root({'controller' : SiteController});
-                this.users({'controller' : UsersController});
-                this.connect('/people/:action', {'controller' : UsersController, 'action' : 'index'});
-                this.connect('/:controller/:action/:id');
-                this.connect('/:controller/:action');
-            });
-            
-            var route:Route = routes.routeFor('/site/index');
-            assertNotNull('/site/index should work with default route', route);
-            assertEquals('/site/index should load default route', '/site/index', route.path);
-            assertSame('/site/index should load SiteController', SiteController, route.controller);
-            
-            route = routes.routeFor('/people/index');
-            assertNotNull('/people/index should return a valid route', route);
-            assertEquals('/people/index should point at UsersController', '/people/index', route.path);
+        protected function assertRoute(route:Route, path:String, controller:Class, action:String=null, id:Number=NaN):void {
+            assertNotNull(path + ' should work with default route', route);
+            assertEquals(path + ' should load default route', path, route.path);
+            assertSame(path + ' should load SiteController', controller, route.controller);
+            assertEquals(path + ' should execute ' + action, action, route.action);
+            if(!isNaN(id)) {
+                assertEquals(path + ' should have id ' + id, id, route.id);
+            }
+        }
+        
+        public function testConnectDynamicControllerAndDefaultAction():void {
+            var route:Route = routes.routeFor('/site');
+            assertRoute(route, '/site/:action', SiteController, 'index');
+        }
+        
+        public function testConnectDynamicControllerAndSpecifiedAction():void {
+            var route:Route = routes.routeFor('/site/show');
+            assertRoute(route, '/site/show', SiteController, 'show');
+        }
+        
+        public function testConnectDynamicControllerAndSpecifiedActionAndId():void {
+            var route:Route = routes.routeFor('/site/show/2');
+            assertRoute(route, '/site/show/2', SiteController, 'show', 2);
+        }
+        
+        public function testConnectStaticControllerAndDefaultAction():void {
+            var route:Route = routes.routeFor('/people');
+            assertRoute(route, '/people/:action', UsersController, 'index');
+        }
+        
+        public function testConnectStaticControllerAndSpecifiedAction():void {
+            var route:Route = routes.routeFor('/people/show');
+            assertRoute(route, '/people/show', UsersController, 'show');
         }
         
         //public function testConfigureAndRetrieveSimpleRoute():void {
