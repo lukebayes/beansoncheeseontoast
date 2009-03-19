@@ -8,14 +8,40 @@ package actionpack {
             _routes = new Array();
         }
 
+        public function configure(config:Function):void {
+            try {
+                config.call(this);
+            }
+            catch(te:TypeError) {
+                convertTypeErrorToNamedRoute(te.message, config);
+            }
+        }
+        
+        private function convertTypeErrorToNamedRoute(message:String, config:Function):void {
+            var result:* = message.match(/\: (\w+) is not a function/i);
+            addNamedRoute(result[1]);
+            // Loop back and run configuration again:
+            configure(config);
+        }
+        
+        private function addNamedRoute(name:String):void {
+            if(this[name] != undefined) {
+                throw new RoutingError('Attempted to create a named route where a property already exists [' + name + ']');
+            }
+            this[name] = function(options:Object):void {
+                addRoute('/' + name, options);
+            }
+        }
+
         // The Route class should only be instantiated through this factory,
         // where we can associate the correct environment with created
         // controller instances.
-        private function createRoute(name:String, options:*=null):Route {
-            var controller:ActionController = new options.controller(function():void {
-                this.environment = new Environment();
-            });
-            return new Route('/' + name, controller, options.action);
+        private function createRoute(path:String, options:*=null):Route {
+            return new Route(path, options);
+        }
+        
+        public function connect(path:String, options:Object=null):void {
+            addRoute(path, options);
         }
         
         public function root(options:Object):void {
@@ -23,17 +49,31 @@ package actionpack {
         }
         
         public function pathFor(options:*):String {
-            return routeFor(options).path;
+            var len:int = _routes.length;
+            var route:Route;
+            for(var i:int; i < len; i++) {
+                route = _routes[i].pathFor(options);
+                if(route != null) {
+                    return route.path;
+                }
+            }
+            return null;
         }
         
         public function routeFor(path:String):Route {
-            return findFirst(_routes, function(route:Route, index:int, routes:Array):Boolean {
-                return (route.acceptsPath(path));
-            });
+            var len:int = _routes.length;
+            var route:Route;
+            for(var i:int; i < len; i++) {
+                route = _routes[i].routeForPath(path)
+                if(route != null) {
+                    return route;
+                }
+            }
+            return null;
         }
         
-        protected function addNamedRoute(name:String, options:Object=null):void {
-            _routes.push(createRoute(name, options))
+        protected function addRoute(path:String, options:Object=null):void {
+            _routes.push(createRoute(path, options));
         }
         
         private function findRouteByOptions(options:*):Route {
@@ -42,33 +82,9 @@ package actionpack {
         
         private function findRouteByController(options:*):Route {
             return findFirst(_routes, function(route:Route, index:int, items:Array):Boolean {
-                return (route.controllerInstance === options.controller);
+                return (route.controller === options.controller);
             }).name || options.controller.controllerPath;
         }
 
-        public function configure(config:Function):void {
-            try {
-                config.call(this);
-            }
-            catch(te:TypeError) {
-                processTypeError(te.message, config);
-            }
-        }
-        
-        private function processTypeError(message:String, config:Function):void {
-            var result:* = message.match(/\: (\w+) is not a function/i);
-            addHookForNamedRoute(result[1], config);
-        }
-        
-        private function addHookForNamedRoute(name:String, config:Function):void {
-            if(this[name] != undefined) {
-                throw new RoutingError('Attempted to create a named route where a property already exists [' + name + ']');
-            }
-            this[name] = function(options:Object):void {
-                addNamedRoute(name, options);
-            }
-            // Loop back and run configuration again:
-            configure(config);
-        }
     }
 }

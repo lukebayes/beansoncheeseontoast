@@ -1,14 +1,19 @@
 package actionpack {
-    import flash.display.DisplayObjectContainer;
-    import flash.utils.Dictionary;
-    import flash.display.Sprite;
     import actionpack.errors.RoutingError;
+    import flash.display.DisplayObjectContainer;
+    import flash.display.Sprite;
+    import flash.utils.Dictionary;
+    import flash.utils.getDefinitionByName;
     import ReferenceError;
+    import reflect.Reflection;
     
     public class Environment extends Configurable {
         private var _displayRoot:DisplayObjectContainer;
         private var _controllers:Dictionary;
         private var _routes:Routes;
+        
+        private var lastController:ActionController;
+        private var lastAction:String;
         
         public function Environment(config:Function=null) {
             _routes = new Routes();
@@ -64,17 +69,20 @@ package actionpack {
         }
         
         public function pathFor(options:*):String {
+            if(options.controller == null) {
+                options.controller = getDefinitionByName(Reflection.create(lastController).name)
+            }
             return _routes.pathFor(options);
         }
         
         private function getControllerForRoute(route:Route):ActionController {
             var controller:ActionController;
             if(_controllers[route.controller] == undefined) {
-                controller = route.controller;
+                controller = new route.controller();
                 controller.environment = this;
                 return _controllers[route.controller] = controller;
             }
-            return _controllers[route.controller];
+            return lastController = _controllers[route.controller];
         }
     }
 }

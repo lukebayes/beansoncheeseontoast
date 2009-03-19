@@ -27,7 +27,6 @@ package actionpack {
             });
 
             assertEquals('/users', environment.pathFor({'controller' : UsersController}));
-            
             var rendered:* = environment.get('/users');
         }
 

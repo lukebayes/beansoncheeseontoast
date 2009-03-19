@@ -12,6 +12,7 @@ package {
 	import actionpack.RoutesTest;
 	import CamelCaseTest;
 	import CapitalizeTest;
+	import CoerceToTypeTest;
 	import FindFirstTest;
 	import UnderscoreTest;
 
@@ -23,6 +24,7 @@ package {
 			addTest(new actionpack.RoutesTest());
 			addTest(new CamelCaseTest());
 			addTest(new CapitalizeTest());
+			addTest(new CoerceToTypeTest());
 			addTest(new FindFirstTest());
 			addTest(new UnderscoreTest());
 		}
