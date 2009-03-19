@@ -70,6 +70,9 @@ package actionpack {
             for(var i:int; i < len; i++) {
                 route = _routes[i].routeForPath(path)
                 if(route != null) {
+                    if(route !== _routes[i]) {
+                        _routes.splice(i, 0, route);
+                    }
                     return route;
                 }
             }
