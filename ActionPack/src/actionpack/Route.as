@@ -86,6 +86,10 @@ package actionpack {
         *   appropriately configured
         **/
         public function routeForPath(otherPath:String):Route {
+            if(otherPath == path) {
+                return this;
+            }
+            
             var otherParts:Array = otherPath.split('/');
             if(otherParts.length > pathParts.length) {
                 return null;

@@ -14,9 +14,10 @@ package actionpack {
             super.setUp();
             routes = new Routes();
             routes.configure(function():void {
-                //this.root({'controller' : SiteController});
-                //this.users({'controller' : UsersController});
+                this.root({'controller' : SiteController, 'action' : 'index'});
+                this.connect('/people/all', {'controller' : UsersController, 'action' : 'index'});
                 this.connect('/people/:action', {'controller' : UsersController});
+                this.connect('/people/:action/:id', {'controller' : UsersController});
                 this.connect('/:controller/:action/:id');
                 this.connect('/:controller/:action');
             });
@@ -35,6 +36,11 @@ package actionpack {
             if(!isNaN(id)) {
                 assertEquals(path + ' should have id ' + id, id, route.id);
             }
+        }
+        
+        public function testRoot():void {
+            var route:Route = routes.routeFor('/');
+            assertRoute(route, '/', SiteController, 'index');
         }
         
         public function testConnectDynamicControllerAndDefaultAction():void {
@@ -57,19 +63,19 @@ package actionpack {
             assertRoute(route, '/people/:action', UsersController, 'index');
         }
         
+        public function testConnectStaticControllerAndStaticAction():void {
+            var route:Route = routes.routeFor('/people/all');
+            assertRoute(route, '/people/all', UsersController, 'index');
+        }
+        
         public function testConnectStaticControllerAndSpecifiedAction():void {
             var route:Route = routes.routeFor('/people/show');
             assertRoute(route, '/people/show', UsersController, 'show');
         }
         
-        //public function testConfigureAndRetrieveSimpleRoute():void {
-        //    testConfigure();
-        //    assertEquals('/users', routes.pathFor({'controller' : UsersController}));
-        //    assertEquals('/', routes.pathFor({'controller' : SiteController}));
-        //}
-        //
-        //public function testDefaultRoutes():void {
-        //    assertEquals('/users', routes.pathFor({'controller' : UsersController}));
-        //}
+        public function testConnectStaticControllerAndSpecifiedActionAndId():void {
+            var route:Route = routes.routeFor('/people/show/3');
+            assertRoute(route, '/people/show/3', UsersController, 'show', 3);
+        }
     }
 }
