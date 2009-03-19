@@ -29,6 +29,9 @@ package actionpack {
                 throw new RoutingError('Attempted to create a named route where a property already exists [' + name + ']');
             }
             this[name] = function(options:Object):void {
+                if(options.action == null) {
+                    options.action = ':action';
+                }
                 addRoute('/' + name, options);
             }
         }
@@ -51,10 +54,11 @@ package actionpack {
         public function pathFor(options:*):String {
             var len:int = _routes.length;
             var route:Route;
+            var path:String;
             for(var i:int; i < len; i++) {
-                route = _routes[i].pathFor(options);
-                if(route != null) {
-                    return route.path;
+                path = _routes[i].pathFor(options);
+                if(path != null) {
+                    return path;
                 }
             }
             return null;

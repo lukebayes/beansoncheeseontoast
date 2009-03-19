@@ -26,8 +26,8 @@ package actionpack {
                 this.users({'controller' : UsersController});
             });
 
-            assertEquals('/users', environment.pathFor({'controller' : UsersController}));
-            var rendered:* = environment.get('/users');
+            assertEquals('/users/index', environment.pathFor({'controller' : UsersController, 'action': 'index'}));
+            //var rendered:* = environment.get('/users');
         }
 
         //public function testCallGetTwiceEnsureFirstViewIsRemoved():void {

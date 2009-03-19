@@ -4,6 +4,8 @@ package actionpack {
     import flash.utils.getQualifiedClassName;
 
     dynamic public class Route {
+        private static const DEFAULT_ACTION:String = 'index';
+        
         public var action:String;
         public var controller:Class;
         public var path:String;
@@ -11,12 +13,16 @@ package actionpack {
         private var pathParts:Array;
         
         public function Route(path:String, options:*=null) {
+            pathParts = path.split('/');
+            if(pathParts.length == 2) {
+                path += '/:action';
+                pathParts.push(':action');
+            }
             this.path = path;
-            this.pathParts = path.split('/');
 
             if(options != null) {
-                this.controller = options.controller;
-                this.action = options.action;
+                controller = options.controller;
+                action = options.action;
             }
         }
         
@@ -32,18 +38,27 @@ package actionpack {
                     if(part.indexOf(':') > -1) {
                         key = part.replace(/^:/, '');
                         if(key == 'controller') {
+                            if(this.controller !== options[key]) {
+                                return null;
+                            }
                             result.push(controllerClassToPath(options[key]));
                         }
+                        else if(key == 'action') {
+                            result.push(options[key] || DEFAULT_ACTION);
+                        }
                         else {
-                            result.push(options[key].toString());
+                            result.push(options[key]);
                         }
                     }
+                    else {
+                        result.push(part);
+                    }
                 }
-                return '/' + result.join('/');
+                return result.join('/');
             }
-
+            
             var controllerName:String = controllerClassToPath(options.controller);
-            var actionName:String = options.action;
+            var actionName:String = options.action || DEFAULT_ACTION;
             var resultPath:String = ('/' + controllerName + '/' + actionName)
             return (resultPath == path) ? resultPath : null;
         }
