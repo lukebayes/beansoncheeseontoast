@@ -66,6 +66,15 @@ package actionpack {
             return null;
         }
         
+        /**
+        *   routeFor accepts either a String or Hash/Object argument.
+        *   
+        *   Examples:
+        *   routeFor('/users/index');
+        *   routeFor('/users/show/3');
+        *   routeFor({ 'controllers' : UsersController, 'action' : 'index' });
+        *   routeFor({ 'controllers' : UsersController, 'action' : 'show', 'id' : 3 });
+        **/
         public function routeFor(pathOrHash:*):Route {
             if(!(pathOrHash is String)) {
                 pathOrHash = buildPathFromHash(pathOrHash);
