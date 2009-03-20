@@ -1,5 +1,7 @@
 package actionpack {
+
     import actionpack.errors.RoutingError;
+    import flash.utils.getQualifiedClassName;
     
     dynamic public class Routes {
         private var _routes:Array;
@@ -64,11 +66,14 @@ package actionpack {
             return null;
         }
         
-        public function routeFor(path:String):Route {
+        public function routeFor(pathOrHash:*):Route {
+            if(!(pathOrHash is String)) {
+                pathOrHash = buildPathFromHash(pathOrHash);
+            }
             var len:int = _routes.length;
             var route:Route;
             for(var i:int; i < len; i++) {
-                route = _routes[i].routeForPath(path)
+                route = _routes[i].routeFor(pathOrHash)
                 if(route != null) {
                     if(route !== _routes[i]) {
                         _routes.splice(i, 0, route);
@@ -78,6 +83,29 @@ package actionpack {
             }
             return null;
         }
+
+        private function duplicateHash(hash:*):* {
+            var dupe:Object = {};
+            for(var key:String in hash) {
+                dupe[key] = hash[key];
+            }
+            return dupe;
+        }
+        
+        private function buildPathFromHash(hash:*):String {
+            hash = duplicateHash(hash);
+            var parts:Array = [''];
+            parts.push(controllerClassToPath(hash.controller));
+            delete hash.controller;
+            if(hash.action) {
+                parts.push(hash.action);
+                delete hash.action;
+            }
+            for(var key:String in hash) {
+                parts.push(hash[key]);
+            }
+            return parts.join('/');
+        }
         
         protected function addRoute(path:String, options:Object=null):void {
             _routes.push(createRoute(path, options));
@@ -85,6 +113,11 @@ package actionpack {
         
         private function findRouteByOptions(options:*):Route {
             return null;
+        }
+        
+        private function controllerClassToPath(controller:Class):String {
+            var name:String = getQualifiedClassName(controller).split('::').pop();
+            return underscore(name).replace(/_controller$/, '');
         }
         
         private function findRouteByController(options:*):Route {

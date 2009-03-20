@@ -1,5 +1,6 @@
 package actionpack {
     
+    import actionpack.errors.RoutingError;
     import flash.utils.getDefinitionByName;
     import flash.utils.getQualifiedClassName;
 
@@ -80,12 +81,16 @@ package actionpack {
             return count;
         }
         
+        public function routeFor(path:String):Route {
+            return routeForPath(path);
+        }
+        
         /**
         *   If our path includes expressions, create a new, empty
         *   Route, populate it with the request values and return it
         *   appropriately configured
         **/
-        public function routeForPath(otherPath:String):Route {
+        private function routeForPath(otherPath:String):Route {
             if(otherPath == path) {
                 return this;
             }

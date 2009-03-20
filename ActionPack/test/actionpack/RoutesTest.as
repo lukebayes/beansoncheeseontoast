@@ -77,5 +77,15 @@ package actionpack {
             var route:Route = routes.routeFor('/people/show/3');
             assertRoute(route, '/people/show/3', UsersController, 'show', 3);
         }
+        
+        public function testRouteByHashForUsersIndex():void {
+            var route:Route = routes.routeFor({'controller' : UsersController, 'action' : 'index'});
+            assertRoute(route, '/users/index', UsersController, 'index');
+        }
+
+        public function testRouteByHashForUsersShowWithId():void {
+            var route:Route = routes.routeFor({'controller' : UsersController, 'action' : 'show', 'id' : 3});
+            assertRoute(route, '/users/show/3', UsersController, 'show', 3);
+        }
     }
 }
