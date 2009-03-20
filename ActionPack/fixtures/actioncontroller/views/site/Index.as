@@ -11,6 +11,7 @@ package site {
         
         public function Index() {
             backgroundColor = 0x00ff00;
+            buttonMode = true;
             addEventListener(MouseEvent.CLICK, clickHandler);
         }
         
@@ -18,6 +19,13 @@ package site {
             backgroundColor = 0xffff00;
             draw();
             environment.get('/users');
+        }
+
+        override public function draw():void {
+            x = y = 10;
+            width = parent.width - 20;
+            height = parent.height - 20;
+            super.draw();
         }
     }
 }

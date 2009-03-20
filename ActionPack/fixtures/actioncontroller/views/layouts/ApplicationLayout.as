@@ -5,13 +5,14 @@ package layouts {
     dynamic public class ApplicationLayout extends ActiveLayout {
         
         public function ApplicationLayout() {
-            backgroundColor = 0x333333;
+            backgroundColor = 0xcccccc;
         }
         
         override public function draw():void {
             if(stage) {
-                width = stage.stageWidth;
-                height = stage.stageHeight;
+                x = y = 5;
+                width = stage.stageWidth - 10;
+                height = stage.stageHeight - 10;
             }
             super.draw();
         }
