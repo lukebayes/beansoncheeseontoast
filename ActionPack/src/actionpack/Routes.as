@@ -19,25 +19,6 @@ package actionpack {
             }
         }
         
-        private function convertTypeErrorToNamedRoute(message:String, config:Function):void {
-            var result:* = message.match(/\: (\w+) is not a function/i);
-            addNamedRoute(result[1]);
-            // Loop back and run configuration again:
-            configure(config);
-        }
-        
-        private function addNamedRoute(name:String):void {
-            if(this[name] != undefined) {
-                throw new RoutingError('Attempted to create a named route where a property already exists [' + name + ']');
-            }
-            this[name] = function(options:Object):void {
-                if(options.action == null) {
-                    options.action = ':action';
-                }
-                addRoute('/' + name, options);
-            }
-        }
-
         // The Route class should only be instantiated through this factory,
         // where we can associate the correct environment with created
         // controller instances.
@@ -91,6 +72,25 @@ package actionpack {
                 }
             }
             return null;
+        }
+
+        private function convertTypeErrorToNamedRoute(message:String, config:Function):void {
+            var result:* = message.match(/\: (\w+) is not a function/i);
+            addNamedRoute(result[1]);
+            // Loop back and run configuration again:
+            configure(config);
+        }
+        
+        private function addNamedRoute(name:String):void {
+            if(this[name] != undefined) {
+                throw new RoutingError('Attempted to create a named route where a property already exists [' + name + ']');
+            }
+            this[name] = function(options:Object):void {
+                if(options.action == null) {
+                    options.action = ':action';
+                }
+                addRoute('/' + name, options);
+            }
         }
 
         private function duplicateHash(hash:*):* {

@@ -29,6 +29,10 @@ package actionpack {
             }
         }
         
+        public function routeFor(path:String):Route {
+            return routeForPath(path);
+        }
+        
         public function pathFor(options:*):String {
             if(path.indexOf(':') > -1) {
                 var len:int = pathParts.length;
@@ -79,10 +83,6 @@ package actionpack {
                 }
             });
             return count;
-        }
-        
-        public function routeFor(path:String):Route {
-            return routeForPath(path);
         }
         
         /**
