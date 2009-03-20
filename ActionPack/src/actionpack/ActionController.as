@@ -25,8 +25,12 @@ package actionpack {
         private var _params:Object;
         private var _redirected:Boolean;
         private var _reflection:Reflection;
-        private var _response:*;
+        private var _response:Response;
+        private var _request:Request;
         private var _session:Object;
+        
+        private var lastLayout:*;
+        private var lastView:*;
         
         public function ActionController(config:Function=null) {
             super(config);
@@ -69,12 +73,20 @@ package actionpack {
             return _params;
         }
         
-        public function set response(response:*):void {
+        public function set response(response:Response):void {
             _response = response;
         }
 
-        public function get response():* {
+        public function get response():Response {
             return _response;
+        }
+        
+        public function set request(request:Request):void {
+            _request = request;
+        }
+        
+        public function get request():Request {
+            return _request;
         }
         
         public function set session(session:Object):void {
@@ -127,13 +139,17 @@ package actionpack {
         }
 
         // Controller entry point to convert paths into actions and views:
-        public function getAction(actionName:String=null):* {
-            _redirected = false;
-            actionName ||= defaultActionName;
-            if(reflection.hasMethod(actionName)) {
-                this[actionName].call();
+        public function getAction(requestOrActionName:*):Response {
+            if(requestOrActionName is String) {
+                request = new Request(requestOrActionName);
             }
-            return render(actionName);
+            else {
+                request = requestOrActionName;
+            }
+            if(reflection.hasMethod(request.action)) {
+                this[request.action].call();
+            }
+            return render(request);
         }
         
         public function redirectTo(template:String, options:Object=null):void {
@@ -141,25 +157,53 @@ package actionpack {
             throw new ActionControllerError('ActionController.redirectTo has not yet been implemented');
         }
         
-        public function render(actionName:String, options:Object=null):* {
-            layout = renderLayout(getDefaultLayoutPath());
-            var clazz:Class = attemptToLoadView(actionName);
-            response = new clazz();
-            configureView(response);
-            layout.contentContainer.addChild(response);
+        /**
+        *   render method can be called from getAction or from within a 
+        *   controller action method body.
+        *   
+        *   Generally, when this method is called from a controller action
+        *   the @requestOrOptions parameter will be a hash of render options,
+        *   when it is called from the getAction a prepared Request object
+        *   will be sent.
+        **/
+        public function render(requestOrOptions:*):Response {
+            if(requestOrOptions is Request) {
+                request = requestOrOptions;
+            }
+            else {
+                for(var key:String in requestOrOptions) {
+                    request[key] = requestOrOptions[key];
+                }
+            }
+            
+            var lastResponse:Response = (response) ? response : new Response();
+
+            var clazz:Class = actionToViewClass(request.action);
+            var view:* = new clazz();
+            var layout:* = renderLayout(request);
+            // TODO: allow for custom layout directives in the request...
+            response = request.response = new Response({
+                                                        'request': request,
+                                                        'view' : view,
+                                                        'layout' : layout
+                                                        });
+            configureView(response.view);
+            layout.contentContainer.addChild(response.view);
+            
+            lastResponse.removeView();
             return response;
         }
         
-        private function renderLayout(target:String):DisplayObjectContainer {
-            var clazz:Class = attemptToLoadClass(pathToClassName(target));
+        private function shouldRenderViewForTheFirstTime(clazz:Class):Boolean {
+            return (!lastView || !(lastView is clazz));
+        }
+        
+        private function renderLayout(request:Request):* {
+            var clazz:Class = attemptToLoadClass(pathToClassName(request.layoutPath));
             var layout:* = new clazz();
             configureView(layout);
             environment.displayRoot.addChild(layout);
             return layout;
-        }
-        
-        private function getDefaultLayoutPath(name:String=null):String {
-            return 'layouts/' + (name ||= 'application_layout');
         }
         
         // Create a Reflection for the concrete controller,
@@ -193,10 +237,10 @@ package actionpack {
         }
         
         public function templateDoesExist(actionName:String=null):Boolean {
-            return attemptToLoadView(actionName) != null;
+            return actionToViewClass(actionName) != null;
         }
         
-        private function attemptToLoadView(actionName:String=null):Class {
+        private function actionToViewClass(actionName:String=null):Class {
             var qualifiedClassName:String = pathToClassName(defaultTemplateName(actionName));
             return attemptToLoadClass(qualifiedClassName);
         }

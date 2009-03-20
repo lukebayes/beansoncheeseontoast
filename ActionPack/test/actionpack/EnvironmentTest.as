@@ -15,6 +15,9 @@ package actionpack {
             environment = new Environment(function():void {
                 this.displayRoot = displayRoot;
             });
+            environment.routes(function():void {
+                this.users({'controller' : UsersController});
+            });
         }
         
         override protected function tearDown():void {
@@ -23,25 +26,22 @@ package actionpack {
         }
 
         public function testConfigureAndLoadRoute():void {
-            environment.routes(function():void {
-                this.users({'controller' : UsersController});
-            });
-
             assertEquals('/users/index', environment.pathFor({'controller' : UsersController, 'action': 'index'}));
-            var rendered:* = environment.get('/users');
+            var response:Response = environment.get('/users');
+            var rendered:* = response.view;
             assertSame('users::Index', Reflection.create(rendered).name);
             assertNotNull('lastAction', environment.lastController);
-            assertSame('layouts::ApplicationLayout', Reflection.create(environment.lastController.layout).name);
+            assertSame('layouts::ApplicationLayout', Reflection.create(response.layout).name);
         }
 
-        //public function testCallGetTwiceEnsureFirstViewIsRemoved():void {
-        //    var response1:* = environment.get('/users/index');
-        //    assertNotNull('First response should be attached', response1.parent);
-        //
-        //    var response2:* = environment.get('/users/show');
-        //    assertNotNull('Second response should be attached', response2.parent);
-        //    assertNull('First response should no longer be attached', response1.parent);
-        //}
+        public function testCallGetTwiceEnsureFirstViewIsRemoved():void {
+            var response1:Response = environment.get('/users/index');
+            assertNotNull('First response should be attached', response1.view.parent);
+            
+            var response2:Response = environment.get('/users/show');
+            assertNotNull('Second response should be attached', response2.view.parent);
+            assertNull('First response should no longer be attached', response1.view.parent);
+        }
         
         //public function testDuplicateRequestShouldDoNothing():void {
         //}

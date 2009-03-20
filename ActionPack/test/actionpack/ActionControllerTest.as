@@ -43,13 +43,14 @@ package actionpack {
             var controller:UsersController = new UsersController(function():void {
                 this.environment = environment;
             });
-            var response:* = controller.getAction('index');
-            assertSame('Controller.response is the view and returned', response, controller.response);
-            assertNotNull('controller.get should return the rendered view', response);
+            var response:Response = controller.getAction('index');
+            assertNotNull('Response should be returned', response);
+            assertNotNull('Response should have request', response.request);
+
             assertNotNull('UsersController.index should set the users collection', controller.allUsers);
-            assertNotNull('Layout should have the session object', controller.layout.session);
-            assertNotNull('Index view should have the users collection', response.allUsers);
-            assertNotNull('Index view should have the flash object', response.flash);
+            assertNotNull('Layout should have the session object', response.view.session);
+            assertNotNull('Index view should have the users collection', response.view.allUsers);
+            assertNotNull('Index view should have the flash object', response.view.flash);
         }
     }
 }

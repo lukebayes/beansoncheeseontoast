@@ -8,12 +8,13 @@ package actionpack {
     import reflect.Reflection;
     
     public class Environment extends Configurable {
-        private var _displayRoot:DisplayObjectContainer;
-        private var _controllers:Dictionary;
-        private var _routes:Routes;
-        
+
         public var lastController:ActionController;
+
         private var lastAction:String;
+        private var _controllers:Dictionary;
+        private var _displayRoot:DisplayObjectContainer;
+        private var _routes:Routes;
         
         public function Environment(config:Function=null) {
             _routes = new Routes();
@@ -51,7 +52,9 @@ package actionpack {
         *   transitions (and other?)
         **/
         public function get(path:*):* {
+            var request:Request = new Request(path);
             var route:Route;
+            
             if(path is String) {
                 route = _routes.routeFor(path);
             }
@@ -62,7 +65,9 @@ package actionpack {
             if(route == null) {
                 throw new RoutingError('Environment.get failed with unhandled path: ' + path);
             }
-            return getControllerForRoute(route).getAction(route.action);
+
+            request.route = route;
+            return getControllerForRoute(request.route).getAction(request);
         }
         
         public function routes(config:Function=null):Routes {
