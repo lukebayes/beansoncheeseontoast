@@ -11,7 +11,6 @@ package actionpack {
 
         public var lastController:ActionController;
 
-        private var lastAction:String;
         private var _controllers:Dictionary;
         private var _displayRoot:DisplayObjectContainer;
         private var _routes:Routes;

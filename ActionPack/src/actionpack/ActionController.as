@@ -172,6 +172,7 @@ package actionpack {
             // TODO: allow for custom layout directives in the request...
             response = request.response = new Response({
                                                         'request': request,
+                                                        'controller' : this,
                                                         'view' : view,
                                                         'layout' : layout
                                                         });
