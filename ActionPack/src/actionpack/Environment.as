@@ -51,10 +51,11 @@ package actionpack {
         *   transitions (and other?)
         **/
         public function get(path:*):* {
-            var request:Request = new Request(path);
+            var request:Request;
             var route:Route;
             
             if(path is String) {
+                request = new Request(path);
                 route = _routes.routeFor(path);
             }
             else {

@@ -249,7 +249,7 @@ package actionpack {
         *  Helper methods that delegate back up to the Environment
         **/
 
-        public function get(path:String=null):* {
+        public function get(path:String=null):Response {
             return environment.get(path);
         }
         

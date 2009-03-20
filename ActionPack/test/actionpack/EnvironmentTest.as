@@ -54,6 +54,6 @@ package actionpack {
         // get({'path':'/users/index', 'transition':function(from:*, to:*):void {
         //      // animate transition and remove 'from' when complete
         // });
-        //
+
     }
 }
