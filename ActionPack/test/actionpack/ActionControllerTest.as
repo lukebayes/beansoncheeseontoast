@@ -29,16 +29,6 @@ package actionpack {
             assertEquals('mock_named/index', controller.defaultTemplateName());
         }
         
-        public function testDefaultTemplateExists():void {
-            var controller:UsersController = new UsersController();
-            assertTrue(controller.templateDoesExist());
-        }
-
-        public function testSpecifiedTemplateExists():void {
-            var controller:UsersController = new UsersController();
-            assertTrue(controller.templateDoesExist('show'));
-        }
-        
         public function testGet():void {
             var controller:UsersController = new UsersController(function():void {
                 this.environment = environment;

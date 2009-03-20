@@ -21,16 +21,12 @@ package actionpack {
         private var _defaultTemplateName:String;
         private var _environment:Environment;
         private var _flash:Object;
-        private var _layout:*;
         private var _params:Object;
         private var _redirected:Boolean;
         private var _reflection:Reflection;
         private var _response:Response;
         private var _request:Request;
         private var _session:Object;
-        
-        private var lastLayout:*;
-        private var lastView:*;
         
         public function ActionController(config:Function=null) {
             super(config);
@@ -52,14 +48,6 @@ package actionpack {
             return _environment ||= new Environment();
         }
         
-        public function set layout(layout:*):void {
-            _layout = layout;
-        }
-        
-        public function get layout():* {
-            return _layout;
-        }
-
         /**
          * Holds a hash of all the GET, POST, and Url parameters passed to the action. 
          * Accessed like <tt>params["post_id"]</tt> to get the post_id. 
@@ -194,10 +182,6 @@ package actionpack {
             return response;
         }
         
-        private function shouldRenderViewForTheFirstTime(clazz:Class):Boolean {
-            return (!lastView || !(lastView is clazz));
-        }
-        
         private function renderLayout(request:Request):* {
             var clazz:Class = attemptToLoadClass(pathToClassName(request.layoutPath));
             var layout:* = new clazz();
@@ -236,13 +220,13 @@ package actionpack {
             //});
         }
         
-        public function templateDoesExist(actionName:String=null):Boolean {
-            return actionToViewClass(actionName) != null;
-        }
-        
         private function actionToViewClass(actionName:String=null):Class {
             var qualifiedClassName:String = pathToClassName(defaultTemplateName(actionName));
-            return attemptToLoadClass(qualifiedClassName);
+            var clazz:Class = attemptToLoadClass(qualifiedClassName);
+            if(clazz == null) {
+                throw new ActionControllerError('ActionController was unable to load a view for ' + actionName + ' with: ' + qualifiedClassName);
+            }
+            return clazz;
         }
         
         private function attemptToLoadClass(qualifiedClassName:String):Class {
