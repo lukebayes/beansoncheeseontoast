@@ -1,6 +1,7 @@
 package actionpack {
 
     import flash.display.Sprite;
+    import reflect.Reflection;
 
     public class EnvironmentTest extends ActionPackTestHelper {
         private var environment:Environment;
@@ -27,7 +28,10 @@ package actionpack {
             });
 
             assertEquals('/users/index', environment.pathFor({'controller' : UsersController, 'action': 'index'}));
-            //var rendered:* = environment.get('/users');
+            var rendered:* = environment.get('/users');
+            assertSame('users::Index', Reflection.create(rendered).name);
+            assertNotNull('lastAction', environment.lastController);
+            assertSame('layouts::ApplicationLayout', Reflection.create(environment.lastController.layout).name);
         }
 
         //public function testCallGetTwiceEnsureFirstViewIsRemoved():void {

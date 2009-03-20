@@ -12,7 +12,7 @@ package actionpack {
         private var _controllers:Dictionary;
         private var _routes:Routes;
         
-        private var lastController:ActionController;
+        public var lastController:ActionController;
         private var lastAction:String;
         
         public function Environment(config:Function=null) {
@@ -84,7 +84,7 @@ package actionpack {
             if(_controllers[route.controller] == undefined) {
                 controller = new route.controller();
                 controller.environment = this;
-                return _controllers[route.controller] = controller;
+                _controllers[route.controller] = controller;
             }
             return lastController = _controllers[route.controller];
         }
