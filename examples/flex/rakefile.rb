@@ -21,24 +21,47 @@ project_model :model do |m|
   # m.compiler_gem_name     = 'sprout-flex4sdk-tool'
   # m.compiler_gem_version  = '>= 4.0.0'
   # m.source_path           << "#{m.lib_dir}/somelib"
+  m.source_path             << '../../ActionPack/lib/reflection'
+  m.source_path             << '../../ActionPack/src'
   # m.libraries             << :corelib
+end
+
+def include_classes(t)
+  ['app/models', 'app/controllers', 'app/views'].each do |package|
+    t.source_path << package
+  end
+
+  Dir.glob(['app/models/*', 'app/controllers/*', 'app/views/**/*']).each do |fixture|
+    if(!File.directory?(fixture))
+      fixture.gsub!('app/models/', '')
+      fixture.gsub!('app/controllers/', '')
+      fixture.gsub!('app/views/', '')
+      fixture.gsub!(/.as$/, '')
+      fixture.gsub!(/.mxml$/, '')
+      fixture = fixture.split('/').join('.')
+      t.includes << fixture
+    end
+  end
 end
 
 
 desc 'Compile and debug the application'
-debug :debug
+debug :debug do |t|
+  include_classes(t)
+end
 
 desc 'Compile run the test harness'
-unit :test
+unit :test do |t|
+  include_classes(t)
+end
 
 desc 'Compile the optimized deployment'
-deploy :deploy
+deploy :deploy do |t|
+  include_classes(t)
+end
 
 desc 'Create documentation'
 document :doc
-
-desc 'Compile a SWC file'
-swc :swc
 
 # set up the default rake task
 task :default => :debug

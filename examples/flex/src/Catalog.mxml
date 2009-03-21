@@ -7,14 +7,30 @@
     >
     <mx:Script>
         <![CDATA[
+        import actionpack.Environment;
+        
+        private var environment:Environment;
         
         private function creationCompleteHandler(event:Event):void {
-            trace(">> CreationComplete");
+
+          // Set up default Environment:
+          var self:* = this;
+          environment = new Environment(function():void {
+            this.displayRoot = self;
+          });
+
+          // Set up default routes:
+          environment.routes(function():void {
+            this.root({'controller' : ProductsController, 'action' : 'index'});
+            this.connect('/:controller/:action/:id');
+            this.connect('/:controller/:action');
+          });
+          
+          environment.get('/');
         }
         ]]>
     </mx:Script>
     
     <!-- Import StyleSheet -->
     <mx:Style source="CatalogSkin.css" />
-    <mx:Container styleName="SproutLogo" width="100%" height="100%" />
 </mx:Application>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ap:ActiveLayout
+    xmlns:ap="mx.actionpack.base.*"
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    backgroundImage=""
+    backgroundColor="#ff0000"
+    creationComplete="creationCompleteHandler(event)"
+    >
+    <mx:Script>
+      import flash.events.Event;
+      
+      private function creationCompleteHandler(event:Event):void {
+        trace(">> creation complete with index mxml");
+      }
+    </mx:Script>
+</ap:ActiveLayout>
