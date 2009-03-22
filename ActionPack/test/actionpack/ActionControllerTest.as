@@ -49,6 +49,13 @@ package actionpack {
             var response:Response = environment.get('/users/show/2');
             assertEquals('Request should have id param', 2, response.controller.params['id']);
         }
+        
+        public function testBasicBeforeFilter():void {
+            var response:Response = environment.get('/users/show/2');
+            var controller:* = response.controller;
+            assertTrue('authenticateAll should have been called', controller.authenticateAllCalled);
+            assertFalse('authenticateOnly should not have been called', controller.authenticateOnlyCalled);
+        }
     }
 }
 

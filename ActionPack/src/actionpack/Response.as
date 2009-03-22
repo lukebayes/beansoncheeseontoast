@@ -4,7 +4,7 @@ package actionpack {
         public var layout:*;
         public var view:*;
         public var request:Request;
-        public var controller:ActionController;
+        public var controller:*;
         public var action:String;
         
         public function Response(options:*=null) {

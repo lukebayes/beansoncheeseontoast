@@ -15,6 +15,8 @@ package actionpack {
         private static const DEFAULT_ACTION_NAME:String = 'index';
         
         private var _actionName:String;
+        private var _afterFilters:Array;
+        private var _beforeFilters:Array;
         private var _controllerName:String;
         private var _controllerPath:String;
         private var _defaultActionName:String;
@@ -30,6 +32,8 @@ package actionpack {
         
         public function ActionController(config:Function=null) {
             super(config);
+            _beforeFilters = [];
+            _afterFilters = [];
         }
         
         public function set actionName(name:String):void {
@@ -137,10 +141,13 @@ package actionpack {
             
             buildParams();
             
+            executeBeforeFiltersFor(request.action);
             if(reflection.hasMethod(request.action)) {
                 this[request.action].call();
             }
-            return render(request);
+            var response:Response = render(request);
+            executeAfterFiltersFor(request.action);
+            return response;
         }
         
         private function buildParams():void {
@@ -189,6 +196,55 @@ package actionpack {
                 'layout' : layout
             };
             return response = request.response = new Response(options);
+        }
+        
+        protected function beforeFilter(handler:Function, options:*=null):void {
+            addBeforeFilterFor(handler, options);
+        }
+        
+        private function addBeforeFilterFor(handler:Function, options:*):void {
+            options = options || {'all' : true};
+            if(options['all'] || options['except']) {
+                var except:Array = options['except'] || [];
+                var methodsLen:int = reflection.methods.length;
+                var exceptLen:int = except.length;
+                var method:ReflectionMethod;
+                for(var i:int = 0; i < methodsLen; i++) {
+                    method = reflection.methods[i];
+                    if(method.declaredBy != 'actionpack::ActionController') {
+                        if(exceptLen == 0) {
+                            _beforeFilters.push(new Filter(handler, method.name));
+                            continue;
+                        }
+                        for(var k:int = 0; k < exceptLen; k++) {
+                            if(method.name != except[k]) {
+                                _beforeFilters.push(new Filter(handler, method.name));
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                throw new Error('>> addBeforeFilter for only methods');
+            }
+        }
+        
+        private function executeBeforeFiltersFor(methodName:String):void {
+            var self:* = this;
+            _beforeFilters.forEach(function(item:Filter, index:int, items:Array):void {
+                if(item.methodName == methodName) {
+                    item.handler.call(self);
+                }
+            });
+        }
+        
+        private function executeAfterFiltersFor(methodName:String):void {
+            var self:* = this;
+            _afterFilters.forEach(function(item:Filter, index:int, items:Array):void {
+                if(item.methodName == methodName) {
+                    item.handler.call(self);
+                }
+            });
         }
         
         private function renderLayout(request:Request):* {
