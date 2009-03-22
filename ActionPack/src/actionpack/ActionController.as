@@ -203,7 +203,7 @@ package actionpack {
                 var newLayout:* = new clazz();
                 environment.layout = newLayout;
                 configureView(newLayout);
-                environment.displayRoot.addChild(newLayout);
+                environment.addLayout(newLayout);
                 return newLayout;
             }
             else {

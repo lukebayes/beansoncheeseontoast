@@ -40,6 +40,14 @@ package actionpack {
             return _displayRoot;
         }
         
+        public function addLayout(newLayout:*):void {
+            if(layout && layout.parent === displayRoot) {
+                displayRoot.removeChild(layout);
+            }
+            layout = newLayout;
+            displayRoot.addChild(newLayout);
+        }
+        
         /**
         *   The default behavior of a get request will accept a path String that should
         *   match with a defined or default route. The default configuration accepts
