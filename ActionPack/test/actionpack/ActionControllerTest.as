@@ -51,7 +51,7 @@ package actionpack {
         }
         
         public function testBasicBeforeFilter():void {
-            var response:Response = environment.get('/users/show/2');
+            var response:Response = environment.get('/users/index');
             var controller:* = response.controller;
             assertTrue('authenticateAll should have been called', controller.authenticateAllCalled);
             assertFalse('authenticateOnly should not have been called', controller.authenticateOnlyCalled);

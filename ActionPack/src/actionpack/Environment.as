@@ -10,9 +10,6 @@ package actionpack {
     
     public class Environment extends Configurable {
 
-        public var lastController:ActionController;
-
-        private var _controllers:Dictionary;
         private var _displayRoot:DisplayObjectContainer;
         private var _layout:*;
         private var _view:*;
@@ -20,7 +17,6 @@ package actionpack {
         
         public function Environment(config:Function=null) {
             _routes = new Routes();
-            _controllers = new Dictionary();
             super(config);
         }
         
@@ -100,20 +96,14 @@ package actionpack {
         }
         
         public function pathFor(options:*):String {
-            if(options.controller == null) {
-                options.controller = getDefinitionByName(Reflection.create(lastController).name)
-            }
             return _routes.pathFor(options);
         }
         
         private function getControllerForRoute(route:Route):ActionController {
             var controller:ActionController;
-            if(_controllers[route.controller] == undefined) {
-                controller = new route.controller();
-                controller.environment = this;
-                _controllers[route.controller] = controller;
-            }
-            return lastController = _controllers[route.controller];
+            controller = new route.controller();
+            controller.environment = this;
+            return controller;
         }
     }
 }

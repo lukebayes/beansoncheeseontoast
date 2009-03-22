@@ -11,7 +11,7 @@ package {
         public function UsersController(config:Function=null) {
             super(config);
             beforeFilter(authenticateAll);
-            //beforeFilter('authenticateOnly', {'only' : 'show'});
+            beforeFilter(authenticateOnly, {'only' : 'show'});
         }
         
         public function index():void {

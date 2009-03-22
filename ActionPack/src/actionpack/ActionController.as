@@ -204,28 +204,50 @@ package actionpack {
         
         private function addBeforeFilterFor(handler:Function, options:*):void {
             options = options || {'all' : true};
-            if(options['all'] || options['except']) {
-                var except:Array = options['except'] || [];
-                var methodsLen:int = reflection.methods.length;
-                var exceptLen:int = except.length;
-                var method:ReflectionMethod;
-                for(var i:int = 0; i < methodsLen; i++) {
-                    method = reflection.methods[i];
-                    if(method.declaredBy != 'actionpack::ActionController') {
-                        if(exceptLen == 0) {
-                            _beforeFilters.push(new Filter(handler, method.name));
-                            continue;
-                        }
-                        for(var k:int = 0; k < exceptLen; k++) {
-                            if(method.name != except[k]) {
-                                _beforeFilters.push(new Filter(handler, method.name));
-                            }
-                        }
-                    }
+            if(options['all']) {
+                addFilterForAll(_beforeFilters, handler);
+            }
+            else if(options['except']) {
+                var except:Array = (options['except'] is String) ? [options['except']] : options['except'];
+                addFilterForAllExcept(_beforeFilters, handler, except);
+            }
+            else if(options['only']) {
+                var only:Array = (options['only'] is String) ? [options['only']] : options['only'];
+                addFilterForOnly(_beforeFilters, handler, only);
+            }
+        }
+
+        private function addFilterForAll(filters:Array, handler:Function):void {
+            var len:int = reflection.methods.length;
+            var method:ReflectionMethod;
+            for(var i:int; i < len; i++) {
+                method = reflection.methods[i];
+                if(method.declaredBy != 'actionpack::ActionController') {
+                    filters.push(new Filter(handler, method.name));
                 }
             }
-            else {
-                throw new Error('>> addBeforeFilter for only methods');
+        }
+        
+        private function addFilterForAllExcept(filters:Array, handler:Function, except:Array):void {
+            var len:int = reflection.methods.length;
+            var method:ReflectionMethod;
+            var exceptLen:int = except.length;
+            for(var i:int; i < len; i++) {
+                method = reflection.methods[i];
+                if(method.declaredBy != 'actionpack::ActionController' && except.index(method.name) == -1) {
+                    filters.push(new Filter(handler, method.name));
+                }
+            }
+        }
+        
+        private function addFilterForOnly(filters:Array, handler:Function, only:Array):void {
+            var len:int = only.length;
+            var methodName:String;
+            for(var i:int; i < len; i++) {
+                methodName = only[i];
+                if(reflection.hasMethod(methodName)) {
+                    filters.push(new Filter(handler, methodName));
+                }
             }
         }
         

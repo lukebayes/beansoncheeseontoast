@@ -31,7 +31,6 @@ package actionpack {
             var response:Response = environment.get('/users');
             var rendered:* = response.view;
             assertSame('users::Index', Reflection.create(rendered).name);
-            assertNotNull('lastController', environment.lastController);
             assertNotNull('response.controller', response.controller);
             assertSame('layouts::ApplicationLayout', Reflection.create(response.layout).name);
         }
