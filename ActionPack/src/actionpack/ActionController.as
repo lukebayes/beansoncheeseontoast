@@ -201,9 +201,8 @@ package actionpack {
             if(!environment.layout || environment.layout && className != Reflection.create(environment.layout).name) {
                 var clazz:Class = attemptToLoadClass(className);
                 var newLayout:* = new clazz();
-                environment.layout = newLayout;
                 configureView(newLayout);
-                environment.addLayout(newLayout);
+                environment.layout = newLayout;
                 return newLayout;
             }
             else {
