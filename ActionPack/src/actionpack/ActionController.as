@@ -190,15 +190,15 @@ package actionpack {
                                                         'layout' : layout
                                                         });
             configureView(response.view);
-            layout.contentContainer.addChild(response.view);
-            
-            lastResponse.removeView();
+            environment.view = view;
             return response;
         }
         
         private function renderLayout(request:Request):* {
             var className:String = pathToClassName(request.layoutPath);
-            if(!environment.layout || environment.layout && className != Reflection.create(environment.layout).name) {
+            if(!environment.layout || 
+                environment.layout && 
+                className != Reflection.create(environment.layout).name) {
                 var clazz:Class = attemptToLoadClass(className);
                 var newLayout:* = new clazz();
                 configureView(newLayout);

@@ -15,6 +15,7 @@ package actionpack {
         private var _controllers:Dictionary;
         private var _displayRoot:DisplayObjectContainer;
         private var _layout:*;
+        private var _view:*;
         private var _routes:Routes;
         
         public function Environment(config:Function=null) {
@@ -49,6 +50,18 @@ package actionpack {
         
         public function get layout():* {
             return _layout;
+        }
+        
+        public function set view(newView:*):void {
+            if(_view && _view.parent === layout.contentContainer) {
+                layout.contentContainer.removeChild(view);
+            }
+            _view = newView;
+            layout.contentContainer.addChild(_view);
+        }
+        
+        public function get view():* {
+            return _view;
         }
         
         /**
