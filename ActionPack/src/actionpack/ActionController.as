@@ -195,7 +195,7 @@ package actionpack {
         }
         
         private function renderLayout(request:Request):* {
-            var className:String = pathToClassName(request.layoutPath);
+            var className:String = pathToClassName(request.layout);
             if(!environment.layout || 
                 environment.layout && 
                 className != Reflection.create(environment.layout).name) {

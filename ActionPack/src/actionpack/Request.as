@@ -9,7 +9,7 @@ package actionpack {
         public var response:Response;
         
         private var _action:String;
-        private var _layoutPath:String;
+        private var _layout:String;
         private var _params:*;
         
         public function Request(path:String, options:*=null) {
@@ -28,12 +28,12 @@ package actionpack {
             return (route && route.action) ? route.action : DEFAULT_ACTION;
         }
         
-        public function set layoutPath(path:String):void {
-            _layoutPath = path;
+        public function set layout(path:String):void {
+            _layout = path;
         }
         
-        public function get layoutPath():String {
-            return _layoutPath ||= 'layouts/application_layout';
+        public function get layout():String {
+            return _layout ||= 'layouts/application_layout';
         }
 
         public function get params():* {
