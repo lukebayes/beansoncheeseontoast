@@ -181,12 +181,13 @@ package actionpack {
             var layout:* = renderLayout(request);
             var view:* = renderView(request);
             // TODO: allow for custom layout directives in the request...
-            return response = request.response = new Response({
-                                                        'request': request,
-                                                        'controller' : this,
-                                                        'view' : view,
-                                                        'layout' : layout
-                                                        });
+            var options:Object = {
+                'request': request,
+                'controller' : this,
+                'view' : view,
+                'layout' : layout
+            };
+            return response = request.response = new Response(options);
         }
         
         private function renderLayout(request:Request):* {
