@@ -58,7 +58,7 @@ package actionpack {
         }
 
         public function get params():Object {
-            return _params;
+            return _params ||= {};
         }
         
         public function set response(response:Response):void {
@@ -134,10 +134,19 @@ package actionpack {
             else {
                 request = requestOrActionName;
             }
+            
+            buildParams();
+            
             if(reflection.hasMethod(request.action)) {
                 this[request.action].call();
             }
             return render(request);
+        }
+        
+        private function buildParams():void {
+            for(var key:String in request.route) {
+                params[key] = request.route[key];
+            }
         }
         
         public function redirectTo(template:String, options:Object=null):void {

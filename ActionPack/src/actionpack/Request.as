@@ -10,6 +10,7 @@ package actionpack {
         
         private var _action:String;
         private var _layoutPath:String;
+        private var _params:*;
         
         public function Request(path:String, options:*=null) {
             this.path = path;
@@ -35,6 +36,10 @@ package actionpack {
         
         public function get layoutPath():String {
             return _layoutPath ||= 'layouts/application_layout';
+        }
+
+        public function get params():* {
+            return _params;
         }
     }
 }

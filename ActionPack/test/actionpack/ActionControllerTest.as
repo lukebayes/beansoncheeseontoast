@@ -42,6 +42,14 @@ package actionpack {
             assertNotNull('Index view should have the users collection', response.view.allUsers);
             assertNotNull('Index view should have the flash object', response.view.flash);
         }
+        
+        public function testParams():void {
+            environment.routes(function():void {
+                this.connect('/:controller/:action/:id');
+            });
+            var response:Response = environment.get('/users/show/2');
+            assertEquals('Request should have id param', 2, response.controller.params['id']);
+        }
     }
 }
 
