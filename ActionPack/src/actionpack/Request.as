@@ -35,6 +35,10 @@ package actionpack {
         public function get layout():String {
             return _layout ||= 'layouts/application_layout';
         }
+        
+        public function set params(params:*):void {
+            _params = params;
+        }
 
         public function get params():* {
             return _params;

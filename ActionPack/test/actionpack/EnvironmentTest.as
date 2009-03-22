@@ -61,7 +61,13 @@ package actionpack {
         
         public function testEnsureDuplicateViewIsNotReloaded():void {
             var response1:Response = environment.get('/users/show/1');
+            assertEquals('controller.params.id == 1', 1, response1.controller.params['id']);
+            assertEquals('request.params.id == 1', 1, response1.request.params['id']);
+
             var response2:Response = environment.get('/users/show/2');
+            assertEquals('controller.params.id == 2', 2, response2.controller.params['id']);
+            assertEquals('request.params.id == 2', 2, response2.request.params['id']);
+
             assertSame(response1.view, response2.view);
         }
         

@@ -151,6 +151,7 @@ package actionpack {
             for(key in request.options) {
                 params[key] = request.options[key];
             }
+            request.params = params;
         }
         
         public function redirectTo(template:String, options:Object=null):void {

@@ -1,7 +1,7 @@
 package users {
     import flash.display.Sprite;
     
-    public class Show extends Sprite {
+    dynamic public class Show extends Sprite {
 
     }
 }
