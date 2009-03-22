@@ -197,11 +197,20 @@ package actionpack {
         }
         
         private function renderLayout(request:Request):* {
-            var clazz:Class = attemptToLoadClass(pathToClassName(request.layoutPath));
-            var layout:* = new clazz();
-            configureView(layout);
-            environment.displayRoot.addChild(layout);
-            return layout;
+            var className:String = pathToClassName(request.layoutPath);
+            if(!environment.layout || environment.layout && className != Reflection.create(environment.layout).name) {
+                var clazz:Class = attemptToLoadClass(className);
+                var newLayout:* = new clazz();
+                environment.layout = newLayout;
+                configureView(newLayout);
+                environment.displayRoot.addChild(newLayout);
+                return newLayout;
+            }
+            else {
+                var layout:* = environment.layout
+                configureView(layout);
+                return layout;
+            }
         }
         
         // Create a Reflection for the concrete controller,

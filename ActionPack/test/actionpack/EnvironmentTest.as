@@ -1,6 +1,7 @@
 package actionpack {
 
     import flash.display.Sprite;
+    import flash.events.Event;
     import reflect.Reflection;
 
     public class EnvironmentTest extends ActionPackTestHelper {
@@ -51,6 +52,15 @@ package actionpack {
             assertEquals('Request should have id param', 2, params['id']);
             assertEquals('Request should have name param', 'luke', params['name']);
             assertEquals('Request should have height param', 5.7, params['height']);
+        }
+        
+        public function testEnsureLayoutIsNotReloaded():void {
+            var response1:Response = environment.get('/users/index');
+            response1.layout.addEventListener(Event.ADDED_TO_STAGE, function(event:Event):void {
+                trace(">> RESPONSE 1 ADDED TO STAGE");
+            });
+            var response2:Response = environment.get('/users/show/2');
+            assertSame(response1.layout, response2.layout);
         }
         
         //public function testDuplicateRequestShouldDoNothing():void {

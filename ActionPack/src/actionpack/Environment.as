@@ -15,6 +15,8 @@ package actionpack {
         private var _controllers:Dictionary;
         private var _displayRoot:DisplayObjectContainer;
         private var _routes:Routes;
+
+        public var layout:*;
         
         public function Environment(config:Function=null) {
             _routes = new Routes();
