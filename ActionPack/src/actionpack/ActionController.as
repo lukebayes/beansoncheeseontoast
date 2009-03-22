@@ -178,37 +178,41 @@ package actionpack {
             }
             
             var lastResponse:Response = (response) ? response : new Response();
-
-            var clazz:Class = actionToViewClass(request.action);
-            var view:* = new clazz();
             var layout:* = renderLayout(request);
+            var view:* = renderView(request);
             // TODO: allow for custom layout directives in the request...
-            response = request.response = new Response({
+            return response = request.response = new Response({
                                                         'request': request,
                                                         'controller' : this,
                                                         'view' : view,
                                                         'layout' : layout
                                                         });
-            configureView(response.view);
-            environment.view = view;
-            return response;
         }
         
         private function renderLayout(request:Request):* {
             var className:String = pathToClassName(request.layout);
-            if(!environment.layout || 
-                environment.layout && 
-                className != Reflection.create(environment.layout).name) {
+            return renderDisplayable(request, className, 'layout');
+        }
+        
+        private function renderView(request:Request):* {
+            var className:String = actionToViewClassName(request.action);
+            return renderDisplayable(request, className, 'view');
+        }
+        
+        private function renderDisplayable(request:Request, className:String, attr:String):* {
+            if(!environment[attr] ||
+            environment[attr] &&
+            className != Reflection.create(environment[attr]).name) {
                 var clazz:Class = attemptToLoadClass(className);
-                var newLayout:* = new clazz();
-                configureView(newLayout);
-                environment.layout = newLayout;
-                return newLayout;
+                var newView:* = new clazz();
+                configureView(newView);
+                environment[attr] = newView;
+                return newView;
             }
             else {
-                var layout:* = environment.layout
-                configureView(layout);
-                return layout;
+                var view:* = environment[attr];
+                configureView(view);
+                return view;
             }
         }
         
@@ -240,17 +244,16 @@ package actionpack {
             //});
         }
         
-        private function actionToViewClass(actionName:String=null):Class {
-            var qualifiedClassName:String = pathToClassName(defaultTemplateName(actionName));
-            var clazz:Class = attemptToLoadClass(qualifiedClassName);
-            if(clazz == null) {
-                throw new ActionControllerError('ActionController was unable to load a view for ' + actionName + ' with: ' + qualifiedClassName);
-            }
-            return clazz;
+        private function actionToViewClassName(actionName:String=null):String {
+            return pathToClassName(defaultTemplateName(actionName));
         }
         
         private function attemptToLoadClass(qualifiedClassName:String):Class {
-            return getDefinitionByName(qualifiedClassName) as Class;
+            var clazz:Class = getDefinitionByName(qualifiedClassName) as Class;
+            if(clazz == null) {
+                throw new ActionControllerError('ActionController was unable to load a view: ' + qualifiedClassName);
+            }
+            return clazz;
         }
         
         private function pathToClassName(path:String):String {

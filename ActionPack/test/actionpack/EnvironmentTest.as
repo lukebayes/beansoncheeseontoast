@@ -53,17 +53,17 @@ package actionpack {
             assertEquals('Request should have height param', 5.7, params['height']);
         }
         
-        public function testEnsureLayoutIsNotReloaded():void {
+        public function testEnsureDuplicateLayoutIsNotReloaded():void {
             var response1:Response = environment.get('/users/index');
-            response1.layout.addEventListener(Event.ADDED_TO_STAGE, function(event:Event):void {
-                trace(">> RESPONSE 1 ADDED TO STAGE");
-            });
             var response2:Response = environment.get('/users/show/2');
             assertSame(response1.layout, response2.layout);
         }
         
-        //public function testDuplicateRequestShouldDoNothing():void {
-        //}
+        public function testEnsureDuplicateViewIsNotReloaded():void {
+            var response1:Response = environment.get('/users/show/1');
+            var response2:Response = environment.get('/users/show/2');
+            assertSame(response1.view, response2.view);
+        }
         
         // TODO: Consider sending .get() method an object argument with a transition handler
         // that will allow us to transition from one view (or layout?) to another.
