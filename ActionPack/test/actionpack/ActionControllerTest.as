@@ -11,6 +11,9 @@ package actionpack {
             super.setUp();
             environment = new Environment(function():void {
                 this.displayRoot = displayRoot;
+                this.routes(function():void {
+                    this.connect('/:controller/:action/:id');
+                });
             });
         }
         
@@ -43,9 +46,6 @@ package actionpack {
         }
         
         public function testParams():void {
-            environment.routes(function():void {
-                this.connect('/:controller/:action/:id');
-            });
             var response:Response = environment.get('/users/show/2');
             assertEquals('Request should have id param', 2, response.controller.params['id']);
         }

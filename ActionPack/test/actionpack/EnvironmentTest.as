@@ -15,10 +15,10 @@ package actionpack {
             super.setUp();
             environment = new Environment(function():void {
                 this.displayRoot = displayRoot;
-            });
-            environment.routes(function():void {
-                this.connect('/:controller/:action');
-                this.connect('/:controller/:action/:id');
+                this.routes(function():void {
+                    this.connect('/:controller/:action');
+                    this.connect('/:controller/:action/:id');
+                });
             });
         }
         

@@ -21,10 +21,10 @@ package {
                 var self:* = this;
                 environment = new Environment(function():void {
                     this.displayRoot = self;
-                });
-                environment.routes(function():void {
-                    this.site({'controller' : SiteController});
-                    this.users({'controller' : UsersController});
+                    this.routes(function():void {
+                        this.site({'controller' : SiteController});
+                        this.users({'controller' : UsersController});
+                    });
                 });
 
                 environment.get('/site');
