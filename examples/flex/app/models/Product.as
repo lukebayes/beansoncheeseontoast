@@ -8,5 +8,9 @@ package {
         public var name:String;
         public var description:String;
         public var price:Number;
+        
+        public static function find(options:*):* {
+            return [];
+        }
     }
 }
