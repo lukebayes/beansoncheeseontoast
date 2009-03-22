@@ -2,6 +2,7 @@ package actionpack {
     
     import asunit.framework.TestCase;
     import flash.display.Sprite;
+    import flash.display.DisplayObjectContainer;
     
     public class ActionPackTestHelper extends TestCase {
         
@@ -20,6 +21,14 @@ package actionpack {
         override protected function tearDown():void {
             super.tearDown();
             removeChild(displayRoot);
+        }
+
+        protected function clearDisplay():void {
+            if(displayRoot is DisplayObjectContainer) {
+                while(displayRoot.numChildren > 0) {
+                    displayRoot.removeChildAt(0);
+                }
+            }
         }
     }
 }

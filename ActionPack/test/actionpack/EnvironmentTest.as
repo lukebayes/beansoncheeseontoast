@@ -24,7 +24,7 @@ package actionpack {
         
         override protected function tearDown():void {
             super.tearDown();
-            environment.clearDisplay();
+            clearDisplay();
         }
 
         public function testConfigureAndLoadRoute():void {

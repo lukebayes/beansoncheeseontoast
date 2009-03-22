@@ -24,14 +24,6 @@ package actionpack {
             super(config);
         }
         
-        public function clearDisplay():void {
-            if(displayRoot is DisplayObjectContainer) {
-                while(displayRoot.numChildren > 0) {
-                    displayRoot.removeChildAt(0);
-                }
-            }
-        }
-        
         public function set displayRoot(root:*):void {
             _displayRoot = root;
         }
