@@ -50,6 +50,17 @@ package actionpack {
             var response:Response = environment.get('/users/show/2');
             assertEquals('Request should have id param', 2, response.controller.params['id']);
         }
+
+        public function testQueryStrings():void {
+            environment.routes(function():void {
+                this.connect('/:controller/:action/:id');
+            });
+            var response:Response = environment.get('/users/show/2?name=luke&height=5.7');
+            var params:* = response.controller.params;
+            assertEquals('Request should have id param', 2, params['id']);
+            assertEquals('Request should have name param', 'luke', params['name']);
+            assertEquals('Request should have height param', 5.7, params['height']);
+        }
     }
 }
 

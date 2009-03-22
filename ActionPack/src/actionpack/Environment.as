@@ -2,6 +2,7 @@ package actionpack {
     import actionpack.errors.RoutingError;
     import flash.display.DisplayObjectContainer;
     import flash.display.Sprite;
+    import flash.net.URLVariables;
     import flash.utils.Dictionary;
     import flash.utils.getDefinitionByName;
     import ReferenceError;
@@ -55,7 +56,10 @@ package actionpack {
             var route:Route;
             
             if(path is String) {
-                request = new Request(path);
+                var parts:Array = path.split('?');
+                path = parts.shift();
+                var variables:URLVariables = new URLVariables(parts.shift());
+                request = new Request(path, variables);
                 route = _routes.routeFor(path);
             }
             else {

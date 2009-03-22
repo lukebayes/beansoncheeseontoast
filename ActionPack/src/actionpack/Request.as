@@ -14,9 +14,7 @@ package actionpack {
         
         public function Request(path:String, options:*=null) {
             this.path = path;
-            for(var key:String in options) {
-                this[key] = options[key];
-            }
+            this.options = options;
         }
         
         public function set action(name:String):void {

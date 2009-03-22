@@ -144,8 +144,12 @@ package actionpack {
         }
         
         private function buildParams():void {
-            for(var key:String in request.route) {
+            var key:String;
+            for(key in request.route) {
                 params[key] = request.route[key];
+            }
+            for(key in request.options) {
+                params[key] = request.options[key];
             }
         }
         
@@ -221,9 +225,7 @@ package actionpack {
             //
             //reflection.methods.forEach(function(method:ReflectionMethod, index:int, items:Array):void {
             //    if(method.declaredBy == "actionpack::ActionController") {
-            //        trace(">> setting method: " + method.name + " with: " + method.declaredBy);
             //        view[method.name] = function(...args):* {
-            //            trace(">> VIEW CALLED " + method.name + " METHOD ON " + self + " with: " + args);
             //            self[method.name].apply(self, args);
             //        }
             //    }
