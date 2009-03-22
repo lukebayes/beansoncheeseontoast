@@ -53,8 +53,15 @@ package actionpack {
         public function testBasicBeforeFilter():void {
             var response:Response = environment.get('/users/index');
             var controller:* = response.controller;
-            assertTrue('authenticateAll should have been called', controller.authenticateAllCalled);
-            assertFalse('authenticateOnly should not have been called', controller.authenticateOnlyCalled);
+            assertNotNull('authenticateAll should have been called', controller.currentUser);
+            assertEquals('controller did not redirect', response.action, 'index');
+        }
+
+        public function testBasicBeforeFilterForAllExcept():void {
+            var response:Response = environment.get('/users/show/2', {'currentUser' : {'role': 'admin'}});
+            var controller:* = response.controller;
+            //assertFalse('authenticateAll should not ave been called', controller.current);
+            //assertTrue('authenticateOnly should have been called', controller.authenticateOnlyCalled);
         }
     }
 }

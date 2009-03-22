@@ -3,6 +3,7 @@ package actionpack {
     import actionpack.Configurable;
     import actionpack.errors.ActionControllerError;
     import actionpack.errors.RenderError;
+    import actionpack.errors.RoutingError;
     import capitalize;
     import flash.display.DisplayObject;
     import flash.display.DisplayObjectContainer;
@@ -13,6 +14,7 @@ package actionpack {
     
     public class ActionController extends Configurable {
         private static const DEFAULT_ACTION_NAME:String = 'index';
+        public static const REDIRECT:int = 302;
         
         private var _actionName:String;
         private var _afterFilters:Array;
@@ -24,11 +26,11 @@ package actionpack {
         private var _environment:Environment;
         private var _flash:Object;
         private var _params:Object;
-        private var _redirected:Boolean;
         private var _reflection:Reflection;
         private var _response:Response;
         private var _request:Request;
         private var _session:Object;
+        private var redirect:Redirect;
         
         public function ActionController(config:Function=null) {
             super(config);
@@ -145,6 +147,14 @@ package actionpack {
             if(reflection.hasMethod(request.action)) {
                 this[request.action].call();
             }
+            if(redirect) {
+                if(request.status == REDIRECT) {
+                    throw new RoutingError('Unable to redirect more than once in a single request');
+                }
+                trace(">> ONLY ALLOW REDIRECT ONCE!");
+                return get(redirect);
+            }
+            
             var response:Response = render(request);
             executeAfterFiltersFor(request.action);
             return response;
@@ -161,9 +171,8 @@ package actionpack {
             request.params = params;
         }
         
-        public function redirectTo(template:String, options:Object=null):void {
-            _redirected = true;
-            throw new ActionControllerError('ActionController.redirectTo has not yet been implemented');
+        public function redirectTo(pathOrAction:String, options:Object=null):void {
+            redirect = new Redirect(pathOrAction, options);
         }
         
         /**
@@ -234,7 +243,7 @@ package actionpack {
             var exceptLen:int = except.length;
             for(var i:int; i < len; i++) {
                 method = reflection.methods[i];
-                if(method.declaredBy != 'actionpack::ActionController' && except.index(method.name) == -1) {
+                if(method.declaredBy != 'actionpack::ActionController' && except.indexOf(method.name) == -1) {
                     filters.push(new Filter(handler, method.name));
                 }
             }
@@ -329,11 +338,15 @@ package actionpack {
         }
         
         private function attemptToLoadClass(qualifiedClassName:String):Class {
-            var clazz:Class = getDefinitionByName(qualifiedClassName) as Class;
-            if(clazz == null) {
-                throw new ActionControllerError('ActionController was unable to load a view: ' + qualifiedClassName);
+            trace(">> getting clas for: " + qualifiedClassName);
+            try {
+                var clazz:Class = getDefinitionByName(qualifiedClassName) as Class;
+                return clazz;
             }
-            return clazz;
+            catch(e:ReferenceError) {
+                throw new ActionControllerError('ActionController was unable to load a view at: ' + qualifiedClassName);
+            }
+            return null;
         }
         
         private function pathToClassName(path:String):String {
@@ -351,8 +364,8 @@ package actionpack {
         *  Helper methods that delegate back up to the Environment
         **/
 
-        public function get(path:String=null):Response {
-            return environment.get(path);
+        public function get(redirectOrPath:*=null):Response {
+            return environment.get(redirectOrPath);
         }
         
         public function pathFor(options:*):String {

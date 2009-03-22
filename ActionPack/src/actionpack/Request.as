@@ -7,6 +7,7 @@ package actionpack {
         public var route:Route;
         public var options:*;
         public var response:Response;
+        public var status:int;
         
         private var _action:String;
         private var _layout:String;

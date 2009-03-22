@@ -13,11 +13,20 @@ package actionpack {
         private var _displayRoot:DisplayObjectContainer;
         private var _layout:*;
         private var _view:*;
+        private var _session:*;
         private var _routes:Routes;
         
         public function Environment(config:Function=null) {
             _routes = new Routes();
             super(config);
+        }
+        
+        public function set session(session:*):void {
+            _session = session;
+        }
+        
+        public function get session():* {
+            return _session ||= {};
         }
         
         public function set displayRoot(root:*):void {
@@ -65,9 +74,15 @@ package actionpack {
         *   This method should also accept an options object to support features like 
         *   transitions (and other?)
         **/
-        public function get(path:*):* {
+        public function get(path:*, sessionData:*=null):* {
+            var redirect:Redirect;
             var request:Request;
             var route:Route;
+            if(sessionData) {
+                for(var sessionKey:String in sessionData) {
+                    session[sessionKey] = sessionData[sessionKey];
+                }
+            }
             
             if(path is String) {
                 var parts:Array = path.split('?');
@@ -75,6 +90,12 @@ package actionpack {
                 var variables:URLVariables = new URLVariables(parts.shift());
                 request = new Request(path, variables);
                 route = _routes.routeFor(path);
+            }
+            else if(path is Redirect) {
+                redirect = path as Redirect;
+                request = new Request(redirect.path, redirect.options);
+                request.status = ActionController.REDIRECT;
+                route = _routes.routeFor(redirect.path);
             }
             else {
                 throw new RoutingError('Environment.get called with unexpected request type: ' + path);
@@ -101,8 +122,11 @@ package actionpack {
         
         private function getControllerForRoute(route:Route):ActionController {
             var controller:ActionController;
-            controller = new route.controller();
+            var clazz:Class = route.controller;
+            trace(">> CLAZZ : " + clazz);
+            controller = new clazz();
             controller.environment = this;
+            controller.session = session;
             return controller;
         }
     }
