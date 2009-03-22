@@ -20,6 +20,7 @@ package actionpack {
         
         override protected function tearDown():void {
             super.tearDown();
+            clearDisplay();
             removeChild(displayRoot);
         }
 
