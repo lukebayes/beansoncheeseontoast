@@ -39,6 +39,7 @@ package actionpack {
             var route:Route;
             var path:String;
             for(var i:int; i < len; i++) {
+                trace(">> checking pathFor: " + _routes[i].path);
                 path = _routes[i].pathFor(options);
                 if(path != null) {
                     return path;

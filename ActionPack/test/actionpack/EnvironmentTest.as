@@ -16,7 +16,8 @@ package actionpack {
                 this.displayRoot = displayRoot;
             });
             environment.routes(function():void {
-                this.users({'controller' : UsersController});
+                this.connect('/:controller/:action');
+                this.connect('/:controller/:action/:id');
             });
         }
         
@@ -42,6 +43,14 @@ package actionpack {
             var response2:Response = environment.get('/users/show');
             assertNotNull('Second response should be attached', response2.view.parent);
             assertNull('First response should no longer be attached', response1.view.parent);
+        }
+
+        public function testQueryStrings():void {
+            var response:Response = environment.get('/users/show/2?name=luke&height=5.7');
+            var params:* = response.controller.params;
+            assertEquals('Request should have id param', 2, params['id']);
+            assertEquals('Request should have name param', 'luke', params['name']);
+            assertEquals('Request should have height param', 5.7, params['height']);
         }
         
         //public function testDuplicateRequestShouldDoNothing():void {

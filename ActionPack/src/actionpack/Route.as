@@ -45,7 +45,7 @@ package actionpack {
                     if(part.indexOf(':') > -1) {
                         key = part.replace(/^:/, '');
                         if(key == 'controller') {
-                            if(this.controller !== options[key]) {
+                            if(path.indexOf(':controller') == -1 && this.controller !== options[key]) {
                                 return null;
                             }
                             result.push(controllerClassToPath(options[key]));
