@@ -7,6 +7,7 @@ package actionpack {
     public class ActionPackTestHelper extends TestCase {
         
         protected var displayRoot:Sprite;
+        protected var session:Object;
         
         public function ActionPackTestHelper(methodName:String=null) {
             super(methodName);
@@ -14,12 +15,14 @@ package actionpack {
         
         override protected function setUp():void {
             super.setUp();
+            session = {'currentUser': {'name' : 'bob', 'role': 'admin'}};
             displayRoot = new Sprite();
             addChild(displayRoot);
         }
         
         override protected function tearDown():void {
             super.tearDown();
+            session = null;
             clearDisplay();
             removeChild(displayRoot);
         }

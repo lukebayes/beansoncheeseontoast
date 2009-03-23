@@ -8,8 +8,8 @@ package {
         
         public function UsersController(config:Function=null) {
             super(config);
-            beforeFilter(authenticate, {'except' : 'login'});
-            beforeFilter(admin, {'only' : 'edit'});
+            //beforeFilter(authenticate, {'except' : 'login'});
+            //beforeFilter(admin, {'only' : 'edit'});
         }
         
         public function index():void {
@@ -26,7 +26,7 @@ package {
         }
         
         public function get currentUser():* {
-            return session['currentUser'] ||= {'role': 'admin'};
+            return session['currentUser'];
         }
         
         private function authenticate():void {

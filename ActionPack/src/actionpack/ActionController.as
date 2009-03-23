@@ -144,14 +144,14 @@ package actionpack {
             buildParams();
             
             executeBeforeFiltersFor(request.action);
-            if(reflection.hasMethod(request.action)) {
+            if(!redirect && reflection.hasMethod(request.action)) {
                 this[request.action].call();
             }
             if(redirect) {
                 if(request.status == REDIRECT) {
                     throw new RoutingError('Unable to redirect more than once in a single request');
                 }
-                trace(">> ONLY ALLOW REDIRECT ONCE!");
+                trace(">> REDIRECTING NOW WITH: " + redirect.path);
                 return get(redirect);
             }
             

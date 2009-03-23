@@ -106,7 +106,8 @@ package actionpack {
             }
 
             request.route = route;
-            return getControllerForRoute(request.route).getAction(request);
+            var controller:ActionController = getControllerForRoute(request.route)
+            return controller.getAction(request);
         }
         
         public function routes(config:Function=null):Routes {
@@ -123,6 +124,9 @@ package actionpack {
         private function getControllerForRoute(route:Route):ActionController {
             var controller:ActionController;
             var clazz:Class = route.controller;
+            if(clazz == null) {
+                throw new RoutingError('Unable to find controller for ' + route.path);
+            }
             trace(">> CLAZZ : " + clazz);
             controller = new clazz();
             controller.environment = this;

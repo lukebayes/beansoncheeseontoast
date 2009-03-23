@@ -1,7 +1,7 @@
 package users {
-    import flash.display.Sprite;
+    import actionpack.base.View;
     
-    dynamic public class Login extends Sprite {
+    dynamic public class Login extends View {
 
     }
 }

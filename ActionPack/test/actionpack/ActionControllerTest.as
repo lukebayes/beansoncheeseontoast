@@ -11,6 +11,7 @@ package actionpack {
             super.setUp();
             environment = new Environment(function():void {
                 this.displayRoot = displayRoot;
+                this.session = session;
                 this.routes(function():void {
                     this.connect('/:controller/:action/:id');
                 });
@@ -51,7 +52,10 @@ package actionpack {
         }
         
         public function testBasicBeforeFilter():void {
+            trace("----------------------");
+            environment.session = {};
             var response:Response = environment.get('/users/index');
+            trace("----------------------");
             var controller:* = response.controller;
             assertNotNull('authenticateAll should have been called', controller.currentUser);
             assertEquals('controller did not redirect', response.action, 'index');
