@@ -17,13 +17,11 @@
           var self:* = this;
           environment = new Environment(function():void {
             this.displayRoot = self;
-          });
-
-          // Set up default routes:
-          environment.routes(function():void {
-            this.root({'controller' : ProductsController, 'action' : 'index'});
-            this.connect('/:controller/:action/:id');
-            this.connect('/:controller/:action');
+            this.routes(function():void {
+              this.root({'controller' : ProductsController, 'action' : 'index'});
+              this.connect('/:controller/:action/:id');
+              this.connect('/:controller/:action');
+            });
           });
           
           environment.get('/');
