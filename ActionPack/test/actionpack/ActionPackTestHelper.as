@@ -15,7 +15,7 @@ package actionpack {
         
         override protected function setUp():void {
             super.setUp();
-            session = {'currentUser': {'name' : 'bob', 'role': 'admin'}};
+            session = {currentUser : {name : 'bob', role: 'admin'}};
             displayRoot = new Sprite();
             addChild(displayRoot);
         }
