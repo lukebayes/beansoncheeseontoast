@@ -57,6 +57,8 @@ package actionpack {
             var response:Response = environment.get('/users/index');
             trace("----------------------");
             var controller:* = response.controller;
+            assertTrue('Fail here to remind me where I left off', false);
+            
             assertNotNull('authenticateAll should have been called', controller.currentUser);
             assertEquals('controller did not redirect', response.action, 'index');
         }
