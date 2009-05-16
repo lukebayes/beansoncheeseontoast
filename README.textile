@@ -6,20 +6,15 @@ OK - there aren't actually Beans or Cheese or Toast, but it _is_ essentially Act
 
 h1. Guiding Principles
 
-Do we really need another architecture? Are you actually satisfied with what you use today? Does it really solve the problems that you face day to day
-
-
-After investigating many of the systems that are available today, I think we do. The reason I believe we need a new architecture, is because none of the existing systems really challenge our assumptions. They fall predictably along a similar matrix of the MVC pattern with Data Binding. While both of these features are valuable, they don't go quite far enough alone to reduce complexity. There needs to be more.
-
 The fundamental principles that guide this architecture are as follows:
 
 h3. _State is bad_
 
-Rich client systems are all flawed in that they force the developer to manage complex, nested state when all they really need to be interested in is routing user gestures to the appropriate behavior. With the right system in place, complex state can emerge, without necessarily being managed by implementors.
+Rich client systems are all flawed in that they force the developer to manage complex, nested state when in most cases, all they really need to be interested in is routing user gestures to the appropriate behavior. With the right system in place, complex state can emerge, without necessarily being managed by implementors.
 
 The observation is that _stateless_ client/server systems that communicate over HTTP are able to have massive complexity emerge from simple, singular, comprehensible request/response processes. 
 
-The _theory_ underlying this system, is that one may be able to replicate the same client/server architecture within the context of a single rich client in order to alleviate the problems associated with complex state.
+The _theory_ underlying this system, is that one may be able to replicate the same client/server architecture within the context of a single rich client in order to alleviate many of the problems associated with complex state.
 
 h3. Duplication is bad
 
@@ -27,7 +22,7 @@ We have systems and architectures in the Flash/Flex world today that relegate us
 
 h3. Strong typing doesn't deliver on it's promises
 
-While this opinion is certainly contentious in some circles, in this architecture, it will be treated as a given. The problems that strong typing attempts to solve are more appropriately solved with better, simpler architectures, and the problems that strong typing introduces are often worse than the cure. I'd rather not get into all the murky details of this debate here, so if you're interested in hashing it out, "Wikipedia":http://en.wikipedia.org/wiki/Type_system#Controversy is a good a place to start as any.
+While this opinion is certainly contentious in some circles, in this architecture, it will be treated as a given. The problems that strong typing attempts to solve are more appropriately solved with better, simpler architectures, and the problems that strong typing introduces are often worse than the cure. I'd rather not get into all the murky details of this debate here, so if you're interested in hashing it out, "Wikipedia":http://en.wikipedia.org/wiki/Type_system#Controversy is as good a place to start as any.
 
 h1. The Roadmap
 
@@ -37,14 +32,10 @@ One of the fundamental almost hidden features of _Ruby on Rails_ is its routing 
 
 h3. Second is modeling
 
-Boilerplate, duplicate code is at best tiresome and worst, a fragile place where bugs sneak into an application. The model layer of a rich client is often a near duplicate of what exists elsewhere on a server. There is really no reason to over-engineer this layer in rich clients, when instead it can often be built almost entirely on abstractions.
+Boilerplate, duplicate code is at best tiresome and worst, a fragile place where bugs sneak into an application. While the model layer of a rich client usually does not map exactly to the domain on the server, we should work to minimize the amount of boilerplate required in our client system.
 
 h3. Third is the services
 
-There is always a contentious problem around getting data into and out of a rich client. Formats, processes, patterns. These decisions all come into play. Ideally, our rich client models will speak RESTful HTTP, but unfortunately, we are constrained by the technology and must instead speak some other, custom protocol.
-
-h3. Fourth?
-
-Let's see how our theories prove out before we try to predict the future.
+There is always a contentious problem around getting data into and out of a rich client. Formats, processes, patterns. These decisions all come into play. Ideally, our rich client models will speak RESTful HTTP, and integrate most seamlessly with Rails, but also play well with other servers.
 
 
