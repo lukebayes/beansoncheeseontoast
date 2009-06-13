@@ -4,24 +4,16 @@
     xmlns:mx="http://www.adobe.com/2006/mxml"
     backgroundImage=""
     backgroundColor="#ff0000"
-    creationComplete="creationCompleteHandler(event)"
     width="100%"
     height="100%"
     >
     <mx:Script>
-      import actionpack.events.RoutingEvent;
-      import flash.events.Event;
       import mx.collections.ArrayCollection;
-      import mx.controls.List;
       
       [Bindable]
       public var products:ArrayCollection;
-      
-      private function creationCompleteHandler(event:Event):void {
-        trace(">> creation complete with index mxml at: " + this);
-      }
-      
     </mx:Script>
+
     <mx:List id="productsList" dataProvider="{products}" width="100%" height="100%" itemClick="get('/products/show/' + List(event.target).selectedItem.id)">
       <mx:itemRenderer>
         <mx:Component>
