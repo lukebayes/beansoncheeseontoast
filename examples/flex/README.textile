@@ -1,0 +1,35 @@
+
+h1. Catalog Flex Application
+
+This is an example application that is being used to demonstrate functionality of the Beans On Cheese On Toast (BOCOT) application framework. This application should become more feature rich as features are added to the framework itself.
+
+A BOCOT application should look very familiar to anyone that has worked with the Ruby on Rails application framework. This is an implementation of the MVC design pattern that values convention over configuration and minimizes the amount of tedious, boilerplate code that developers must create.
+
+The core of this framework can be summed up as simple, intelligent routing between user gestures and controller actions.
+
+Some files of interest are as follows:
+
+* Application bootstrap and Routes configuration: src/Catalog.mxml
+* Main Controller: app/controllers/ProductsController.as
+* Stub model: app/models/Product.as
+* Main application layout: app/views/layouts/ApplicationLayout.mxml
+* Basic views: app/views/products/*.mxml
+
+This framework makes it easy to think about your SWF application more like a set of RESTful services, and facilitates the complex presentation of large data sets that are stored remotely.
+
+h1. Compiling and Running:
+
+You will need Ruby and RubyGems to compile and run this project using Sprouts. Go here http://projectsprouts.org to learn more.
+
+Once your system is ready, you should be able to run:
+
+<code>
+rake
+</code>
+
+or
+
+<code>
+rake test
+</code>
+

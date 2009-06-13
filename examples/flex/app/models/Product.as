@@ -4,6 +4,13 @@ package {
     import flash.utils.setTimeout;
     import mx.collections.ArrayCollection;
     
+    /**
+    *   This class is currently being stubbed in order to more easily
+    *   demonstrate Controller / View / Routing features.
+    *   
+    *   One should imagine a variety of methods here that make
+    *   requests against a server and asynchronously update responses.
+    **/
     [Bindable]
     public class Product extends EventDispatcher {
         public var id:int;
@@ -20,6 +27,7 @@ package {
             }
         }
         
+        // This should give us a delayed response for index action:
         private static function getAllProductsFromServer():* {
             var products:ArrayCollection = new ArrayCollection();
             setTimeout(function():void {
@@ -31,6 +39,7 @@ package {
             return products;
         }
 
+        // This should give us a delayed response for show action:
         private static function getSingleProductFromServer(productId:Number):* {
             var product:Product = new Product();
             setTimeout(function():void {
@@ -50,6 +59,7 @@ package {
             return product;
         }
         
+        // Essentially our database:
         private static function getProducts():Array {
             var products:Array = new Array();
             var product:Product = new Product();
