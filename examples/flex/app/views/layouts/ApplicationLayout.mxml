@@ -21,7 +21,6 @@
         }
 
         override public function get contentContainer():DisplayObjectContainer {
-            trace(">> GETTING CONTENT CONTAINER WITH: " + this['mainContent']);
             return this['mainContent'];
         }
         ]]>

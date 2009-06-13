@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ap:ActiveLayout
+    xmlns:ap="mx.actionpack.base.*"
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    backgroundImage=""
+    backgroundColor="#ff0000"
+    creationComplete="creationCompleteHandler(event)"
+    width="100%"
+    height="100%"
+    >
+    <mx:Script>
+      import actionpack.events.RoutingEvent;
+      import flash.events.Event;
+      
+      [Bindable]
+      public var product:Product;
+      
+      private function creationCompleteHandler(event:Event):void {
+        trace(">> creation complete with SHOW mxml at: " + this);
+        trace(">> product: " + product.name);
+      }
+      
+    </mx:Script>
+    <mx:VBox width="100%" backgroundColor="#00ff00">
+        <mx:Label text="{product.name}" />
+        <mx:Label text="{product.description}" />
+    </mx:VBox>
+    <mx:Button label="Back to List" click="get('/products/index');" />
+</ap:ActiveLayout>
