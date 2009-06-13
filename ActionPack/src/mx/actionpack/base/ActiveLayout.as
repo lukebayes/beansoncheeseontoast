@@ -1,6 +1,7 @@
 package mx.actionpack.base {
     
     import actionpack.Environment;
+    import actionpack.events.RoutingEvent;
     import flash.display.DisplayObjectContainer;
     import mx.containers.VBox;
     
@@ -16,7 +17,11 @@ package mx.actionpack.base {
         public var session:Object;
 
         public function ActiveLayout() {
-            trace(">> ActiveLayout INSTANTIATED!");
+            trace(">> ActiveLayout INSTANTIATED with: " + this);
+        }
+        
+        public function get(path:*, sessionData:*=null):* {
+            return environment.get(path, sessionData);
         }
 
         public function get contentContainer():DisplayObjectContainer {

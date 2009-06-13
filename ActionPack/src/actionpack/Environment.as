@@ -1,7 +1,10 @@
 package actionpack {
+
     import actionpack.errors.RoutingError;
+    import actionpack.events.RoutingEvent;
     import flash.display.DisplayObjectContainer;
     import flash.display.Sprite;
+    import flash.events.IEventDispatcher;
     import flash.net.URLVariables;
     import flash.utils.Dictionary;
     import flash.utils.getDefinitionByName;
@@ -30,7 +33,11 @@ package actionpack {
         }
         
         public function set displayRoot(root:*):void {
+            if(_displayRoot) {
+                removeConfiguredListeners(_displayRoot);
+            }
             _displayRoot = root;
+            configureListeners(_displayRoot);
         }
         
         public function get displayRoot():* {
@@ -127,6 +134,18 @@ package actionpack {
             controller.environment = this;
             controller.session = session;
             return controller;
+        }
+        
+        private function configureListeners(dispatcher:IEventDispatcher):void {
+            dispatcher.addEventListener(RoutingEvent.TYPE, routingEventHandler);
+        }
+
+        private function removeConfiguredListeners(dispatcher:IEventDispatcher):void {
+            dispatcher.removeEventListener(RoutingEvent.TYPE, routingEventHandler);
+        }
+        
+        private function routingEventHandler(event:RoutingEvent):void {
+            this[event.method](event.path);
         }
     }
 }

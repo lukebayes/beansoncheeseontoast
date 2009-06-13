@@ -1,7 +1,9 @@
 package actionpack {
 
+    import actionpack.events.RoutingEvent;
     import flash.display.Sprite;
     import flash.events.Event;
+    import users.Show;
     import reflect.Reflection;
 
     public class EnvironmentTest extends ActionPackTestHelper {
@@ -71,6 +73,13 @@ package actionpack {
             assertEquals('request.params.id == 2', 2, response2.request.params['id']);
 
             assertSame(response1.view, response2.view);
+        }
+        
+        public function testRoutingEvent():void {
+            var response1:Response = environment.get('/users/index');
+            assertNotNull(response1.view);
+            response1.view.dispatchEvent(new RoutingEvent('/users/show/1'));
+            assertTrue('View should change after event', environment.view is users.Show);
         }
         
         // TODO: Consider sending .get() method an object argument with a transition handler
