@@ -24,7 +24,7 @@ package actionpack {
         private function getUsersIndexWithUnknownUser():Response {
             environment.session = {};
             // Should redirect with from authenticate beforeFilter:
-            return environment.get('/users/index');
+            return environment.get('/users/show');
         }
 
         public function testAssertRedirectedToWithWrongPath():void {

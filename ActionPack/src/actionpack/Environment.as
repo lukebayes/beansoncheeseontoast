@@ -78,11 +78,7 @@ package actionpack {
             var redirect:Redirect;
             var request:Request;
             var route:Route;
-            if(sessionData) {
-                for(var sessionKey:String in sessionData) {
-                    session[sessionKey] = sessionData[sessionKey];
-                }
-            }
+            session = sessionData || session;
             
             if(path is String) {
                 var parts:Array = path.split('?');

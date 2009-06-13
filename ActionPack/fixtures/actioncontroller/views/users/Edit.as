@@ -3,12 +3,12 @@ package users {
     
     import flash.text.TextField;
     
-    dynamic public class Login extends View {
+    dynamic public class Edit extends View {
 
  
          override public function draw():void {
              var label:TextField = new TextField();
-             label.text = 'Users::Login';
+             label.text = 'Users::Edit';
              addChild(label);
          }
    }

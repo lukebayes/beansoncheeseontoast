@@ -13,7 +13,6 @@ package actionpack {
         }
 
         protected function assertRedirectedTo(response:Response, pathOrRoute:*):void {
-            trace(">> assert redirected to: " + response);
             assertEquals('Unexpected Request.status: ' + response.request.status, ActionController.REDIRECT, response.request.status);
             if(pathOrRoute is String) {
                 assertEquals('Unexpected Path from redirect: ' + pathOrRoute, pathOrRoute, response.request.route.path);

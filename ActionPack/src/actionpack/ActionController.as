@@ -56,7 +56,7 @@ package actionpack {
         /**
          * Holds a hash of all the GET, POST, and Url parameters passed to the action. 
          * Accessed like <tt>params["post_id"]</tt> to get the post_id. 
-         * No type casts are made, so all values are returned as strings.
+         * No type casts are made, so all values are returned as Objects.
          **/
         public function set params(params:Object):void {
             _params = params;
@@ -143,6 +143,7 @@ package actionpack {
             buildParams();
             
             executeBeforeFiltersFor(request.action);
+            
             if(!redirect && reflection.hasMethod(request.action)) {
                 this[request.action].call();
             }

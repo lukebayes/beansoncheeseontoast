@@ -8,6 +8,7 @@ package {
 
 	import asunit.framework.TestSuite;
 	import actionpack.ActionControllerTest;
+	import actionpack.ActionPackTestCaseTest;
 	import actionpack.EnvironmentTest;
 	import actionpack.RoutesTest;
 	import CamelCaseTest;
@@ -20,6 +21,7 @@ package {
 
 		public function AllTests() {
 			addTest(new actionpack.ActionControllerTest());
+			addTest(new actionpack.ActionPackTestCaseTest());
 			addTest(new actionpack.EnvironmentTest());
 			addTest(new actionpack.RoutesTest());
 			addTest(new CamelCaseTest());

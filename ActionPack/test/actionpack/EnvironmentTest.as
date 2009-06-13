@@ -15,6 +15,9 @@ package actionpack {
             super.setUp();
             environment = new Environment(function():void {
                 this.displayRoot = displayRoot;
+                this.session = {
+                    currentUser : {admin:true}
+                },
                 this.routes(function():void {
                     this.connect('/:controller/:action');
                     this.connect('/:controller/:action/:id');
