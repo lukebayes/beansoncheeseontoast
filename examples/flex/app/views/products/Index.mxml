@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ap:ActiveLayout
+<ap:ActiveView
     xmlns:ap="mx.actionpack.base.*"
     xmlns:mx="http://www.adobe.com/2006/mxml"
     backgroundImage=""
@@ -32,4 +32,4 @@
         </mx:Component>
       </mx:itemRenderer>
     </mx:List>
-</ap:ActiveLayout>
+</ap:ActiveView>
