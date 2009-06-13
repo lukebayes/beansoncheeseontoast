@@ -6,7 +6,7 @@ package mx.actionpack.base {
     import mx.containers.VBox;
     
     [Bindable]
-    public class ActiveLayout extends VBox {
+    public class ActiveView extends VBox {
         
         public var actionName:String;
         public var controllerName:String;
@@ -16,8 +16,8 @@ package mx.actionpack.base {
         public var response:Object;
         public var session:Object;
 
-        public function ActiveLayout() {
-            trace(">> ActiveLayout INSTANTIATED with: " + this);
+        public function ActiveView() {
+            trace(">> ActiveView INSTANTIATED with: " + this);
         }
         
         public function get(path:*, sessionData:*=null):* {

@@ -12,7 +12,7 @@ package actionpack.base {
     *   There is no need to extend this class or implement a particular
     *   interface, the contentContainer method is all that is required.
     *   
-    *   If the concrete layout does extend ActiveLayout (or is dynamic), 
+    *   If the concrete layout does extend ActiveView (or is dynamic), 
     *   ActionController will apply current attribute values to the layout
     *   as well as the current view.
     *   
@@ -29,7 +29,7 @@ package actionpack.base {
     *   to the stage resize event after Event.ADDED_TO_STAGE handled.
     *   
     **/
-    public class ActiveLayout extends View {
+    public class ActiveView extends View {
         
         public function get contentContainer():DisplayObjectContainer {
             return this;

@@ -1,8 +1,8 @@
 package layouts {
     import flash.display.Sprite;
-    import actionpack.base.ActiveLayout;
+    import actionpack.base.ActiveView;
     
-    dynamic public class ApplicationLayout extends ActiveLayout {
+    dynamic public class ApplicationLayout extends ActiveView {
         
         public function ApplicationLayout() {
             backgroundColor = 0xcccccc;
