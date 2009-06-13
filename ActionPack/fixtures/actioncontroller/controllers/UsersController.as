@@ -8,8 +8,8 @@ package {
         
         public function UsersController(config:Function=null) {
             super(config);
-            //beforeFilter(authenticate, {'except' : 'login'});
-            //beforeFilter(admin, {'only' : 'edit'});
+            beforeFilter(authenticate, {except : 'login'});
+            //beforeFilter(admin, {only : 'edit'});
         }
         
         public function index():void {

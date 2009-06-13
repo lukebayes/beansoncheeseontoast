@@ -1,10 +1,10 @@
 package actionpack {
     
-    import asunit.framework.TestCase;
+    import actionpack.ActionPackTestCase;
     import flash.display.Sprite;
     import flash.display.DisplayObjectContainer;
     
-    public class ActionPackTestHelper extends TestCase {
+    public class ActionPackTestHelper extends ActionPackTestCase {
         
         protected var displayRoot:Sprite;
         protected var session:Object;
@@ -34,5 +34,6 @@ package actionpack {
                 }
             }
         }
+        
     }
 }

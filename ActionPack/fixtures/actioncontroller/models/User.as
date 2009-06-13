@@ -14,9 +14,9 @@ package {
         // TODO: Implement finders in ActiveRecord class:
         public static function find(type:String):Array {
             var users:Array = [];
-            users.push(new User({'name':'Luke'}));
-            users.push(new User({'name':'Bob'}));
-            users.push(new User({'name':'Bill'}));
+            users.push(new User({name:'Luke'}));
+            users.push(new User({name:'Bob'}));
+            users.push(new User({name:'Bill'}));
             return users;
         }
     }

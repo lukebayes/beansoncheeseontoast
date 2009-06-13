@@ -14,10 +14,10 @@ package actionpack {
             super.setUp();
             routes = new Routes();
             routes.configure(function():void {
-                this.root({'controller' : SiteController, 'action' : 'index'});
-                this.connect('/people/all', {'controller' : UsersController, 'action' : 'index'});
-                this.connect('/people/:action', {'controller' : UsersController});
-                this.connect('/people/:action/:id', {'controller' : UsersController});
+                this.root({controller : SiteController, action : 'index'});
+                this.connect('/people/all', {controller : UsersController, action : 'index'});
+                this.connect('/people/:action', {controller : UsersController});
+                this.connect('/people/:action/:id', {controller : UsersController});
                 this.connect('/:controller/:action/:id');
                 this.connect('/:controller/:action');
             });
@@ -79,12 +79,12 @@ package actionpack {
         }
         
         public function testRouteByHashForUsersIndex():void {
-            var route:Route = routes.routeFor({'controller' : UsersController, 'action' : 'index'});
+            var route:Route = routes.routeFor({controller : UsersController, action : 'index'});
             assertRoute(route, '/users/index', UsersController, 'index');
         }
 
         public function testRouteByHashForUsersShowWithId():void {
-            var route:Route = routes.routeFor({'controller' : UsersController, 'action' : 'show', 'id' : 3});
+            var route:Route = routes.routeFor({controller : UsersController, action : 'show', 'id' : 3});
             assertRoute(route, '/users/show/3', UsersController, 'show', 3);
         }
     }

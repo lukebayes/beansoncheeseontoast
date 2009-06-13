@@ -22,8 +22,8 @@ package {
                 environment = new Environment(function():void {
                     this.displayRoot = self;
                     this.routes(function():void {
-                        this.site({'controller' : SiteController});
-                        this.users({'controller' : UsersController});
+                        this.site({controller : SiteController});
+                        this.users({controller : UsersController});
                     });
                 });
 

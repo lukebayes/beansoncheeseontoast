@@ -27,7 +27,7 @@ package actionpack {
         }
 
         public function testConfigureAndLoadRoute():void {
-            assertEquals('/users/index', environment.pathFor({'controller' : UsersController, 'action': 'index'}));
+            assertEquals('/users/index', environment.pathFor({controller:UsersController, action:'index'}));
             var response:Response = environment.get('/users');
             var rendered:* = response.view;
             assertSame('users::Index', Reflection.create(rendered).name);
@@ -74,7 +74,7 @@ package actionpack {
         // that will allow us to transition from one view (or layout?) to another.
         // maybe something like:
         //
-        // get({'path':'/users/index', 'transition':function(from:*, to:*):void {
+        // get({path:'/users/index', transition:function(from:*, to:*):void {
         //      // animate transition and remove 'from' when complete
         // });
 

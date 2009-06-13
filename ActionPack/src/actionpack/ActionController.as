@@ -26,7 +26,6 @@ package actionpack {
         private var _environment:Environment;
         private var _flash:Object;
         private var _params:Object;
-        private var _reflection:Reflection;
         private var _response:Response;
         private var _request:Request;
         private var _session:Object;
@@ -151,7 +150,6 @@ package actionpack {
                 if(request.status == REDIRECT) {
                     throw new RoutingError('Unable to redirect more than once in a single request');
                 }
-                trace(">> REDIRECTING NOW WITH: " + redirect.path);
                 return get(redirect);
             }
             
@@ -212,8 +210,7 @@ package actionpack {
         }
         
         private function addBeforeFilterFor(handler:Function, options:*):void {
-            options = options || {'all' : true};
-            if(options['all']) {
+            if(options == null || options['all']) {
                 addFilterForAll(_beforeFilters, handler);
             }
             else if(options['except']) {
@@ -338,7 +335,6 @@ package actionpack {
         }
         
         private function attemptToLoadClass(qualifiedClassName:String):Class {
-            trace(">> getting clas for: " + qualifiedClassName);
             try {
                 var clazz:Class = getDefinitionByName(qualifiedClassName) as Class;
                 return clazz;
@@ -357,7 +353,7 @@ package actionpack {
         }
         
         protected function get reflection():Reflection {
-            return _reflection ||= Reflection.create(this);
+            return Reflection.create(this);
         }
 
         /**

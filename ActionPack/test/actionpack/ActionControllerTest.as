@@ -18,10 +18,6 @@ package actionpack {
             });
         }
         
-        override protected function tearDown():void {
-            super.tearDown();
-        }
-
         public function testControllerName():void {
             var controller:MockNamedController = new MockNamedController();
             assertEquals('mock_named', controller.controllerName);
@@ -52,19 +48,17 @@ package actionpack {
         }
         
         public function testBasicBeforeFilter():void {
-            trace("----------------------");
             environment.session = {};
             var response:Response = environment.get('/users/index');
-            trace("----------------------");
             var controller:* = response.controller;
-            assertTrue('Fail here to remind me where I left off', false);
-            
-            assertNotNull('authenticateAll should have been called', controller.currentUser);
-            assertEquals('controller did not redirect', response.action, 'index');
+
+            assertRedirectedTo(response, '/users/login')
+            //assertNotNull('authenticateAll should have been called', controller.currentUser);
+            //assertEquals('controller did not redirect', response.action, 'index');
         }
 
         public function testBasicBeforeFilterForAllExcept():void {
-            var response:Response = environment.get('/users/show/2', {'currentUser' : {'role': 'admin'}});
+            var response:Response = environment.get('/users/show/2', {currentUser : {role: 'admin'}});
             var controller:* = response.controller;
             //assertFalse('authenticateAll should not ave been called', controller.current);
             //assertTrue('authenticateOnly should have been called', controller.authenticateOnlyCalled);

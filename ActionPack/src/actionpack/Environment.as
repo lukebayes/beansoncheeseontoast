@@ -127,7 +127,6 @@ package actionpack {
             if(clazz == null) {
                 throw new RoutingError('Unable to find controller for ' + route.path);
             }
-            trace(">> CLAZZ : " + clazz);
             controller = new clazz();
             controller.environment = this;
             controller.session = session;
