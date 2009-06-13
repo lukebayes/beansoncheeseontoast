@@ -17,7 +17,6 @@
       
       private function creationCompleteHandler(event:Event):void {
         trace(">> creation complete with SHOW mxml at: " + this);
-        trace(">> product: " + product.name);
       }
       
     </mx:Script>

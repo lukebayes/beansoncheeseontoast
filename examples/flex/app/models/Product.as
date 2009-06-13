@@ -16,7 +16,6 @@ package {
                 return getAllProductsFromServer();
             }
             if(options is Number) {
-                trace(">> OPTIONS IS A NUMBER");
                 return getSingleProductFromServer(options);
             }
         }
@@ -40,7 +39,6 @@ package {
                 for(var i:int; i < response.length; i++) {
                     remoteProduct = response[i];
                     if(remoteProduct.id == productId) {
-                        trace(">> FOUND MATCHING PRODUCT IN COLLECTION");
                         product.id = remoteProduct.id;
                         product.name = remoteProduct.name;
                         product.description = remoteProduct.description;
