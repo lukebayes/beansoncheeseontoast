@@ -12,7 +12,7 @@
         private var environment:Environment;
         
         private function creationCompleteHandler(event:Event):void {
-
+        
           // Set up default Environment:
           var self:* = this;
           environment = new Environment(function():void {
