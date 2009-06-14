@@ -295,8 +295,17 @@ package reflect {
             return false;
         }
         
+        public function getAccessorByName(name:String):ReflectionAccessor {
+            var ln:Number = accessors.length
+            for(var i:Number = 0; i < ln; i++) {
+                if(accessors[i].name == name) {
+                    return accessors[i];
+                }
+            }
+            return null;
+        }
+        
         public function getMethodByName(name:String):ReflectionMethod {
-            var methods:Array = this.methods;
             var ln:Number = methods.length;
             for(var i:Number = 0; i < ln; i++) {
                 if(methods[i].name == name) {

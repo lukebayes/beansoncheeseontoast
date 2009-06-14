@@ -15,6 +15,7 @@ package {
 	import CapitalizeTest;
 	import CoerceToTypeTest;
 	import FindFirstTest;
+	import reflect.ReflectionTest;
 	import UnderscoreTest;
 
 	public class AllTests extends TestSuite {
@@ -28,6 +29,7 @@ package {
 			addTest(new CapitalizeTest());
 			addTest(new CoerceToTypeTest());
 			addTest(new FindFirstTest());
+			addTest(new reflect.ReflectionTest());
 			addTest(new UnderscoreTest());
 		}
 	}
