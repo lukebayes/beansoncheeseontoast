@@ -87,5 +87,9 @@ package actionpack {
             var route:Route = routes.routeFor({controller : UsersController, action : 'show', 'id' : 3});
             assertRoute(route, '/users/show/3', UsersController, 'show', 3);
         }
+        
+        public function testToString():void {
+            trace(routes.toString());
+        }
     }
 }

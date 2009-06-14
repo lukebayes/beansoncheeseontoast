@@ -11,6 +11,7 @@ package actionpack {
         public var controller:Class;
         public var path:String;
         
+        private var _controllerName:String;
         private var pathParts:Array;
         private var options:*;
         
@@ -64,15 +65,30 @@ package actionpack {
                 return result.join('/');
             }
             
-            var controllerName:String = controllerClassToPath(options.controller);
+            var controllerPathName:String = controllerClassToPath(options.controller);
             var actionName:String = options.action || DEFAULT_ACTION;
-            var resultPath:String = ('/' + controllerName + '/' + actionName)
+            var resultPath:String = ('/' + controllerPathName + '/' + actionName)
             return (resultPath == path) ? resultPath : null;
         }
         
+        public function toString():String {
+            var parts:Array = [];
+            parts.push('[Route path="' + path + '"')
+            if(controllerName() != ':controller') {
+                parts.push('controller="' + controllerName() + '"');
+            }
+            if(action) {
+                parts.push('action="' + action + '"');
+            }
+            return parts.join(' ') + ']';
+        }
+        
         private function controllerClassToPath(controller:Class):String {
-            var name:String = getQualifiedClassName(controller).split('::').pop();
-            return underscore(name).replace(/_controller$/, '');
+            return underscore(controllerName(controller)).replace(/_controller$/, '');
+        }
+        
+        private function controllerName(clazz:Class=null):String {
+            return (clazz == null) ? ':controller' : getQualifiedClassName(clazz).split('::').pop();
         }
         
         private function get staticPathPartsLength():int {

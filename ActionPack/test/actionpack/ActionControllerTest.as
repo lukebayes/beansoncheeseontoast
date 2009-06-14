@@ -47,11 +47,16 @@ package actionpack {
             assertEquals('Request should have id param', 2, response.controller.params['id']);
         }
         
-        public function testBasicBeforeFilter():void {
-            environment.session = {};
-            var response:Response = environment.get('/users/show');
+        public function testBeforeFilterExceptRedirected():void {
+            var response:Response = environment.get('/users/show', {});
             var controller:* = response.controller;
             assertRedirectedTo(response, '/users/login');
+        }
+
+        public function testBeforeFilterExceptPassed():void {
+            var response:Response = environment.get('/users/show', {currentUser : {}});
+            var controller:* = response.controller;
+            assertResponseSuccess(response);
         }
 
         public function testBeforeFilterOnlyRedirected():void {
@@ -63,7 +68,7 @@ package actionpack {
         public function testBeforeFilterOnlyPassed():void {
             var response:Response = environment.get('/users/edit/2', {currentUser : {role: 'admin'}});
             var controller:* = response.controller;
-            assertEquals(0, response.request.status);
+            assertResponseSuccess(response);
         }
     }
 }

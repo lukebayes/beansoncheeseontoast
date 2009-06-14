@@ -35,5 +35,9 @@ package actionpack {
             }
         }
         
+        protected function assertResponseSuccess(response:Response):void {
+            assertEquals('Response status should be successful', 0, response.request.status);
+        }
+        
     }
 }

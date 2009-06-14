@@ -73,6 +73,14 @@ package actionpack {
             }
             return null;
         }
+        
+        public function toString():String {
+            var lines:Array = [];
+            _routes.forEach(function(route:Route, index:int, items:Array):void {
+                lines.push(route.toString());
+            });
+            return lines.join('\n');
+        }
 
         private function convertTypeErrorToNamedRoute(message:String, config:Function):void {
             var result:* = message.match(/\: (\w+) is not a function/i);
