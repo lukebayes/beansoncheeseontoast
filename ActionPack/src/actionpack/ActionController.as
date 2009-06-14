@@ -32,9 +32,13 @@ package actionpack {
         private var redirect:Redirect;
         
         public function ActionController(config:Function=null) {
-            super(config);
             _beforeFilters = [];
             _afterFilters = [];
+            super(config);
+            initialize();
+        }
+        
+        protected function initialize():void {
         }
         
         public function set actionName(name:String):void {

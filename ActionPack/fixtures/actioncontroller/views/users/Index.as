@@ -16,7 +16,7 @@ package users {
             height = parent.height - 20;
             super.draw();
             var lastY:int = 0;
-            allUsers.forEach(function(user:User, index:int, users:Array):void {
+            allUsers.forEach(function(user:User, index:int, items:Array):void {
                 var sprite:Sprite = new Sprite();
                 sprite.buttonMode = true;
                 sprite.addEventListener(MouseEvent.CLICK, function(event:MouseEvent):void {

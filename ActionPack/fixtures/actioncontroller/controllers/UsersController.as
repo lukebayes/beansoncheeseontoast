@@ -8,6 +8,9 @@ package {
         
         public function UsersController(config:Function=null) {
             super(config);
+        }
+        
+        override protected function initialize():void {
             beforeFilter(authenticate, {except : ['login', 'index']});
             beforeFilter(admin, {only : 'edit'});
         }
