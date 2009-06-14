@@ -101,7 +101,6 @@ package reflect {
         public function testDescription():void {
             var desc:XML = reflection.description;
             assertNotNull(desc);
-//            trace("desc: " + desc);
         }
         
         public function testAccessors():void {
@@ -188,10 +187,26 @@ package reflect {
             assertTrue(reflection.hasVariable('height', 'Number'));
         }
         
+        //TODO: metadata nodes are available as child nodes
+        // for Reflection Members:
+        //public function testMetaData():void {
+        //}
+        
         public function testGetReadWriteMembers():void {
             var members:Array = reflection.readWriteMembers;
             assertEquals(32, members.length);
         }
+    }
+}
+
+class FakeController {
+    
+    [BeforeFilter(order=1)]
+    public function authenticate():void {
+    }
+    
+    [AfterFilter(order=2)]
+    public function cleanRecords():void {
     }
 }
 

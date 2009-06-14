@@ -1,6 +1,5 @@
 package {
     import asunit.textui.TestRunner;
-    import actionpack.EnvironmentTest;
     
     public class ActionPackRunner extends TestRunner {
 
