@@ -7,21 +7,19 @@
     >
     <mx:Script>
         <![CDATA[
-        import actionpack.Environment;
+        import actionpack.Boot;
+        import actionpack.IEnvironment;
         
-        private var environment:Environment;
+        // Can be set with compiler params:
+        public static const BEANS_ENV:String = 'production';
+        private var environment:IEnvironment;
         
         private function creationCompleteHandler(event:Event):void {
-        
-          // Set up default Environment:
           var self:* = this;
-          environment = new Environment(function():void {
-            this.displayRoot = self;
-            this.routes(function():void {
-              this.root({'controller' : ProductsController, 'action' : 'index'});
-              this.connect('/:controller/:action/:id');
-              this.connect('/:controller/:action');
-            });
+
+          // Set up default Environment:
+          environment = Boot.strap(BEANS_ENV, function():void {
+              this.displayRoot = self;
           });
           
           environment.get('/');

@@ -31,7 +31,7 @@ def include_classes(t)
     t.source_path << package
   end
 
-  Dir.glob(['config', 'app/models/*', 'app/controllers/*', 'app/views/**/*']).each do |fixture|
+  Dir.glob(['config/**/*', 'app/models/**/*', 'app/controllers/**/*', 'app/views/**/*']).each do |fixture|
     if(!File.directory?(fixture))
       fixture.gsub!('config/', '')
       fixture.gsub!('app/models/', '')
