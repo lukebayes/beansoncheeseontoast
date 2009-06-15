@@ -2,11 +2,13 @@ package {
     import flash.display.Sprite;
     import flash.events.Event;
     import flash.utils.setTimeout;
-    import actionpack.AbstractEnvironment;
-    import actionpack.Routes;
+    import actionpack.IEnvironment;
+    import actionpack.Boot;
 
     public class ActionPack extends Sprite {
-        private var environment:AbstractEnvironment;
+        public static const BEANS_ENV:String = 'production';
+        
+        private var environment:IEnvironment;
         
         public function ActionPack() {
             addEventListener(Event.ADDED, addedHandler);
@@ -15,7 +17,7 @@ package {
         private function addedHandler(event:Event):void {
             if(event.target === this) {
                 var self:* = this;
-                environment = new AbstractEnvironment(function():void {
+                environment = Boot.strap(BEANS_ENV, function():void {
                     this.displayRoot = self;
                     this.routes(function():void {
                         this.site({controller : SiteController});

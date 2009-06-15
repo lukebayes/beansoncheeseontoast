@@ -37,9 +37,9 @@ def include_classes(t)
     t.source_path << package
   end
 
-  Dir.glob(['fixtures/actioncontroller/config/*',
-    'fixtures/actioncontroller/models/*', 
-    'fixtures/actioncontroller/controllers/*', 
+  Dir.glob(['fixtures/actioncontroller/config/**/*',
+    'fixtures/actioncontroller/models/**/*', 
+    'fixtures/actioncontroller/controllers/**/*', 
     'fixtures/actioncontroller/views/**/*']).each do |fixture|
     if(!File.directory?(fixture))
       fixture.gsub!('fixtures/actioncontroller/config/', '')
@@ -58,19 +58,16 @@ meta_data_tags = ['BeforeFilter', 'AfterFilter']
 desc 'Compile and debug the application'
 debug :debug do |t|
   include_classes(t)
-  t.appended_args = "-keep-as3-metadata+=#{meta_data_tags.join(',')}"
 end
 
 desc 'Compile and run the test harness'
 unit :test do |t|
   include_classes(t)
-  t.appended_args = "-keep-as3-metadata+=#{meta_data_tags.join(',')}"
 end
 
 desc 'Compile the optimized deployment'
 deploy :deploy do |t|
   include_classes(t)
-  t.appended_args = "-keep-as3-metadata+=#{meta_data_tags.join(',')}"
 end
 
 desc 'Create documentation'
@@ -78,7 +75,7 @@ document :doc
 
 desc 'Compile a SWC file'
 swc :swc do |t|
-  t.appended_args = "-keep-as3-metadata+=#{meta_data_tags.join(',')}"
+  include_classes(t)
 end
 
 desc 'Compile and run the test harness for CI'
