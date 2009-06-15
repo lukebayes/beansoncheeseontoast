@@ -3,6 +3,7 @@ package actionpack {
     import asunit.framework.TestCase;
     import environments.Development;
     import environments.Production;
+    import environments.SomeLongName;
     import environments.Test;
     import flash.utils.getDefinitionByName;
     import flash.utils.getQualifiedClassName;
@@ -25,8 +26,13 @@ package actionpack {
             assertEnvironmentAcceptedConfiguration(AbstractEnvironment.TEST, Test);
         }
         
+        public function testSomeLongNameEnvironment():void {
+            assertEnvironmentAcceptedConfiguration('some_long_name', SomeLongName);
+        }
+        
         private function assertEnvironmentAcceptedConfiguration(env:String, clazz:Class):void {
             var environment:IEnvironment = Boot.strap(env);
+            assertNotNull('Boot.strap(' + env + ') should have created an instance', environment);
             assertSame(getClassByInstance(environment), clazz);
         }
         

@@ -8,7 +8,8 @@ package {
         
         public function Environment(config:Function=null) {
             super(function():void {
-                // Set up global Environment configuration here (spans Production, Development and Test):
+                // Set up global Environment configuration here,
+                // configurations that spans Production, Development and Test:
 
                 // Put system-wide routes here:
                 this.routes(function():void {
