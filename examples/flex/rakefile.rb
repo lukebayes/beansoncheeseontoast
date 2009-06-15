@@ -27,12 +27,13 @@ project_model :model do |m|
 end
 
 def include_classes(t)
-  ['app/models', 'app/controllers', 'app/views'].each do |package|
+  ['config', 'app/models', 'app/controllers', 'app/views'].each do |package|
     t.source_path << package
   end
 
-  Dir.glob(['app/models/*', 'app/controllers/*', 'app/views/**/*']).each do |fixture|
+  Dir.glob(['config', 'app/models/*', 'app/controllers/*', 'app/views/**/*']).each do |fixture|
     if(!File.directory?(fixture))
+      fixture.gsub!('config/', '')
       fixture.gsub!('app/models/', '')
       fixture.gsub!('app/controllers/', '')
       fixture.gsub!('app/views/', '')

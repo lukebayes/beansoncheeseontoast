@@ -23,7 +23,7 @@ package actionpack {
         private var _controllerPath:String;
         private var _defaultActionName:String;
         private var _defaultTemplateName:String;
-        private var _environment:Environment;
+        private var _environment:AbstractEnvironment;
         private var _flash:Object;
         private var _params:Object;
         private var _response:Response;
@@ -49,12 +49,12 @@ package actionpack {
             return _actionName;
         }
 
-        public function set environment(environment:Environment):void {
+        public function set environment(environment:AbstractEnvironment):void {
             _environment = environment;
         }
 
-        public function get environment():Environment {
-            return _environment ||= new Environment();
+        public function get environment():AbstractEnvironment {
+            return _environment ||= new AbstractEnvironment();
         }
         
         /**
@@ -362,7 +362,7 @@ package actionpack {
         }
 
         /**
-        *  Helper methods that delegate back up to the Environment
+        *  Helper methods that delegate back up to the AbstractEnvironment
         **/
 
         public function get(redirectOrPath:*=null):Response {

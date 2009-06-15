@@ -3,15 +3,54 @@ package actionpack {
     import asunit.errors.AssertionFailedError;
     import asunit.errors.UnimplementedFeatureError;
     import asunit.framework.TestCase;
-    
+    import flash.display.DisplayObjectContainer;
+    import flash.display.Sprite;
     import reflect.Reflection;
     
+    /**
+    *   Collection of custom assertions and helpers that make it easier
+    *   to test Controllers and their respective actions.
+    **/
     public class ActionPackTestCase extends TestCase {
+        
+        protected var displayRoot:Sprite;
+        protected var environment:IEnvironment;
+        protected var session:Object;
 
+        // Not yet implemented....
+        //protected var response:Response;
+        
         public function ActionPackTestCase(methodName:String=null) {
             super(methodName)
         }
-
+        
+        // Ensure subclasses call super.setUp();
+        override protected function setUp():void {
+            super.setUp();
+            session = {};
+            displayRoot = new Sprite();
+            addChild(displayRoot);
+            setUpEnvironment();
+        }
+        
+        // Override to change the environment configuration:
+        protected function setUpEnvironment():void {
+            environment = Boot.strap(AbstractEnvironment.TEST, function():void {
+                this.displayRoot = displayRoot;
+                this.session = session;
+            });
+        }
+        
+        override protected function tearDown():void {
+            super.tearDown();
+            session = null;
+            removeChild(displayRoot);
+        }
+        
+        protected function assertResponseSuccess(response:Response):void {
+            assertEquals('Response status should be successful', 0, response.request.status);
+        }
+        
         protected function assertRedirectedTo(response:Response, pathOrRoute:*):void {
             assertEquals('Unexpected Request.status: ' + response.request.status, ActionController.REDIRECT, response.request.status);
             if(pathOrRoute is String) {

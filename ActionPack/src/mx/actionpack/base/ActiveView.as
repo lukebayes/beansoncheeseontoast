@@ -1,6 +1,6 @@
 package mx.actionpack.base {
     
-    import actionpack.Environment;
+    import actionpack.AbstractEnvironment;
     import actionpack.events.RoutingEvent;
     import flash.display.DisplayObjectContainer;
     import mx.containers.VBox;
@@ -10,7 +10,7 @@ package mx.actionpack.base {
         
         public var actionName:String;
         public var controllerName:String;
-        public var environment:Environment;
+        public var environment:AbstractEnvironment;
         public var flash:Object;
         public var params:Object;
         public var response:Object;

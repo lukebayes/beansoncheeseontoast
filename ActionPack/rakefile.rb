@@ -30,12 +30,19 @@ project_model :model do |m|
 end
 
 def include_classes(t)
-  ['fixtures/actioncontroller/models', 'fixtures/actioncontroller/controllers', 'fixtures/actioncontroller/views'].each do |package|
+  ['fixtures/actioncontroller/config',
+   'fixtures/actioncontroller/models', 
+   'fixtures/actioncontroller/controllers', 
+   'fixtures/actioncontroller/views'].each do |package|
     t.source_path << package
   end
 
-  Dir.glob(['fixtures/actioncontroller/models/*', 'fixtures/actioncontroller/controllers/*', 'fixtures/actioncontroller/views/**/*']).each do |fixture|
+  Dir.glob(['fixtures/actioncontroller/config/*',
+    'fixtures/actioncontroller/models/*', 
+    'fixtures/actioncontroller/controllers/*', 
+    'fixtures/actioncontroller/views/**/*']).each do |fixture|
     if(!File.directory?(fixture))
+      fixture.gsub!('fixtures/actioncontroller/config/', '')
       fixture.gsub!('fixtures/actioncontroller/models/', '')
       fixture.gsub!('fixtures/actioncontroller/controllers/', '')
       fixture.gsub!('fixtures/actioncontroller/views/', '')

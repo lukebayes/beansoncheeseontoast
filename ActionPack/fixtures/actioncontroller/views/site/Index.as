@@ -1,6 +1,6 @@
 package site {
     import actionpack.base.View;
-    import actionpack.Environment;
+    import actionpack.AbstractEnvironment;
     import flash.display.Sprite;
     import flash.events.Event;
     import flash.events.MouseEvent;

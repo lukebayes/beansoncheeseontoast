@@ -6,25 +6,19 @@ package actionpack {
     import users.Show;
     import reflect.Reflection;
 
-    public class EnvironmentTest extends ActionPackTestHelper {
-        private var environment:Environment;
+    public class AbstractEnvironmentTest extends ActionPackTestCase {
 
-        public function EnvironmentTest(methodName:String=null) {
+        public function AbstractEnvironmentTest(methodName:String=null) {
             super(methodName)
         }
         
         override protected function setUp():void {
             super.setUp();
-            environment = new Environment(function():void {
-                this.displayRoot = displayRoot;
-                this.session = {
-                    currentUser : {admin:true}
-                },
-                this.routes(function():void {
-                    this.connect('/:controller/:action');
-                    this.connect('/:controller/:action/:id');
-                });
-            });
+            // update Session with admin user:
+            session.currentUser = {
+                name : 'bob', 
+                role: 'admin'
+            }
         }
         
         override protected function tearDown():void {

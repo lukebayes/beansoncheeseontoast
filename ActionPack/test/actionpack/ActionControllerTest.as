@@ -1,7 +1,8 @@
 package actionpack {
 
-    public class ActionControllerTest extends ActionPackTestHelper {
-        private var environment:Environment;
+    import asunit.errors.AssertionFailedError;
+
+    public class ActionControllerTest extends ActionPackTestCase {
 
         public function ActionControllerTest(methodName:String=null) {
             super(methodName)
@@ -9,13 +10,11 @@ package actionpack {
         
         override protected function setUp():void {
             super.setUp();
-            environment = new Environment(function():void {
-                this.displayRoot = displayRoot;
-                this.session = session;
-                this.routes(function():void {
-                    this.connect('/:controller/:action/:id');
-                });
-            });
+            // Update the session with admin user:
+            session.currentUser = {
+                name : 'bob', 
+                role: 'admin'
+            }
         }
         
         public function testControllerName():void {
@@ -69,6 +68,39 @@ package actionpack {
             var response:Response = environment.get('/users/edit/2', {currentUser : {role: 'admin'}});
             var controller:* = response.controller;
             assertResponseSuccess(response);
+        }        private function getUsersIndexWithUnknownUser():Response {
+            environment.session = {};
+            // Should redirect with from authenticate beforeFilter:
+            return environment.get('/users/show');
+        }
+
+        public function testAssertRedirectedToWithWrongPath():void {
+            var response:Response = getUsersIndexWithUnknownUser();
+
+            assertThrows(AssertionFailedError, function():void {
+                assertRedirectedTo(response, '/users/login2');
+            });
+        }
+
+        public function testAssertRedirectedToWithCorrectPath():void {
+            var response:Response = getUsersIndexWithUnknownUser();
+            assertRedirectedTo(response, '/users/login');
+        }
+
+        public function testAssertRedirectedToWithInvalidResponse():void {
+            var response:Response = getUsersIndexWithUnknownUser();
+            assertThrows(TypeError, function():void {
+                assertRedirectedTo(null, '/users/login');
+            });
+        }
+        
+        public function testAssertThrowsWithAFunctionThatDoesNotThrow():void {
+            var response:Response = getUsersIndexWithUnknownUser();
+            assertThrows(AssertionFailedError, function():void {
+                assertThrows(AssertionFailedError, function():void {
+                    assertRedirectedTo(response, '/users/login');
+                });
+            });
         }
     }
 }

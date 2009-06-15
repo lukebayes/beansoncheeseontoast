@@ -1,11 +1,11 @@
 package actionpack {
-
+    
     import asunit.framework.TestCase;
     import reflect.Reflection;
-
+    
     public class RoutesTest extends TestCase {
         private var routes:Routes;
-
+        
         public function RoutesTest(methodName:String=null) {
             super(methodName)
         }
@@ -82,14 +82,14 @@ package actionpack {
             var route:Route = routes.routeFor({controller : UsersController, action : 'index'});
             assertRoute(route, '/users/index', UsersController, 'index');
         }
-
+        
         public function testRouteByHashForUsersShowWithId():void {
             var route:Route = routes.routeFor({controller : UsersController, action : 'show', 'id' : 3});
             assertRoute(route, '/users/show/3', UsersController, 'show', 3);
         }
         
         public function testToString():void {
-            trace(routes.toString());
+            assertNotNull(routes.toString());
         }
     }
 }

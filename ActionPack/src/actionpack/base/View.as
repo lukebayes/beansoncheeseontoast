@@ -2,19 +2,19 @@ package actionpack.base {
     
     import flash.display.Sprite;
     import flash.events.Event;
-    import actionpack.Environment;
+    import actionpack.AbstractEnvironment;
     
     /**
     *   The View class can be any DisplayObject, but this class is provided
     *   to help make things a little less repetitive.
     *   
     *   The only requirement for Views is that they can be added (using addChild)
-    *   to whatever DisplayObjectContainer was provided to the Environment
+    *   to whatever DisplayObjectContainer was provided to the AbstractEnvironment
     *   object during configuration.
     *   
-    *   So - if you gave the Environment a Flex Application (or IUIComponent),
+    *   So - if you gave the AbstractEnvironment a Flex Application (or IUIComponent),
     *   then your views might need to also be IUIComponents.
-    *   If you provided a standard Sprite to the Environment, then your views
+    *   If you provided a standard Sprite to the AbstractEnvironment, then your views
     *   can be any class that extends DisplayObject.
     *   
     *   If your view is 'dynamic' (all MXML classes are), then all publicly
@@ -53,7 +53,7 @@ package actionpack.base {
 
         public var actionName:String;
         public var controllerName:String;
-        public var environment:Environment;
+        public var environment:AbstractEnvironment;
         public var flash:Object;
         public var params:Object;
         public var response:Object;

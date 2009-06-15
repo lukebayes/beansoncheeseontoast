@@ -9,7 +9,7 @@ package actionpack {
         public function Routes() {
             _routes = new Array();
         }
-
+        
         public function configure(config:Function):void {
             try {
                 config.call(this);
@@ -81,7 +81,7 @@ package actionpack {
             });
             return lines.join('\n');
         }
-
+        
         private function convertTypeErrorToNamedRoute(message:String, config:Function):void {
             var result:* = message.match(/\: (\w+) is not a function/i);
             addNamedRoute(result[1]);
@@ -100,7 +100,7 @@ package actionpack {
                 addRoute('/' + name, options);
             }
         }
-
+        
         private function duplicateHash(hash:*):* {
             var dupe:Object = {};
             for(var key:String in hash) {
@@ -142,6 +142,6 @@ package actionpack {
                 return (route.controller === options.controller);
             }).name || options.controller.controllerPath;
         }
-
+        
     }
 }

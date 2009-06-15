@@ -7,9 +7,9 @@ package {
 	 */
 
 	import asunit.framework.TestSuite;
+	import actionpack.AbstractEnvironmentTest;
 	import actionpack.ActionControllerTest;
-	import actionpack.ActionPackTestCaseTest;
-	import actionpack.EnvironmentTest;
+	import actionpack.BootTest;
 	import actionpack.RoutesTest;
 	import CamelCaseTest;
 	import CapitalizeTest;
@@ -21,9 +21,9 @@ package {
 	public class AllTests extends TestSuite {
 
 		public function AllTests() {
+			addTest(new actionpack.AbstractEnvironmentTest());
 			addTest(new actionpack.ActionControllerTest());
-			addTest(new actionpack.ActionPackTestCaseTest());
-			addTest(new actionpack.EnvironmentTest());
+			addTest(new actionpack.BootTest());
 			addTest(new actionpack.RoutesTest());
 			addTest(new CamelCaseTest());
 			addTest(new CapitalizeTest());

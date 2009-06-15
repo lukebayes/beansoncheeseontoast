@@ -11,7 +11,10 @@ package actionpack {
     import ReferenceError;
     import reflect.Reflection;
     
-    public class Environment extends Configurable {
+    public class AbstractEnvironment extends Configurable implements IEnvironment {
+        public static const DEVELOPMENT:String = 'development';
+        public static const PRODUCTION:String  = 'production';
+        public static const TEST:String        = 'test';
 
         private var _displayRoot:DisplayObjectContainer;
         private var _layout:*;
@@ -19,9 +22,13 @@ package actionpack {
         private var _session:*;
         private var _routes:Routes;
         
-        public function Environment(config:Function=null) {
+        public function AbstractEnvironment(config:Function=null) {
             _routes = new Routes();
             super(config);
+        }
+        
+        override protected function applyConfiguration(config:Function=null):void {
+            super.applyConfiguration(config);
         }
         
         public function set session(session:*):void {
@@ -101,11 +108,11 @@ package actionpack {
                 route = _routes.routeFor(redirect.path);
             }
             else {
-                throw new RoutingError('Environment.get called with unexpected request type: ' + path);
+                throw new RoutingError('AbstractEnvironment.get called with unexpected request type: ' + path);
             }
             
             if(route == null) {
-                throw new RoutingError('Environment.get failed with unhandled path: ' + path);
+                throw new RoutingError('AbstractEnvironment.get failed with unhandled path: ' + path);
             }
 
             request.route = route;
