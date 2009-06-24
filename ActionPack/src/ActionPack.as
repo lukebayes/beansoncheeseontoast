@@ -11,22 +11,12 @@ package {
         private var environment:IEnvironment;
         
         public function ActionPack() {
-            addEventListener(Event.ADDED, addedHandler);
-        }
-        
-        private function addedHandler(event:Event):void {
-            if(event.target === this) {
-                var self:* = this;
-                environment = Boot.strap(BEANS_ENV, function():void {
-                    this.displayRoot = self;
-                    this.routes(function():void {
-                        this.site({controller : SiteController});
-                        this.users({controller : UsersController});
-                    });
-                });
+            var self:* = this;
+            environment = Boot.strap(BEANS_ENV, function():void {
+                this.displayRoot = self;
+            });
 
-                environment.get('/site');
-            }
+            environment.get('/site');
         }
     }
 }

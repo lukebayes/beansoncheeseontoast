@@ -108,7 +108,8 @@ package actionpack {
                 route = _routes.routeFor(redirect.path);
             }
             else {
-                throw new RoutingError('AbstractEnvironment.get called with unexpected request type: ' + path);
+                return get(_routes.pathFor(path), sessionData);
+                /*throw new RoutingError('AbstractEnvironment.get called with unexpected request type: ' + path);*/
             }
             
             if(route == null) {

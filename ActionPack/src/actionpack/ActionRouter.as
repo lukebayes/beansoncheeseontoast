@@ -8,7 +8,7 @@ package actionpack {
         
         public function ActionRouter() {
             _routes = new Array();
-            initialize();
+            configure(initialize);
         }
         
         protected function initialize():void {

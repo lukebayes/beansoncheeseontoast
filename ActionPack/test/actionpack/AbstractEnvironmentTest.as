@@ -1,5 +1,6 @@
 package actionpack {
 
+    import actionpack.test.ActionPackTestCase;
     import actionpack.events.RoutingEvent;
     import flash.display.Sprite;
     import flash.events.Event;
@@ -26,6 +27,7 @@ package actionpack {
         }
 
         public function testConfigureAndLoadRoute():void {
+            assertEquals('/site/index', environment.pathFor({controller:SiteController, action:'index'}));
             assertEquals('/users/index', environment.pathFor({controller:UsersController, action:'index'}));
             var response:Response = environment.get('/users');
             var rendered:* = response.view;

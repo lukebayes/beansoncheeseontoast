@@ -9,8 +9,9 @@ package {
 	import asunit.framework.TestSuite;
 	import actionpack.AbstractEnvironmentTest;
 	import actionpack.ActionControllerTest;
-	import actionpack.BootTest;
 	import actionpack.ActionRouterTest;
+	import actionpack.BootTest;
+	import actionpack.test.ActionPackTestCaseTest;
 	import CamelCaseTest;
 	import CapitalizeTest;
 	import CoerceToTypeTest;
@@ -23,8 +24,9 @@ package {
 		public function AllTests() {
 			addTest(new actionpack.AbstractEnvironmentTest());
 			addTest(new actionpack.ActionControllerTest());
-			addTest(new actionpack.BootTest());
 			addTest(new actionpack.ActionRouterTest());
+			addTest(new actionpack.BootTest());
+			addTest(new actionpack.test.ActionPackTestCaseTest());
 			addTest(new CamelCaseTest());
 			addTest(new CapitalizeTest());
 			addTest(new CoerceToTypeTest());

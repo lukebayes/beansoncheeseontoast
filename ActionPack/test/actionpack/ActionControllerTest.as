@@ -1,5 +1,6 @@
 package actionpack {
 
+    import actionpack.test.ActionPackTestCase;
     import asunit.errors.AssertionFailedError;
 
     public class ActionControllerTest extends ActionPackTestCase {
@@ -13,7 +14,7 @@ package actionpack {
             // Update the session with admin user:
             session.currentUser = {
                 name : 'bob', 
-                role: 'admin'
+                role : 'admin'
             }
         }
         

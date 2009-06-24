@@ -1,26 +1,19 @@
 package controllers {
 
-    import asunit.framework.TestCase;
+    import actionpack.test.ActionPackTestCase;
 
-    public class ProductsControllerTest extends TestCase {
+    public class ProductsControllerTest extends ActionPackTestCase {
         private var instance:ProductsController;
 
         public function ProductsControllerTest(methodName:String=null) {
             super(methodName);
         }
-
-        override protected function setUp():void {
-            super.setUp();
-            instance = new ProductsController();
+        
+        public function testShouldGetIndex():void {
+            get('index');
+            
+            assertResponseSuccess();
         }
 
-        override protected function tearDown():void {
-            super.tearDown();
-            instance = null;
-        }
-
-        public function testInstantiated():void {
-            assertTrue("instance is ProductsController", instance is ProductsController);
-        }
     }
 }
