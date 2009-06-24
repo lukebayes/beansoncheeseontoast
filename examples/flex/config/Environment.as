@@ -11,13 +11,6 @@ package {
                 // Set up global Environment configuration here,
                 // configurations that spans Production, Development and Test:
 
-                // Put system-wide routes here:
-                this.routes(function():void {
-                    this.root({'controller' : ProductsController, 'action' : 'index'});
-                    this.connect('/:controller/:action');
-                    this.connect('/:controller/:action/:id');
-                });
-                
                 applyConfiguration(config);
             });
         }

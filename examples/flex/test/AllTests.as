@@ -7,11 +7,13 @@ package {
      */
 
     import asunit.framework.TestSuite;
+    import controllers.ProductsControllerTest;
     import models.ProductTest;
 
     public class AllTests extends TestSuite {
 
         public function AllTests() {
+            addTest(new controllers.ProductsControllerTest());
             addTest(new models.ProductTest());
         }
     }
