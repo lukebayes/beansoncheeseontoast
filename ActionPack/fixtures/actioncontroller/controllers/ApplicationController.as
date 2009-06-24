@@ -18,7 +18,7 @@ package {
                 redirectTo('/users/login');
             }
         }
-
+        
         protected function admin():void {
             if(!currentUser || currentUser.role != 'admin') {
                 flash['warning'] = 'You must be an administrator to take that action';

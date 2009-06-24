@@ -3,16 +3,16 @@ package actionpack {
     import asunit.framework.TestCase;
     import reflect.Reflection;
     
-    public class RoutesTest extends TestCase {
-        private var routes:Routes;
+    public class ActionRouterTest extends TestCase {
+        private var routes:ActionRouter;
         
-        public function RoutesTest(methodName:String=null) {
+        public function ActionRouterTest(methodName:String=null) {
             super(methodName)
         }
         
         override protected function setUp():void {
             super.setUp();
-            routes = new Routes();
+            routes = new ActionRouter();
             routes.configure(function():void {
                 this.root({controller : SiteController, action : 'index'});
                 this.connect('/people/all', {controller : UsersController, action : 'index'});

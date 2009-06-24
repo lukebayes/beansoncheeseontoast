@@ -16,6 +16,5 @@ package layouts {
             }
             super.draw();
         }
-        
     }
 }

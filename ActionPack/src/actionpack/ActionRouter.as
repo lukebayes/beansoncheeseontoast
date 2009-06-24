@@ -3,11 +3,15 @@ package actionpack {
     import actionpack.errors.RoutingError;
     import flash.utils.getQualifiedClassName;
     
-    dynamic public class Routes {
+    dynamic public class ActionRouter {
         private var _routes:Array;
         
-        public function Routes() {
+        public function ActionRouter() {
             _routes = new Array();
+            initialize();
+        }
+        
+        protected function initialize():void {
         }
         
         public function configure(config:Function):void {

@@ -10,7 +10,7 @@ package {
 	import actionpack.AbstractEnvironmentTest;
 	import actionpack.ActionControllerTest;
 	import actionpack.BootTest;
-	import actionpack.RoutesTest;
+	import actionpack.ActionRouterTest;
 	import CamelCaseTest;
 	import CapitalizeTest;
 	import CoerceToTypeTest;
@@ -24,7 +24,7 @@ package {
 			addTest(new actionpack.AbstractEnvironmentTest());
 			addTest(new actionpack.ActionControllerTest());
 			addTest(new actionpack.BootTest());
-			addTest(new actionpack.RoutesTest());
+			addTest(new actionpack.ActionRouterTest());
 			addTest(new CamelCaseTest());
 			addTest(new CapitalizeTest());
 			addTest(new CoerceToTypeTest());

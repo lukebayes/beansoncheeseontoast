@@ -20,7 +20,7 @@ package actionpack {
         private var _layout:*;
         private var _view:*;
         private var _session:*;
-        private var _routes:Routes;
+        private var _routes:ActionRouter;
         
         public function AbstractEnvironment(config:Function=null) {
             _routes = new Routes();
@@ -120,7 +120,7 @@ package actionpack {
             return controller.getAction(request);
         }
         
-        public function routes(config:Function=null):Routes {
+        public function routes(config:Function=null):ActionRouter {
             if(config is Function) {
                 _routes.configure(config);
             }

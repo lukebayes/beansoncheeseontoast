@@ -20,7 +20,7 @@ package actionpack {
         function get(path:*, sessionData:*=null):*;
 
         // Forward configuration function to routes:
-        function routes(config:Function=null):Routes;
+        function routes(config:Function=null):ActionRouter;
         
         // Get a path for a hash of options:
         // pathFor({controller: UsersController, action: 'index'}); // '/users'
